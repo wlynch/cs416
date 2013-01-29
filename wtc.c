@@ -10,6 +10,7 @@ void print_usage() {
 
 int main(int argc, char ** argv) {
   int number_of_processes, number_of_vertices;
+  int i, j;
   FILE * input_fd;
 
   if (argc != 2) {
@@ -26,6 +27,10 @@ int main(int argc, char ** argv) {
   number_of_processes = atoi(parser_next_word(input_fd));
   number_of_vertices  = atoi(parser_next_word(input_fd));
   printf("%i processes\n%i vertices\n", number_of_processes, number_of_vertices);
+
+  while ( fscanf(input_fd, "%i %i", &i, &j) == 2 ) {
+      printf("(%i, %i)\n", i, j);
+  }
 
   /* close the input file */
   fclose(input_fd);
