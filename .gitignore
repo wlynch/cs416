@@ -24,3 +24,5 @@ wtc
 
 # Vim Swap Files
 *.swp
+*.swo
+*.*~
