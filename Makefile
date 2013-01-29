@@ -13,8 +13,19 @@ all: ${EXEC}
 ${EXEC}: ${OBJS}
 	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS}
 
-test: ${EXEC}
-	./${EXEC} input.in
+test: test_proc
+
+test_proc: ${EXEC}
+	./${EXEC} 1 input.in
+
+test_thr: ${EXEC}
+	./${EXEC} 2 input.in
+
+test_btproc: ${EXEC}
+	./${EXEC} 3 input.in
+
+test_btthrc: ${EXEC}
+	./${EXEC} 4 input.in
 
 clean:
 	rm ./${EXEC}
