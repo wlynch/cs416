@@ -23,7 +23,7 @@ int main(int argc, char ** argv) {
   int i, j;
   FILE * input_fd;
 
-  /* the vertices graph, length number_of_vertices * number_of_vertices 
+  /* the vertices graph, length number_of_vertices * number_of_vertices
    * to find a connection you look at E[x + y * number_of_vertices] */
   int * T;
 
@@ -43,7 +43,7 @@ int main(int argc, char ** argv) {
   printf("%i processes\n%i vertices\n", number_of_processes, number_of_vertices);
 
   /* initialize E, the vertex graph*/
-  T = calloc(number_of_vertices * number_of_vertices, 0);
+  T = calloc(number_of_vertices * number_of_vertices, sizeof(int));
 
   while ( fscanf(input_fd, "%i %i", &i, &j) == 2 ) {
       printf("(%i, %i)\n", i, j);
@@ -56,7 +56,8 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-
+      wtc_proc_init(T, number_of_vertices);
+      wtc_proc();
       break;
     case 2:
       break;
