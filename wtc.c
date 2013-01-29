@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "parser.h"
-
 void print_usage() {
   fprintf(stderr, "usage: wtc <input file>\n");
   exit(0);
@@ -24,8 +22,8 @@ int main(int argc, char ** argv) {
     exit(1);
   }
 
-  number_of_processes = atoi(parser_next_word(input_fd));
-  number_of_vertices  = atoi(parser_next_word(input_fd));
+  fscanf(input_fd, "%i", &number_of_processes);
+  fscanf(input_fd, "%i", &number_of_vertices);
   printf("%i processes\n%i vertices\n", number_of_processes, number_of_vertices);
 
   while ( fscanf(input_fd, "%i %i", &i, &j) == 2 ) {
