@@ -2,7 +2,7 @@ CC ?= gcc
 CFLAGS ?= -pedantic -Wall
 
 EXEC = wtc
-SRCS = parser.c main.c
+SRCS = parser.c wtc.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}
