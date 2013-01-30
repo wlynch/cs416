@@ -12,7 +12,7 @@
 #include "wtc_proc.h"
 
 /* shared vertices graph, will result in the transitive closure graph */
-int * T;
+int * T, t;
 int T_size;
 int shared_memory_fd;
 #define shared_memory_path "/tmp/wtc_proc_shared"
@@ -25,8 +25,6 @@ void wtc_proc_init(int * E, size_t size) {
     perror("cannot open shared_memory_path with shm_open()");
     exit(1);
   }
-
-  printf("shared_memory_fd = %i\n", shared_memory_fd);
 
   if (ftruncate(shared_memory_fd, size) == -1) {
     perror("cannot truncate shared_memory_path");
@@ -41,12 +39,24 @@ void wtc_proc_init(int * E, size_t size) {
     perror("could not mmap");
     exit(1);
   }
-
-  memcpy(T, E, size);
 }
 
-void wtc_proc() {
+void wtc_proc(int * vertices, int n) {
+  int i,j,k;
 
+  for (k = 0; k < n; k++) {
+    switch ( pid = fork() ) {
+      case 0: /* child */
+
+        break;
+      case -1: /* error */
+        perror("could not create a child process");
+        exit(1);
+        break;
+      default: /* we are the parent */
+        break;
+    }
+  }
 }
 
 void wtc_proc_cleanup() {
