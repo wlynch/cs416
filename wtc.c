@@ -57,8 +57,9 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(T, number_of_vertices);
+      wtc_proc_init(T, sizeof(int) * number_of_vertices * number_of_vertices);
       wtc_proc();
+      wtc_proc_cleanup();
       break;
     case 2:
 			wtc_thr_init(T, number_of_vertices);
