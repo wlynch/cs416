@@ -13,6 +13,7 @@ size_t number_of_vertices;
 
 int get_array_loc(int, int);
 void print_array();
+
 /*
  * Create any global structures which are necessary
  *
@@ -64,6 +65,9 @@ void print_array()
 		printf("\n");
 }
 
+/**
+ * Frees all memory allocated by this process
+ */
 void wtc_thr_destroy(){
 	free(transitive_closure);
 }
