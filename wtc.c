@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "wtc_proc.h"
 #include "wtc_thr.h"
 
 void print_usage() {
@@ -57,10 +56,7 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(T, sizeof(int) * number_of_vertices * number_of_vertices);
-      wtc_proc();
-      wtc_proc_cleanup();
-      break;
+     break;
     case 2:
 			wtc_thr_init(T, number_of_vertices);
 			print_adjacency_matrix(wtc_thr(), number_of_vertices);
