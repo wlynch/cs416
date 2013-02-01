@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "wtc_proc.h"
+#include "wtc_thr.h"
 
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
@@ -60,6 +61,8 @@ int main(int argc, char ** argv) {
       wtc_proc();
       break;
     case 2:
+			wtc_thr_init(T, number_of_vertices);
+			print_adjacency_matrix(wtc_thr(), number_of_vertices);
       break;
     case 3:
       break;
