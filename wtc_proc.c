@@ -45,18 +45,27 @@ void wtc_proc(int * vertices, int n) {
   int i,j,k;
   int pid;
 
-  for (k = 0; k < n; k++) {
-    pid = fork();
-    switch ( pid ) {
-      case 0: /* child */
+  for (k = 0; k < n; k++) { /* for each vertex */
+    for (i = 0 ; i < n; i ++) { /* for each row */
+      pid = fork();
 
-        break;
-      case -1: /* error */
-        perror("could not create a child process");
-        exit(1);
-        break;
-      default: /* we are the parent */
-        break;
+      switch (pid) {
+        case 0: /* child */
+          if (vertices[k + i*n]) {
+            for (j = 0; j < n; j++) { /* for each column */
+              vertices[j + i*n] = vertices[j + i*n] || vertices[j + k*n];
+            }
+          }
+
+          break;
+        case -1: /* error */
+          perror("FFFFFUUUUUUUUUUUUU");
+          exit(1);
+          break;
+        default: /* parent */
+          waitpid(pid, NULL, NULL);
+          break;
+      }
     }
   }
 }
