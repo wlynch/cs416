@@ -41,7 +41,7 @@ void wtc_proc_init(int * E, size_t size) {
   }
 }
 
-void wtc_proc(int * vertices, int n) {
+void wtc_proc(int n) {
   int i,j,k;
   int pid;
 
@@ -51,9 +51,9 @@ void wtc_proc(int * vertices, int n) {
 
       switch (pid) {
         case 0: /* child */
-          if (vertices[k + i*n]) {
+          if (T[k + i*n]) { /* optimization, check the first of the row */
             for (j = 0; j < n; j++) { /* for each column */
-              vertices[j + i*n] = vertices[j + i*n] || vertices[j + k*n];
+              T[j + i*n] = T[j + i*n] || T[j + k*n];
             }
           }
 
@@ -63,7 +63,6 @@ void wtc_proc(int * vertices, int n) {
           exit(1);
           break;
         default: /* parent */
-          waitpid(pid, NULL, NULL);
           break;
       }
     }
