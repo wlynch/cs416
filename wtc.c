@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "wtc_proc.h"
-
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
   exit(0);
@@ -56,8 +54,6 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(T, number_of_vertices);
-      wtc_proc();
       break;
     case 2:
       break;
