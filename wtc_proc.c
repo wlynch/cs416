@@ -12,7 +12,7 @@
 #include "wtc_proc.h"
 
 /* shared vertices graph, will result in the transitive closure graph */
-int * T, t;
+int * T;
 int T_size;
 int shared_memory_fd;
 #define shared_memory_path "/tmp/wtc_proc_shared"
@@ -43,9 +43,11 @@ void wtc_proc_init(int * E, size_t size) {
 
 void wtc_proc(int * vertices, int n) {
   int i,j,k;
+  int pid;
 
   for (k = 0; k < n; k++) {
-    switch ( pid = fork() ) {
+    pid = fork();
+    switch ( pid ) {
       case 0: /* child */
 
         break;
