@@ -1,8 +1,8 @@
 CC ?= gcc
-CFLAGS ?= -pedantic -Wall
+CFLAGS ?= -pedantic -Wall -g
 
 EXEC = wtc
-SRCS = wtc_proc.c wtc.c
+SRCS = wtc_thr.c wtc.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}

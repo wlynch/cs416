@@ -50,6 +50,7 @@ int main(int argc, char ** argv) {
       T[(i-1) + (j-1)*number_of_vertices] = 1;
   }
 
+	printf("Input graph is \n");
   /* print the graph */
   print_adjacency_matrix(T, number_of_vertices);
 
@@ -59,6 +60,7 @@ int main(int argc, char ** argv) {
      break;
     case 2:
 			wtc_thr_init(T, number_of_vertices);
+			printf("Output of method two is \n");
 			print_adjacency_matrix(wtc_thr(), number_of_vertices);
       break;
     case 3:
