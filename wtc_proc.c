@@ -9,15 +9,20 @@
 #include <sys/mman.h>
 #include <errno.h>
 
+#include <semaphore.h>
+
 #include "wtc_proc.h"
 
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
+sem_t T_sem;
+
 int T_size;
 int shared_memory_fd;
-#define shared_memory_path "/tmp/wtc_proc_shared"
+#define shared_memory_path "/tmp/wtc_proc_shared4"
 
-void wtc_proc_init(int * E, size_t size) {
+void wtc_proc_init(int * E, size_t size, int n) {
+  int ret;
   shared_memory_fd = shm_open(shared_memory_path,
                               O_CREAT | O_RDWR,
                               S_IRUSR | S_IWUSR);
@@ -39,39 +44,58 @@ void wtc_proc_init(int * E, size_t size) {
     perror("could not mmap");
     exit(1);
   }
+
+  ret = sem_init(&T_sem, 1, n);
 }
 
-void wtc_proc(int n) {
+int * wtc_proc(int n) {
   int i,j,k;
   int pid;
 
   for (k = 0; k < n; k++) { /* for each vertex */
     for (i = 0 ; i < n; i ++) { /* for each row */
-      pid = fork();
+      if (T[k + i*n]) { /* optimization, check the first of the row */
+        pid = fork();
+        sem_wait(&T_sem);
 
-      switch (pid) {
-        case 0: /* child */
-          if (T[k + i*n]) { /* optimization, check the first of the row */
+        switch (pid) {
+          case 0: /* child */
             for (j = 0; j < n; j++) { /* for each column */
-              T[j + i*n] = T[j + i*n] || T[j + k*n];
+              T[j + i*n] = T[j + i*n] | T[j + k*n];
             }
-          }
 
-          break;
-        case -1: /* error */
-          perror("FFFFFUUUUUUUUUUUUU");
-          exit(1);
-          break;
-        default: /* parent */
-          break;
+            sem_post(&T_sem);
+            break;
+          case -1: /* error */
+            perror("FFFFFUUUUUUUUUUUUU");
+            exit(1);
+            break;
+          default: /* parent */
+            break;
+        }
       }
     }
   }
+
+  return T;
 }
 
 void wtc_proc_cleanup() {
-  munmap(T, T_size);
-  close(shared_memory_fd);
-  shm_unlink(shared_memory_path);
+  int ret;
+
+  ret = munmap(T, T_size);
+  if (ret == -1) {
+    perror("munmap"); exit(1);
+  }
+
+  ret = close(shared_memory_fd);
+  if (ret == -1) {
+    perror("close of shared_memory_fd"); exit(1);
+  }
+
+  ret = shm_unlink(shared_memory_path);
+  if (ret == -1) {
+    perror("shm_unlink failed. should change shared_memory_path"); exit(1);
+  }
 }
 

@@ -1,5 +1,6 @@
 CC ?= gcc
 CFLAGS ?= -pedantic -Wall
+LIBS = -lpthread
 
 EXEC = wtc
 SRCS = wtc_proc.c wtc.c
@@ -11,7 +12,7 @@ all: ${EXEC}
 	${CC} ${CFLAGS} -o $@ -c $<
 
 ${EXEC}: ${OBJS}
-	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS}
+	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS} ${LIBS}
 
 test: test_proc
 

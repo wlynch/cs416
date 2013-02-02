@@ -25,7 +25,7 @@ int main(int argc, char ** argv) {
 
   /* the vertices graph, length number_of_vertices * number_of_vertices
    * to find a connection you look at E[x + y * number_of_vertices] */
-  int * T;
+  int * T, T_star;
 
   if (argc != 3) {
     print_usage();
@@ -56,8 +56,9 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(T, sizeof(int) * number_of_vertices * number_of_vertices);
-      wtc_proc(number_of_vertices);
+      wtc_proc_init(T, sizeof(int) * number_of_vertices * number_of_vertices, number_of_vertices);
+      puts("");
+      print_adjacency_matrix(wtc_proc(number_of_vertices), number_of_vertices);
       wtc_proc_cleanup();
       break;
     case 2:
