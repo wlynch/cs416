@@ -24,15 +24,15 @@ void wtc_thr_init(int * T, size_t num_vertices){
 	size_of_graph = num_vertices * num_vertices * sizeof(int);
 	number_of_vertices = num_vertices;
 
-    //allocate both transitive closure objects
+    /* allocate both transitive closure objects */
 	odd_closure = (int *)malloc(size_of_graph);
 	even_closure = (int *)malloc(size_of_graph);
 	
-    //copy the current graph into both even and odd closures
+    /* copy the current graph into both even and odd closures */
     memcpy(odd_closure, T, size_of_graph);
 	memcpy(even_closure, T, size_of_graph);
    
-    //initialize both transitive closures
+    /* initialize both transitive closures */
     both_closures = (int**)malloc(sizeof(int*) * 2);
     both_closures[0] = even_closure;
     both_closures[1] = odd_closure;
@@ -47,10 +47,10 @@ int *wtc_thr(){
     int even_closure_loc, odd_closure_loc;
 	int k, i, j, index;
 
-	//hold each vertex steady
+	/* hold each vertex steady */
 	for( k = 0; k < number_of_vertices; k++ ) 
     {
-        //figure out which closure we are reading and which we are writing
+        /* figure out which closure we are reading and which we are writing */
         int *closure_writing = k % 2 == 0 ? even_closure : odd_closure;
         int *closure_reading = k % 2 == 1 ? even_closure : odd_closure;
 
@@ -65,7 +65,7 @@ int *wtc_thr(){
         }
    	}
    
-    //return the most recently written array
+    /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }
 
