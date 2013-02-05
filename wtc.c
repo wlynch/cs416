@@ -59,7 +59,7 @@ int main(int argc, char ** argv) {
     case 1:
      break;
     case 2:
-			wtc_thr_init(T, number_of_vertices);
+			wtc_thr_init(T, number_of_vertices, number_of_processes);
 			printf("Output of method two is \n");
 			print_adjacency_matrix(wtc_thr(), number_of_vertices);
             wtc_thr_destroy();
