@@ -15,9 +15,11 @@
 
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
-sem_t T_sem;
+sem_t * T_sem;
 struct shared_memory * T_shared_memory;
+struct shared_memory * T_sem_shared_memory;
 #define shared_memory_path "/tmp/wtc_proc_shared4"
+#define T_sem_shared_memory_path "/tmp/wtc_proc_t_sem_sadnkasnd"
 
 struct shared_memory * share_memory(char * path, size_t size) {
   int shared_fd;
@@ -70,14 +72,19 @@ void unshare_memory(struct shared_memory * memory, char * path) {
 void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   T_shared_memory = share_memory(shared_memory_path, sizeof(int) * n * n);
   T = T_shared_memory->address;
+
+  T_sem_shared_memory = share_memory(T_sem_shared_memory_path, sizeof(sem_t));
+  T_sem = T_shared_memory->address;
+  sem_init(T_sem, 1, number_of_processes);
+
   memcpy(T, initial_matrix, sizeof(int) * n * n);
-  sem_init(&T_sem, 1, number_of_processes);
 }
 
 int * wtc_proc(int n) {
   int i,j,k;
 
   for (k = 0; k < n; k++) { /* for each vertex */
+
     for (i = 0 ; i < n; i++) { /* for each row */
       if (T[k + i*n]) { /* optimization, check the first of the row */
         for (j = 0; j < n; j++) { /* for each column */
@@ -92,5 +99,6 @@ int * wtc_proc(int n) {
 
 void wtc_proc_cleanup() {
   unshare_memory(T_shared_memory, shared_memory_path);
+  unshare_memory(T_sem_shared_memory, T_sem_shared_memory_path);
 }
 
