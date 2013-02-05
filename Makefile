@@ -11,7 +11,7 @@ all: ${EXEC}
 	${CC} ${CFLAGS} -o $@ -c $<
 
 ${EXEC}: ${OBJS}
-	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS}
+	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS} -lpthread
 
 test: test_proc
 
