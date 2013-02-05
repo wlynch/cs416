@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 #include <pthread.h>
 #include <semaphore.h>
@@ -12,6 +14,8 @@ int *even_closure;
 int **both_closures;
 size_t size_of_graph;
 size_t number_of_vertices;
+
+bool still_running;
 
 int get_array_loc(int, int);
 void print_array();
@@ -76,14 +80,28 @@ int get_array_loc(int x, int y){
 	return ((x * number_of_vertices)) + y;
 }
 
-void print_array(int *array)
+/**
+ * Does all operations related to creating a thread for warshal's algorithm
+ * 
+ * Thread logic is:
+ *  Given a high and low index, check all i values in that range
+ *  Sleep
+ *
+ * Threads should join with the main process to let them know when to terminate.
+ */
+void create_thread(int low_index, int high_index)
 {
-		int i;
-		for(i = 0; i < number_of_vertices * number_of_vertices; i++)
-		{
-		    printf("%d ", array[i]);
-		}
-		printf("\n");
+  
+}
+
+void thread_function(int low, int high)
+{
+  while(still_running == true)
+  {
+    //get the current value of k
+    //figure out which closure is being read and which is being written
+    //do the j logic in there
+  }
 }
 
 /**
@@ -94,3 +112,19 @@ void wtc_thr_destroy(){
     free(odd_closure);
     free(both_closures);
 }
+
+/**
+ * Helper method to print out a given 1D array that represents the graph
+ */
+void print_array(int *array)
+{
+		int i;
+		for(i = 0; i < number_of_vertices * number_of_vertices; i++)
+		{
+		    printf("%d ", array[i]);
+		}
+		printf("\n");
+}
+
+
+
