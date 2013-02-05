@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -pedantic -Wall
+CFLAGS ?= -gdwarf-2 -g3 -pedantic -Wall
 
 EXEC = wtc
 SRCS = wtc.c
