@@ -17,8 +17,6 @@ int get_array_loc(int, int);
 void print_array();
 
 sem_t finish;
-pthread_mutex_t even_lock;
-pthread_mutex_t odd_lock;
 
 /*
  * Create any global structures which are necessary
@@ -66,11 +64,14 @@ int *wtc_thr(){
         pthread_mutex_lock(&(args->lock));
         args->k=k;
         for (i=0; i < number_of_vertices; i++){
+            
             /* Lock only if not the first iteration, i.e. if setting k did not already lock */
             if (i != 0) {    
                 pthread_mutex_lock(&(args->lock));
             }
             args->i=i;
+
+
             /* Make a thread and detach. We will wait for it to finish later */
             pthread_create(&t,NULL,wtc_thr_thread,(void *)args);
             pthread_detach(t);
@@ -101,18 +102,14 @@ void *wtc_thr_thread(void *args){
     /* figure out which closure we are reading and which we are writing */
     int *closure_writing = k % 2 == 0 ? even_closure : odd_closure;
     int *closure_reading = k % 2 == 1 ? even_closure : odd_closure;
-    pthread_mutex_t *closure_lock = k % 2 == 0 ? &even_lock : &odd_lock;
 
     /* The main part of the thread. Does work for the given row */
     int j,index;
     for( j = 0; j < number_of_vertices; j++ ) 
     {
         index = get_array_loc(i, j);
-        pthread_mutex_lock(closure_lock);
         closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, k)] & closure_reading[get_array_loc(k, j)]); 
-        pthread_mutex_unlock(closure_lock);
     }
-
 
     sem_post(&finish);
     return NULL;
