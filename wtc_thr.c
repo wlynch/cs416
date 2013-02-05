@@ -81,12 +81,12 @@ int *wtc_thr(){
             pthread_create(&t,NULL,wtc_thr_thread,(void *)s);
             pthread_detach(t);
         }
+        /* Wait for all threads to finish before returning */
+        for (i=0; i < number_of_vertices; i++){
+            sem_wait(&finish);
+        }
     }
 
-    /* Wait for all threads to finish before returning */
-    for (i=0; i < (number_of_vertices*number_of_vertices); i++){
-        sem_wait(&finish);
-    }
     printf("Done waiting\n");
 
     /* return the most recently written array */
@@ -113,8 +113,8 @@ void *wtc_thr_thread(void *s){
         closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, k)] & closure_reading[get_array_loc(k, j)]); 
         pthread_mutex_unlock(lock);
     }
-    
-    
+
+
     sem_post(&finish);
     free(s);
     return NULL;
