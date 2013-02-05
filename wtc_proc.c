@@ -76,12 +76,13 @@ void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
 
 int * wtc_proc(int n) {
   int i,j,k;
-  int pid;
 
   for (k = 0; k < n; k++) { /* for each vertex */
     for (i = 0 ; i < n; i++) { /* for each row */
-      for (j = 0; j < n; j++) { /* for each column */
-        T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
+      if (T[k + i*n]) { /* optimization, check the first of the row */
+        for (j = 0; j < n; j++) { /* for each column */
+          T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
+        }
       }
     }
   }
