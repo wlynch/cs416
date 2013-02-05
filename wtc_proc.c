@@ -48,6 +48,13 @@ int * wtc_proc(int n) {
     for (i = 0 ; i < n; i++) { /* for each row */
       if (T[k + i*n]) { /* optimization, check the first of the row */
         sem_wait(T_sem);
+
+        #ifndef __APPLE__
+          int val;
+          sem_getvalue(T_sem, &val);
+          printf("semaphore value: %i\n", val);
+        #endif
+
         pid = fork();
 
         if (pid == -1) {
