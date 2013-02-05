@@ -50,35 +50,29 @@ void wtc_thr_init(int * T, size_t num_vertices){
  */
 int *wtc_thr(){
 
-    int even_closure_loc, odd_closure_loc;
-    int k, i, j, index;
+    int k, i;
+    /* Struct initialization. This is what we will pass in to the threads */
+    wtc_thr_args *args=(wtc_thr_args *)malloc(sizeof(wtc_thr_args));
+    args->nov=number_of_vertices;
+    pthread_mutex_init(&(args->lock),NULL);
     
     sem_init(&finish,0,0); 
-    
+
     /* hold each vertex steady */
     for( k = 0; k < number_of_vertices; k++ ) 
     {
-        /* figure out which closure we are reading and which we are writing */
-        int *closure_writing = k % 2 == 0 ? even_closure : odd_closure;
-        int *closure_reading = k % 2 == 1 ? even_closure : odd_closure;
-        pthread_mutex_t *closure_lock = k % 2 == 0 ? &even_lock : &odd_lock;
         pthread_t t;
-        
+        /* Lock so we don't try to change something that hasn't been read yet. */
+        pthread_mutex_lock(&(args->lock));
+        args->k=k;
         for (i=0; i < number_of_vertices; i++){
-            /* Make a struct with the information for the thread to use.
-             * I realize this is not the most optimal way of doing this,
-             * but this is more of a proof of concept/get it working step.
-             */
-            wtc_thr_args *s=(wtc_thr_args *)malloc(sizeof(wtc_thr_args));
-            s->cw=closure_writing;
-            s->cr=closure_reading;
-            s->lock=closure_lock;
-            s->k=k;
-            s->nov=number_of_vertices;
-            s->i=i;
-            
+            /* Lock only if not the first iteration, i.e. if setting k did not already lock */
+            if (i != 0) {    
+                pthread_mutex_lock(&(args->lock));
+            }
+            args->i=i;
             /* Make a thread and detach. We will wait for it to finish later */
-            pthread_create(&t,NULL,wtc_thr_thread,(void *)s);
+            pthread_create(&t,NULL,wtc_thr_thread,(void *)args);
             pthread_detach(t);
         }
         /* Wait for all threads to finish before returning */
@@ -86,37 +80,41 @@ int *wtc_thr(){
             sem_wait(&finish);
         }
     }
-
-    printf("Done waiting\n");
+    
+    free(args);
 
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }
 
 /* Thread to run Warshalls algo for the given row */
-void *wtc_thr_thread(void *s){
+void *wtc_thr_thread(void *args){
 
     /* Some abstraction just to make things easier to read below */
-    int number_of_vertices=((wtc_thr_args *)s)->nov;
-    int k=((wtc_thr_args *)s)->k;
-    int *closure_writing=((wtc_thr_args *)s)->cw;
-    int *closure_reading=((wtc_thr_args *)s)->cr;
-    int i=((wtc_thr_args *)s)->i;
-    pthread_mutex_t *lock = ((wtc_thr_args *)s)->lock;
+    int i=((wtc_thr_args *)args)->i;
+    int k=((wtc_thr_args *)args)->k;
+    /* Unlock so that k and i can be changed again for the next thread. */
+    pthread_mutex_unlock(&(((wtc_thr_args *)args)->lock));
+    
+    int number_of_vertices=((wtc_thr_args *)args)->nov;
+
+    /* figure out which closure we are reading and which we are writing */
+    int *closure_writing = k % 2 == 0 ? even_closure : odd_closure;
+    int *closure_reading = k % 2 == 1 ? even_closure : odd_closure;
+    pthread_mutex_t *closure_lock = k % 2 == 0 ? &even_lock : &odd_lock;
 
     /* The main part of the thread. Does work for the given row */
     int j,index;
     for( j = 0; j < number_of_vertices; j++ ) 
     {
         index = get_array_loc(i, j);
-        pthread_mutex_lock(lock);
+        pthread_mutex_lock(closure_lock);
         closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, k)] & closure_reading[get_array_loc(k, j)]); 
-        pthread_mutex_unlock(lock);
+        pthread_mutex_unlock(closure_lock);
     }
 
 
     sem_post(&finish);
-    free(s);
     return NULL;
 }
 

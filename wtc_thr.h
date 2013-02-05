@@ -1,11 +1,9 @@
 #ifndef _WTC_THR_H
 #define _WTC_THR_H
 
-/* Struct to pass in all variables as single parameter */
+/* Struct to pass in all variables to a thread as single parameter */
 typedef struct wtc_thr_args{
-    int *cw;
-    int *cr;
-    pthread_mutex_t *lock;
+    pthread_mutex_t lock;
     int nov;
     int k;
     int i;
