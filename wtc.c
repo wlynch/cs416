@@ -62,6 +62,7 @@ int main(int argc, char ** argv) {
 			wtc_thr_init(T, number_of_vertices);
 			printf("Output of method two is \n");
 			print_adjacency_matrix(wtc_thr(), number_of_vertices);
+            wtc_thr_destroy();
       break;
     case 3:
       break;

@@ -96,7 +96,7 @@ int *wtc_thr(){
 /* Thread to run Warshalls algo for the given row */
 void *wtc_thr_thread(void *s){
 
-    /* Some abstraction just to make things easier below */
+    /* Some abstraction just to make things easier to read below */
     int number_of_vertices=((wtc_thr_args *)s)->nov;
     int k=((wtc_thr_args *)s)->k;
     int *closure_writing=((wtc_thr_args *)s)->cw;
