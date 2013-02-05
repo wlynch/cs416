@@ -31,11 +31,12 @@ void* MapSharedMemory(int id) {
 }
 
 void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
+  sem_t * temp_sem;
   T = MapSharedMemory(AllocateSharedMemory(sizeof(int) * n * n));
+  T_sem = MapSharedMemory(AllocateSharedMemory(sizeof(int)));
+  temp_sem = sem_open("/semaphore", O_CREAT, 0644, number_of_processes);
 
-  T_sem = MapSharedMemory(AllocateSharedMemory(sizeof(sem_t)));
-  sem_init(T_sem, 1, number_of_processes);
-
+  memcpy(&T_sem, &temp_sem, sizeof(int));
   memcpy(T, initial_matrix, sizeof(int) * n * n);
 }
 
@@ -72,5 +73,11 @@ void wtc_proc_cleanup() {
   puts("unlinked T_shared_memory");
   shmdt(T_sem);
   puts("unlinked T_sem_shared_memory");
+  if (sem_close(T_sem) == -1) {
+    perror("sem_close"); exit(EXIT_FAILURE);
+  }
+  if (sem_unlink("/semaphore") == -1) {
+    perror("sem_unlink"); exit(EXIT_FAILURE);
+  }
 }
 
