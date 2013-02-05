@@ -67,10 +67,10 @@ void unshare_memory(struct shared_memory * memory, char * path) {
   }
 }
 
-void wtc_proc_init(int * E, int n, int number_of_processes) {
+void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   T_shared_memory = share_memory(shared_memory_path, sizeof(int) * n * n);
   T = T_shared_memory->address;
-  memcpy(T, E, sizeof(int) * n * n);
+  memcpy(T, initial_matrix, sizeof(int) * n * n);
   sem_init(&T_sem, 1, number_of_processes);
 }
 

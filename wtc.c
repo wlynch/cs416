@@ -22,7 +22,7 @@ int main(int argc, char ** argv) {
   int number_of_processes, number_of_vertices;
   int i, j;
   FILE * input_fd;
-  int * T, * T_star;
+  int * initial_matrix, * transitive_closure;
 
   if (argc != 3) {
     print_usage();
@@ -40,23 +40,23 @@ int main(int argc, char ** argv) {
   printf("%i processes\n%i vertices\n", number_of_processes, number_of_vertices);
 
   /* initialize E, the vertex graph*/
-  T = calloc(number_of_vertices * number_of_vertices, sizeof(int));
+  initial_matrix = calloc(number_of_vertices * number_of_vertices, sizeof(int));
 
   while ( fscanf(input_fd, "%i %i", &i, &j) == 2 ) {
       printf("(%i, %i)\n", i, j);
-      T[(i-1) + (j-1)*number_of_vertices] = 1;
+      initial_matrix[(i-1) + (j-1)*number_of_vertices] = 1;
   }
 
   /* print the graph */
-  print_adjacency_matrix(T, number_of_vertices);
+  print_adjacency_matrix(initial_matrix, number_of_vertices);
 
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(T, number_of_vertices, number_of_processes);
+      wtc_proc_init(initial_matrix, number_of_vertices, number_of_processes);
       puts("");
-      T_star = wtc_proc(number_of_vertices);
-      print_adjacency_matrix(T_star, number_of_vertices);
+      transitive_closure = wtc_proc(number_of_vertices);
+      print_adjacency_matrix(transitive_closure, number_of_vertices);
       wtc_proc_cleanup();
       break;
     case 2:
@@ -71,7 +71,7 @@ int main(int argc, char ** argv) {
   }
 
   /* clean up */
-  free(T);
+  free(initial_matrix);
 
   /* close the input file */
   fclose(input_fd);
