@@ -46,28 +46,25 @@ int * wtc_proc(int n) {
 
   for (k = 0; k < n; k++) { /* for each vertex */
     for (i = 0 ; i < n; i++) { /* for each row */
-      if (T[k + i*n]) { /* optimization, check the first of the row */
-        sem_wait(T_sem);
+      sem_wait(T_sem);
 
-        #ifndef __APPLE__
-          int val;
-          sem_getvalue(T_sem, &val);
-          printf("semaphore value: %i\n", val);
-        #endif
+      #ifndef __APPLE__
+        int val;
+        sem_getvalue(T_sem, &val);
+        printf("semaphore value: %i\n", val);
+      #endif
 
-        pid = fork();
+      pid = fork();
 
-        if (pid == -1) {
-          perror("FFFFUUUUUUU"); exit(1);
-        } else if (pid == 0) {
-          printf("working on row %i\n", i);
-          for (j = 0; j < n; j++) { /* for each column */
-            T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
-          }
-          sem_post(T_sem);
-          exit(0);
-        } else {
+      if (pid == -1) {
+        perror("FFFFUUUUUUU"); exit(1);
+      } else if (pid == 0) {
+        printf("working on row %i\n", i);
+        for (j = 0; j < n; j++) { /* for each column */
+          T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
         }
+        sem_post(T_sem);
+        exit(0);
       }
     }
   }
