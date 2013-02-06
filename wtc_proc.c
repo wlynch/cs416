@@ -15,6 +15,8 @@
 
 #include "wtc_proc.h"
 
+#define MIN(x,y) (x < y ? x : y)
+
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
 sem_t * T_sem;
@@ -34,7 +36,7 @@ void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   sem_t * temp_sem;
   T = MapSharedMemory(AllocateSharedMemory(sizeof(int) * n * n));
   T_sem = MapSharedMemory(AllocateSharedMemory(sizeof(int)));
-  temp_sem = sem_open("/semaphore", O_CREAT, 0644, number_of_processes);
+  temp_sem = sem_open("/semaphore", O_CREAT, 0644, MIN(n, number_of_processes));
 
   memcpy(&T_sem, &temp_sem, sizeof(int));
   memcpy(T, initial_matrix, sizeof(int) * n * n);
