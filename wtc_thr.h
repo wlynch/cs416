@@ -4,9 +4,10 @@
 /* Struct to pass in all variables to a thread as single parameter */
 typedef struct wtc_thr_args{
     pthread_mutex_t lock;
+    pthread_cond_t condition;
+    pthread_mutex_t loop_lock;
     int nov;
-    int k;
-    int i;
+    int *k;
     int low_index;
     int high_index;
 } wtc_thr_args;
