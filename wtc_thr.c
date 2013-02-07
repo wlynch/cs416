@@ -75,22 +75,19 @@ int *wtc_thr(){
     rows_per_thread = number_of_vertices / number_of_threads;
     remainder = number_of_vertices % number_of_threads;
 
-    fprintf(stderr,"num threads %d\n",number_of_threads);
+    temp_remainder = remainder;
+
     /* Create the pthreads */
     for(count = 0; count < number_of_threads; count++)
     {
-        fprintf(stderr,"TEST: THREAD CREATION LOOP\n");
         /* Make this operation atomic, that's not necessary on the first
          * iteration*/
         pthread_mutex_lock(&(args->lock)); 
 
-        fprintf(stderr, "TEST LOCKING\n");
         /* Pass in k by reference so we can use the proper closure*/ 
         args->k = &k;
         args->nov = number_of_vertices;
         
-        temp_remainder = remainder;
-
         thread_rows = rows_per_thread; 
 
         if(temp_remainder > 0)
@@ -118,10 +115,16 @@ int *wtc_thr(){
           sem_wait(&finish);
         }
 
+        pthread_mutex_lock(&(args->lock));
         pthread_cond_broadcast(&(args->condition));
+        pthread_mutex_unlock(&(args->lock));
     }
-    
     still_running = false;
+    
+    for (i=0; i < number_of_threads; i++){
+      sem_wait(&finish);
+    }
+
     pthread_cond_broadcast(&(args->condition));
 
     pthread_cond_destroy(&(args->condition));
@@ -152,7 +155,6 @@ void *wtc_thr_thread(void *args){
 
     while(still_running == true)
     {
-
         /* figure out which closure we are reading and which we are writing */
         closure_writing = *k % 2 == 0 ? even_closure : odd_closure;
         closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
@@ -168,10 +170,13 @@ void *wtc_thr_thread(void *args){
             }
         }
 
+        pthread_mutex_lock(&(data->lock));
         sem_post(&finish);
-        pthread_cond_wait(&(data->condition), &(data->loop_lock));
+        pthread_cond_wait(&(data->condition), &(data->lock));
+        pthread_mutex_unlock(&(data->lock));
     }
 
+    sem_post(&finish);
     return NULL;
 }
 
