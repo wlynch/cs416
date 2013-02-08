@@ -44,7 +44,7 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
     both_closures = (int**)malloc(sizeof(int*) * 2);
     both_closures[0] = even_closure;
     both_closures[1] = odd_closure;
-    
+
     number_of_threads = num_threads;
 }
 
@@ -70,8 +70,8 @@ int *wtc_thr(){
     pthread_cond_init(&(args->condition), NULL);
     pthread_mutex_init(&(args->loop_lock), NULL);
     pthread_mutex_init(&(args->lock),NULL);
-    
-    sem_init(&finish,0,0); 
+
+    sem_init(&finish,0,0);
 
     rows_per_thread = number_of_vertices / number_of_threads;
     remainder = number_of_vertices % number_of_threads;
@@ -83,13 +83,13 @@ int *wtc_thr(){
     {
         /* Make this operation atomic, that's not necessary on the first
          * iteration*/
-        pthread_mutex_lock(&(args->lock)); 
+        pthread_mutex_lock(&(args->lock));
 
-        /* Pass in k by reference so we can use the proper closure*/ 
+        /* Pass in k by reference so we can use the proper closure*/
         args->k = &k;
         args->nov = number_of_vertices;
-        
-        thread_rows = rows_per_thread; 
+
+        thread_rows = rows_per_thread;
 
         if(temp_remainder > 0)
         {
@@ -108,7 +108,7 @@ int *wtc_thr(){
 
 
     /* hold each vertex steady */
-    for( k = 0; k < number_of_vertices; k++ ) 
+    for( k = 0; k < number_of_vertices; k++ )
     {
 
         /* Wait for all threads to finish before returning */
@@ -121,7 +121,7 @@ int *wtc_thr(){
         pthread_mutex_unlock(&(args->lock));
     }
     still_running = false;
-    
+
     for (i=0; i < number_of_threads; i++){
       sem_wait(&finish);
     }
@@ -142,16 +142,16 @@ void *wtc_thr_thread(void *args){
     int *closure_reading, *closure_writing;
 
     wtc_thr_args *data = (wtc_thr_args *)args;
-    
+
     /* Some abstraction just to make things easier to read below */
     k=data->k;
-    
+
     low_index = data->low_index;
     high_index = data->high_index;
 
     /* Unlock so that k and i can be changed again for the next thread. */
     pthread_mutex_unlock(&(data->lock));
-    
+
     number_of_vertices=data->nov;
 
     while(still_running == true)
@@ -161,13 +161,13 @@ void *wtc_thr_thread(void *args){
         closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
 
         /* The main part of the thread. Does work for the given row */
-        
+
         for(i = low_index; i < high_index; i++)
         {
-            for( j = 0; j < number_of_vertices; j++ ) 
+            for( j = 0; j < number_of_vertices; j++ )
             {
                 index = get_array_loc(i, j);
-                closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]); 
+                closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]);
             }
         }
 
