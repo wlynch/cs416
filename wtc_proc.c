@@ -9,17 +9,18 @@
 #include <sys/shm.h>
 
 #include <semaphore.h>
+#include <pthread.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 
 #include "wtc_proc.h"
 
-#define MIN(x,y) (x < y ? x : y)
-
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
-sem_t * T_sem;
+sem_t * sem;
+pthread_mutex_t * lock;
+pthread_cond_t * cond;
 
 int AllocateSharedMemory(int n) {
   return shmget(IPC_PRIVATE, n, IPC_CREAT | SHM_R | SHM_W);
@@ -32,58 +33,94 @@ void* MapSharedMemory(int id) {
   return addr;
 }
 
-void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
-  sem_t * temp_sem;
-  T = MapSharedMemory(AllocateSharedMemory(sizeof(int) * n * n));
-  T_sem = MapSharedMemory(AllocateSharedMemory(sizeof(int)));
-  temp_sem = sem_open("/semaphore", O_CREAT, 0644, MIN(n, number_of_processes));
-
-  memcpy(&T_sem, &temp_sem, sizeof(int));
-  memcpy(T, initial_matrix, sizeof(int) * n * n);
+void * give_memory(size_t num_bytes) {
+  return MapSharedMemory(AllocateSharedMemory(num_bytes));
 }
 
-int * wtc_proc(int n) {
-  int i,j,k;
-  int pid;
+void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
+  sem_t * temp_sem;
+  int process_number;
+
+  T = give_memory(sizeof(int) * n * n);
+  sem = give_memory(sizeof(int));
+  temp_sem = sem_open("/semaphore", O_CREAT, 0644, 0);
+
+  memcpy(&sem, &temp_sem, sizeof(int));
+  memcpy(T, initial_matrix, sizeof(int) * n * n);
+
+  lock = give_memory(sizeof(pthread_mutex_t));
+  cond = give_memory(sizeof(pthread_cond_t));
+
+  pthread_mutex_init(lock, NULL);
+  pthread_cond_init(cond, NULL);
+
+  for (process_number = 0; process_number < number_of_processes; process_number++) {
+    wtc_proc_create(process_number, number_of_processes, n);
+  }
+}
+
+int * wtc_proc(int n, int number_of_processes) {
+  int i, k;
 
   for (k = 0; k < n; k++) { /* for each vertex */
-    for (i = 0 ; i < n; i++) { /* for each row */
-      sem_wait(T_sem);
-
-      #ifndef __APPLE__
-        int val;
-        sem_getvalue(T_sem, &val);
-        printf("semaphore value: %i\n", val);
-      #endif
-
-      pid = fork();
-
-      if (pid == -1) {
-        perror("FFFFUUUUUUU"); exit(1);
-      } else if (pid == 0) {
-        printf("working on row %i\n", i);
-        for (j = 0; j < n; j++) { /* for each column */
-          T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
-        }
-        sem_post(T_sem);
-        exit(0);
-      }
+    /* Wait for all threads to finish before returning */
+    for (i=0; i < number_of_processes; i++){
+      printf("parent: waiting for %i to finish\n", i);
+      sem_wait(sem);
     }
+
+    /* send signal to start running again */
+    pthread_cond_broadcast(cond);
+    pthread_mutex_unlock(lock);
   }
 
   return T;
 }
 
+void wtc_proc_create(int process_number, int number_of_processes, int n) {
+  /* create forks, detach them, and make pools */
+  int pid, i, j, k;
+
+  pid = fork();
+  switch (pid) {
+    case -1:
+      perror("we done fucked up"); exit(1);
+      break;
+    case 0:
+      printf("p%i: hello world\n", process_number);
+      for (k = 0; k < n; k++) { /* each k */
+        fprintf(stderr, "p%i: starting k: %i\n", process_number, k);
+        for (i = process_number; i < n; i += number_of_processes) { /* row */
+          for (j = 0 ; j < n; j++) { /* column */
+            T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
+          }
+        }
+
+        fprintf(stderr, "p%i: posting\n", process_number);
+        /* announce that we finished the row */
+        sem_post(sem);
+
+        fprintf(stderr, "p%i: waiting for cond\n", process_number);
+        /* wait to continue to work on the next k */
+        pthread_cond_wait(cond, lock);
+        pthread_mutex_unlock(lock);
+      }
+      exit(0);
+      break;
+  }
+}
+
 void wtc_proc_cleanup() {
   shmdt(T);
-  puts("unlinked T_shared_memory");
-  shmdt(T_sem);
-  puts("unlinked T_sem_shared_memory");
-  if (sem_close(T_sem) == -1) {
+  shmdt(sem);
+  shmdt(lock);
+  shmdt(cond);
+  if (sem_close(sem) == -1) {
     perror("sem_close"); exit(EXIT_FAILURE);
   }
   if (sem_unlink("/semaphore") == -1) {
     perror("sem_unlink"); exit(EXIT_FAILURE);
   }
+
 }
 

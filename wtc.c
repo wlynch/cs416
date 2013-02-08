@@ -55,7 +55,7 @@ int main(int argc, char ** argv) {
     case 1:
       wtc_proc_init(initial_matrix, number_of_vertices, number_of_processes);
       puts("");
-      transitive_closure = wtc_proc(number_of_vertices);
+      transitive_closure = wtc_proc(number_of_vertices, number_of_processes);
       print_adjacency_matrix(transitive_closure, number_of_vertices);
       wtc_proc_cleanup();
       break;
