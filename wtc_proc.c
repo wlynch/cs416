@@ -70,8 +70,12 @@ int * wtc_proc(int n, int number_of_processes) {
     }
 
     /* send signal to start running again */
+    pthread_mutex_lock(lock);
+    fprintf(stderr, "parent: got lock\n");
     pthread_cond_broadcast(cond);
+    fprintf(stderr, "parent: broadcast\n");
     pthread_mutex_unlock(lock);
+    fprintf(stderr, "parent: unlocked\n");
   }
 
   return T;
@@ -102,7 +106,10 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
 
         fprintf(stderr, "p%i: waiting for cond\n", process_number);
         /* wait to continue to work on the next k */
+        pthread_mutex_lock(lock);
+        fprintf(stderr, "p%i: got a lock\n", process_number);
         pthread_cond_wait(cond, lock);
+        fprintf(stderr, "p%i: passed wait\n", process_number);
         pthread_mutex_unlock(lock);
       }
       exit(0);
