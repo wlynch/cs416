@@ -8,8 +8,6 @@ typedef struct wtc_thr_args{
     pthread_mutex_t loop_lock;
     int nov;
     int *k;
-    int low_index;
-    int high_index;
     int mod;
 } wtc_thr_args;
 
