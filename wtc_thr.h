@@ -10,6 +10,7 @@ typedef struct wtc_thr_args{
     int *k;
     int low_index;
     int high_index;
+    int mod;
 } wtc_thr_args;
 
 void *wtc_thr_thread(void *s);
