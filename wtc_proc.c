@@ -40,6 +40,8 @@ void * give_memory(size_t num_bytes) {
 void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   sem_t * temp_sem;
   int process_number;
+  pthread_condattr_t cond_attr;
+  pthread_mutexattr_t lock_attr;
 
   T = give_memory(sizeof(int) * n * n);
   sem = give_memory(sizeof(int));
@@ -51,8 +53,13 @@ void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   lock = give_memory(sizeof(pthread_mutex_t));
   cond = give_memory(sizeof(pthread_cond_t));
 
-  pthread_mutex_init(lock, NULL);
-  pthread_cond_init(cond, NULL);
+  pthread_mutexattr_init(&lock_attr);
+  pthread_mutexattr_setpshared(&lock_attr, PTHREAD_PROCESS_SHARED);
+  pthread_mutex_init(lock, &lock_attr);
+
+  pthread_condattr_init(&cond_attr);
+  pthread_condattr_setpshared(&cond_attr, PTHREAD_PROCESS_SHARED);
+  pthread_cond_init(cond, &cond_attr);
 
   for (process_number = 0; process_number < number_of_processes; process_number++) {
     wtc_proc_create(process_number, number_of_processes, n);
