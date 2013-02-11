@@ -54,16 +54,10 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
 int *wtc_thr(){
 
     int k, i, count;
-    int rows_per_thread, thread_rows;
-    int remainder, temp_remainder;
-    int low_index;
     wtc_thr_args *args;
     pthread_t t;
 
     k = 0;
-
-    low_index = 0;
-
 
     /* Struct initialization. This is what we will pass in to the threads */
     args=(wtc_thr_args *)malloc(sizeof(wtc_thr_args));
@@ -72,11 +66,6 @@ int *wtc_thr(){
     pthread_mutex_init(&(args->lock),NULL);
 
     sem_init(&finish,0,0);
-
-    rows_per_thread = number_of_vertices / number_of_threads;
-    remainder = number_of_vertices % number_of_threads;
-
-    temp_remainder = remainder;
 
     /* Create the pthreads */
     for(count = 0; count < number_of_threads; count++)
@@ -88,19 +77,7 @@ int *wtc_thr(){
         /* Pass in k by reference so we can use the proper closure*/
         args->k = &k;
         args->nov = number_of_vertices;
-
-        thread_rows = rows_per_thread;
-
-        if(temp_remainder > 0)
-        {
-            thread_rows++;
-            temp_remainder--;
-        }
-
-        args->low_index = low_index;
-        args->high_index = low_index + thread_rows;
-
-        low_index += thread_rows;
+        args->mod = count;
 
         pthread_create(&t, NULL, wtc_thr_thread, (void *)args);
         pthread_detach(t);
@@ -138,16 +115,14 @@ int *wtc_thr(){
 /* Thread to run Warshalls algo for the given row */
 void *wtc_thr_thread(void *args){
 
-    int i, *k, j, low_index, high_index, index ;
+    int i, *k, j, index, mod;
     int *closure_reading, *closure_writing;
 
     wtc_thr_args *data = (wtc_thr_args *)args;
 
     /* Some abstraction just to make things easier to read below */
     k=data->k;
-
-    low_index = data->low_index;
-    high_index = data->high_index;
+    mod = data->mod;
 
     /* Unlock so that k and i can be changed again for the next thread. */
     pthread_mutex_unlock(&(data->lock));
@@ -161,14 +136,14 @@ void *wtc_thr_thread(void *args){
         closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
 
         /* The main part of the thread. Does work for the given row */
-
-        for(i = low_index; i < high_index; i++)
-        {
-            for( j = 0; j < number_of_vertices; j++ )
+        i = mod;
+        while(i < number_of_vertices){
+            for( j = 0; j < number_of_vertices; j++ ) 
             {
                 index = get_array_loc(i, j);
                 closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]);
             }
+            i+=number_of_threads;
         }
 
         pthread_mutex_lock(&(data->lock));
