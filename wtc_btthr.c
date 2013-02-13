@@ -32,14 +32,13 @@ sem_t finish;
  */
 int *wtc_btthr(){
 
-    int i, count;
+    int i, count, k;
     wtc_btthr_args *args;
     pthread_t t;
-    int *k=(int *)malloc(sizeof(int));
     still_running=true;
     row = 0;
     
-    *k = 0;
+    k = 0;
 
     /* Struct initialization. This is what we will pass in to the threads */
     args=(wtc_btthr_args *)malloc(sizeof(wtc_btthr_args));
@@ -58,14 +57,14 @@ int *wtc_btthr(){
         pthread_mutex_lock(&(args->lock));
 
         /* Pass in k by reference so we can use the proper closure*/
-        args->k = k;
+        args->k = &k;
 
         pthread_create(&t, NULL, wtc_btthr_thread, (void *)args);
         pthread_detach(t);
     }
 
     /* hold each vertex steady */
-    while ( *k < number_of_vertices) {
+    while ( k < number_of_vertices) {
         /* Wait for all threads to finish before returning */
         for (i=0; i < number_of_threads; i++){
             sem_wait(&finish);
@@ -76,10 +75,9 @@ int *wtc_btthr(){
         pthread_mutex_unlock(&row_lock);
         
         pthread_mutex_lock(&(args->lock));
-        (*k)++;
+        k++;
         pthread_cond_broadcast(&(args->condition));
         pthread_mutex_unlock(&(args->lock));
-
     }
 
     still_running = false;
@@ -91,7 +89,7 @@ int *wtc_btthr(){
     free(args);
 
     /* return the most recently written array */
-    return (*k) % 2 == 0 ? odd_closure : even_closure;
+    return k % 2 == 0 ? odd_closure : even_closure;
 }
 
 /* Thread to run Bag of Tasks algo for the given row */
