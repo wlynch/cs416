@@ -2,7 +2,7 @@ CC ?= gcc
 CFLAGS ?= -pedantic -Wall -g
 
 EXEC = wtc
-SRCS = wtc_thr.c wtc.c
+SRCS = wtc_thr.c wtc.c wtc_btthr.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}

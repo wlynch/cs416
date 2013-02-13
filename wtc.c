@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "wtc_thr.h"
+#include "wtc_btthr.h"
 
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
@@ -59,18 +60,22 @@ int main(int argc, char ** argv) {
     case 1:
      break;
     case 2:
-			wtc_thr_init(T, number_of_vertices, number_of_processes);
-			printf("Output of method two is \n");
-			print_adjacency_matrix(wtc_thr(), number_of_vertices);
-            wtc_thr_destroy();
-      break;
+     wtc_thr_init(T, number_of_vertices, number_of_processes);
+     printf("Output of method two is \n");
+     print_adjacency_matrix(wtc_thr(), number_of_vertices);
+     wtc_thr_destroy();
+     break;
     case 3:
-      break;
+     break;
     case 4:
-      break;
+     wtc_thr_init(T, number_of_vertices, number_of_processes);
+     printf("Output of method four is \n");
+     print_adjacency_matrix(wtc_btthr(), number_of_vertices);
+     wtc_thr_destroy();
+     break;
     default:
-      fprintf(stderr, "invalid method %s\n", argv[1]);
-      break;
+     fprintf(stderr, "invalid method %s\n", argv[1]);
+     break;
   }
 
   /* clean up */

@@ -16,4 +16,7 @@ void wtc_thr_init(int * T, size_t size, size_t num_threads);
 int *wtc_thr();
 void wtc_thr_destroy();
 
+int get_array_loc(int x, int y);
+void print_array(int *array);
+
 #endif
