@@ -32,13 +32,14 @@ sem_t finish;
  */
 int *wtc_btthr(){
 
-    int k, i, count;
+    int i, count;
     wtc_btthr_args *args;
     pthread_t t;
-
+    int *k=(int *)malloc(sizeof(int));
     still_running=true;
     row = 0;
-    k = 0;
+    
+    *k = 0;
 
     /* Struct initialization. This is what we will pass in to the threads */
     args=(wtc_btthr_args *)malloc(sizeof(wtc_btthr_args));
@@ -57,30 +58,31 @@ int *wtc_btthr(){
         pthread_mutex_lock(&(args->lock));
 
         /* Pass in k by reference so we can use the proper closure*/
-        args->k = &k;
+        args->k = k;
 
         pthread_create(&t, NULL, wtc_btthr_thread, (void *)args);
         pthread_detach(t);
     }
 
     /* hold each vertex steady */
-    for( k = 0; k < number_of_vertices; k++ )
-    {
+    while ( *k < number_of_vertices) {
         /* Wait for all threads to finish before returning */
         for (i=0; i < number_of_threads; i++){
             sem_wait(&finish);
         }
 
+        pthread_mutex_lock(&row_lock);
         enqueue_all();
-        fprintf(stderr,"%d is done\n",k);
+        pthread_mutex_unlock(&row_lock);
+        
         pthread_mutex_lock(&(args->lock));
+        (*k)++;
         pthread_cond_broadcast(&(args->condition));
         pthread_mutex_unlock(&(args->lock));
-        
+
     }
 
     still_running = false;
-
     for (i=0; i < number_of_threads; i++){
         sem_wait(&finish);
     }
@@ -89,7 +91,7 @@ int *wtc_btthr(){
     free(args);
 
     /* return the most recently written array */
-    return k % 2 == 0 ? odd_closure : even_closure;
+    return (*k) % 2 == 0 ? odd_closure : even_closure;
 }
 
 /* Thread to run Bag of Tasks algo for the given row */
@@ -112,8 +114,11 @@ void *wtc_btthr_thread(void *args){
         closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
 
         /* The main part of the thread. Does work for the given row */
-        while (row < number_of_vertices){
+        pthread_mutex_lock(&row_lock);
+        while (row < number_of_vertices) {
             i = dequeue();
+            pthread_mutex_unlock(&row_lock);
+
             if ( i >= 0 ) {
                 for( j = 0; j < number_of_vertices; j++ ) 
                 {
@@ -121,7 +126,11 @@ void *wtc_btthr_thread(void *args){
                     closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]);
                 }
             }
+            /* Lock before we check/dequeue the row */
+            pthread_mutex_lock(&row_lock);
         }
+        pthread_mutex_unlock(&row_lock);
+
         pthread_mutex_lock(&(data->lock));
         sem_post(&finish);
         pthread_cond_wait(&(data->condition), &(data->lock));
@@ -132,24 +141,21 @@ void *wtc_btthr_thread(void *args){
     return NULL;
 }
 
-/* Enqueue all the rows to be operated on */
+/* Enqueue all the rows to be operated on. 
+ * This function seems unnecessary. It is. 
+ * It's to enforce the point that this is how the queue is defined.*/
 void enqueue_all() {
-    pthread_mutex_lock(&row_lock);
     row = 0;
-    pthread_mutex_unlock(&row_lock);
 }
 
 /* Dequeue a single row to be operated on */
 int dequeue() {
     int retval;
-    pthread_mutex_lock(&row_lock);
     if (row < number_of_vertices) {
         retval=row;
         row++;
     } else {
         retval = -1;
     }
-    fprintf(stderr,"Dequeue: %d\n",retval);
-    pthread_mutex_unlock(&row_lock);
     return retval;
 }

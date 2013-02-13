@@ -19,9 +19,6 @@ size_t number_of_threads;
 
 bool still_running = true;
 
-int get_array_loc(int, int);
-void print_array();
-
 sem_t finish;
 
 /*
@@ -76,7 +73,6 @@ int *wtc_thr(){
 
         /* Pass in k by reference so we can use the proper closure*/
         args->k = &k;
-        args->nov = number_of_vertices;
         args->mod = count;
 
         pthread_create(&t, NULL, wtc_thr_thread, (void *)args);
@@ -85,15 +81,14 @@ int *wtc_thr(){
 
 
     /* hold each vertex steady */
-    for( k = 0; k < number_of_vertices; k++ )
-    {
-
+    while ( k < number_of_vertices ) {
         /* Wait for all threads to finish before returning */
         for (i=0; i < number_of_threads; i++){
           sem_wait(&finish);
         }
 
         pthread_mutex_lock(&(args->lock));
+        k++;
         pthread_cond_broadcast(&(args->condition));
         pthread_mutex_unlock(&(args->lock));
     }
@@ -126,8 +121,6 @@ void *wtc_thr_thread(void *args){
 
     /* Unlock so that k and i can be changed again for the next thread. */
     pthread_mutex_unlock(&(data->lock));
-
-    number_of_vertices=data->nov;
 
     while(still_running == true)
     {
