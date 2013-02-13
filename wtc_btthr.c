@@ -73,7 +73,8 @@ int *wtc_btthr(){
         pthread_mutex_lock(&row_lock);
         enqueue_all();
         pthread_mutex_unlock(&row_lock);
-        
+    
+        /*Increment k and wake up worker threads*/
         pthread_mutex_lock(&(args->lock));
         k++;
         pthread_cond_broadcast(&(args->condition));
@@ -84,6 +85,7 @@ int *wtc_btthr(){
     for (i=0; i < number_of_threads; i++){
         sem_wait(&finish);
     }
+
     pthread_cond_broadcast(&(args->condition));
     pthread_cond_destroy(&(args->condition));
     free(args);
@@ -129,6 +131,9 @@ void *wtc_btthr_thread(void *args){
         }
         pthread_mutex_unlock(&row_lock);
 
+        /* Post that we have finished work for this iteration and wait for the
+         * next one
+         */
         pthread_mutex_lock(&(data->lock));
         sem_post(&finish);
         pthread_cond_wait(&(data->condition), &(data->lock));
@@ -149,10 +154,13 @@ void enqueue_all() {
 /* Dequeue a single row to be operated on */
 int dequeue() {
     int retval;
+    /*If we still have more rows to give out, distribute it*/
     if (row < number_of_vertices) {
         retval=row;
         row++;
+        
     } else {
+       /*If we have no more items, just return negative one*/
         retval = -1;
     }
     return retval;
