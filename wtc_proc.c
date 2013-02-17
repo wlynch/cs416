@@ -67,6 +67,7 @@ int * wtc_proc(int n, int number_of_processes) {
     for (i=0; i < number_of_processes; i++){
       printf("parent: waiting for %i to finish\n", i);
       sem_wait(sem);
+
     }
 
     /* send signal to start running again */
@@ -102,8 +103,10 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
 
         fprintf(stderr, "p%i: waiting for cond\n", process_number);
         /* wait to continue to work on the next k */
+        pthread_mutex_lock(lock);
         pthread_cond_wait(cond, lock);
         pthread_mutex_unlock(lock);
+
       }
       exit(0);
       break;

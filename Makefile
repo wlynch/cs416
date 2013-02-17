@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -pedantic -Wall
+CFLAGS ?=  -g -pedantic -Wall
 LIBS = -lpthread
 
 EXEC = wtc
