@@ -40,6 +40,8 @@ void * give_memory(size_t num_bytes) {
 void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   sem_t * temp_sem;
   int process_number;
+  pthread_condattr_t cond_attr;
+  pthread_mutexattr_t lock_attr;
 
   T = give_memory(sizeof(int) * n * n);
   sem = give_memory(sizeof(int));
@@ -51,8 +53,13 @@ void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   lock = give_memory(sizeof(pthread_mutex_t));
   cond = give_memory(sizeof(pthread_cond_t));
 
-  pthread_mutex_init(lock, NULL);
-  pthread_cond_init(cond, NULL);
+  pthread_mutexattr_init(&lock_attr);
+  pthread_mutexattr_setpshared(&lock_attr, PTHREAD_PROCESS_SHARED);
+  pthread_mutex_init(lock, &lock_attr);
+
+  pthread_condattr_init(&cond_attr);
+  pthread_condattr_setpshared(&cond_attr, PTHREAD_PROCESS_SHARED);
+  pthread_cond_init(cond, &cond_attr);
 
   for (process_number = 0; process_number < number_of_processes; process_number++) {
     wtc_proc_create(process_number, number_of_processes, n);
@@ -71,8 +78,15 @@ int * wtc_proc(int n, int number_of_processes) {
     }
 
     /* send signal to start running again */
+    pthread_mutex_lock(lock);
     pthread_cond_broadcast(cond);
+    fprintf(stderr, "parent: broadcast\n");
     pthread_mutex_unlock(lock);
+  }
+
+  /* wait for all of the processes to finish */
+  for (i = 0; i < number_of_processes; i++) {
+    sem_wait(sem);
   }
 
   return T;
@@ -85,7 +99,7 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
   pid = fork();
   switch (pid) {
     case -1:
-      perror("we done fucked up"); exit(1);
+      perror("fork"); exit(1);
       break;
     case 0:
       printf("p%i: hello world\n", process_number);
@@ -97,7 +111,9 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
           }
         }
 
-        fprintf(stderr, "p%i: posting\n", process_number);
+        /* wait to continue to work on the next k */
+        pthread_mutex_lock(lock);
+
         /* announce that we finished the row */
         sem_post(sem);
 
@@ -108,6 +124,8 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
         pthread_mutex_unlock(lock);
 
       }
+
+      sem_post(sem);
       exit(0);
       break;
   }
