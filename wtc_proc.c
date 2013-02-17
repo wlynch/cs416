@@ -119,7 +119,6 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
 
         fprintf(stderr, "p%i: waiting for cond\n", process_number);
         /* wait to continue to work on the next k */
-        pthread_mutex_lock(lock);
         pthread_cond_wait(cond, lock);
         pthread_mutex_unlock(lock);
 
