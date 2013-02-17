@@ -78,11 +78,14 @@ int * wtc_proc(int n, int number_of_processes) {
 
     /* send signal to start running again */
     pthread_mutex_lock(lock);
-    fprintf(stderr, "parent: got lock\n");
     pthread_cond_broadcast(cond);
     fprintf(stderr, "parent: broadcast\n");
     pthread_mutex_unlock(lock);
-    fprintf(stderr, "parent: unlocked\n");
+  }
+
+  /* wait for all of the processes to finish */
+  for (i = 0; i < number_of_processes; i++) {
+    sem_wait(sem);
   }
 
   return T;
@@ -95,7 +98,7 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
   pid = fork();
   switch (pid) {
     case -1:
-      perror("we done fucked up"); exit(1);
+      perror("fork"); exit(1);
       break;
     case 0:
       printf("p%i: hello world\n", process_number);
@@ -107,18 +110,18 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
           }
         }
 
-        fprintf(stderr, "p%i: posting\n", process_number);
+        /* wait to continue to work on the next k */
+        pthread_mutex_lock(lock);
+
         /* announce that we finished the row */
         sem_post(sem);
 
-        fprintf(stderr, "p%i: waiting for cond\n", process_number);
-        /* wait to continue to work on the next k */
-        pthread_mutex_lock(lock);
-        fprintf(stderr, "p%i: got a lock\n", process_number);
+        /* wait to start the next k cycle */
         pthread_cond_wait(cond, lock);
-        fprintf(stderr, "p%i: passed wait\n", process_number);
         pthread_mutex_unlock(lock);
       }
+
+      sem_post(sem);
       exit(0);
       break;
   }
