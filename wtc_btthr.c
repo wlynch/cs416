@@ -1,5 +1,8 @@
+#include <sys/time.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <string.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -10,11 +13,18 @@
 #include "wtc_btthr.h"
 #include "wtc_thr.h"
 
+/**
+ * 
+ * Representations and ways to get at the graph
+ */
 int *odd_closure;
 int *even_closure;
 int **both_closures;
 int row;
 
+/**
+ * Graph information
+ */
 size_t size_of_graph;
 size_t number_of_vertices;
 size_t number_of_threads;
@@ -24,15 +34,25 @@ bool still_running;
 int get_array_loc(int, int);
 void print_array();
 
+/**
+ * Useful stuff for synchronization
+ */
 pthread_mutex_t row_lock;
 sem_t finish;
+
+/**
+ * Structs to handle time
+ */
+struct timeval start_time;
+struct timeval end_time;
+
 
 /*
  * Actually run Bag of Tasks algorithm
  */
-int *wtc_btthr(){
-
-    int i, count, k;
+int *wtc_btthr()
+{    
+    int i, count, k, microsecondsTaken, secondsTaken;
     wtc_btthr_args *args;
     pthread_t t;
     still_running=true;
@@ -63,6 +83,8 @@ int *wtc_btthr(){
         pthread_detach(t);
     }
 
+    gettimeofday(&start_time, NULL);
+    
     /* hold each vertex steady */
     while ( k < number_of_vertices) {
         /* Wait for all threads to finish before returning */
@@ -89,6 +111,14 @@ int *wtc_btthr(){
     pthread_cond_broadcast(&(args->condition));
     pthread_cond_destroy(&(args->condition));
     free(args);
+
+    gettimeofday(&end_time, NULL);
+
+    microsecondsTaken = end_time.tv_usec - start_time.tv_usec;
+    secondsTaken = end_time.tv_sec - start_time.tv_sec;
+
+    printf("Time taken by this program is %d seconds and %d microseconds\n",
+             secondsTaken, microsecondsTaken);
 
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
