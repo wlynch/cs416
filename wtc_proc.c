@@ -28,8 +28,8 @@ int AllocateSharedMemory(int n) {
 
 void* MapSharedMemory(int id) {
   void* addr;
-  addr = shmat(id, NULL, 0); /* Attach the segment... */
-  shmctl(id, IPC_RMID, NULL); /* ...and mark it destroyed. */
+  addr = shmat(id, NULL, 0); /* Attach the segment */
+  shmctl(id, IPC_RMID, NULL); /* mark it destroyed */
   return addr;
 }
 
@@ -72,15 +72,12 @@ int * wtc_proc(int n, int number_of_processes) {
   for (k = 0; k < n; k++) { /* for each vertex */
     /* Wait for all threads to finish before returning */
     for (i=0; i < number_of_processes; i++){
-      printf("parent: waiting for %i to finish\n", i);
       sem_wait(sem);
-
     }
 
     /* send signal to start running again */
     pthread_mutex_lock(lock);
     pthread_cond_broadcast(cond);
-    fprintf(stderr, "parent: broadcast\n");
     pthread_mutex_unlock(lock);
   }
 
@@ -102,9 +99,7 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
       perror("fork"); exit(1);
       break;
     case 0:
-      printf("p%i: hello world\n", process_number);
       for (k = 0; k < n; k++) { /* each k */
-        fprintf(stderr, "p%i: starting k: %i\n", process_number, k);
         for (i = process_number; i < n; i += number_of_processes) { /* row */
           for (j = 0 ; j < n; j++) { /* column */
             T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
@@ -117,11 +112,9 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
         /* announce that we finished the row */
         sem_post(sem);
 
-        fprintf(stderr, "p%i: waiting for cond\n", process_number);
         /* wait to continue to work on the next k */
         pthread_cond_wait(cond, lock);
         pthread_mutex_unlock(lock);
-
       }
 
       sem_post(sem);
