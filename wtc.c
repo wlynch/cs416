@@ -76,12 +76,11 @@ int main(int argc, char ** argv) {
             break;
         case 4:
             wtc_thr_init(T, number_of_vertices, number_of_processes);
-            start=clock();
-            result=wtc_btthr();
-            end=clock();
+            struct timeval timeTaken; 
+            result=wtc_btthr(&timeTaken);
             printf("Output of method four is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %f s\n",(float)(end-start)/(float)CLOCKS_PER_SEC);
+            printf("Time: %d s and %d us\n", timeTaken.tv_sec, timeTaken.tv_usec);
             wtc_thr_destroy();
             break;
         default:

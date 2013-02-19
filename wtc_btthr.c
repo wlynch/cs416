@@ -50,7 +50,7 @@ struct timeval end_time;
 /*
  * Actually run Bag of Tasks algorithm
  */
-int *wtc_btthr()
+int *wtc_btthr(struct timeval *timeTaken)
 {    
     int i, count, k, microsecondsTaken, secondsTaken;
     wtc_btthr_args *args;
@@ -114,11 +114,12 @@ int *wtc_btthr()
 
     gettimeofday(&end_time, NULL);
 
+    /* Compute the amount of time taken */
     microsecondsTaken = end_time.tv_usec - start_time.tv_usec;
     secondsTaken = end_time.tv_sec - start_time.tv_sec;
 
-    printf("Time taken by this program is %d seconds and %d microseconds\n",
-             secondsTaken, microsecondsTaken);
+    timeTaken -> tv_sec = secondsTaken;
+    timeTaken -> tv_usec = microsecondsTaken;
 
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
