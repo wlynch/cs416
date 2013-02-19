@@ -48,7 +48,7 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
 /*
  * Actually run warshal's algorithm
  */
-int *wtc_thr(struct timeval *timeTaken){
+int *wtc_thr(struct timeval *time_taken){
 
     struct timeval start_time, end_time;
     int k, i, count;
@@ -102,14 +102,24 @@ int *wtc_thr(struct timeval *timeTaken){
 
     gettimeofday(&end_time, NULL);
 
-    timeTaken -> tv_sec = end_time.tv_sec - start_time.tv_sec;
-    timeTaken -> tv_usec = end_time.tv_usec - start_time.tv_usec;
+    time_taken -> tv_sec = end_time.tv_sec - start_time.tv_sec;
+    time_taken -> tv_usec = end_time.tv_usec - start_time.tv_usec;
+
+    if(end_time.tv_sec > start_time.tv_sec)
+    {
+        if(end_time.tv_usec < start_time.tv_usec)
+        {
+            time_taken -> tv_sec -= 1;
+            time_taken -> tv_usec = 1000000 + time_taken -> tv_usec;
+        }
+    }
 
     pthread_cond_broadcast(&(args->condition));
 
     pthread_cond_destroy(&(args->condition));
     free(args);
 
+    printf("end time is %ld start time is %ld\n", end_time.tv_usec, start_time.tv_usec);
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }
@@ -151,6 +161,7 @@ void *wtc_thr_thread(void *args){
         pthread_cond_wait(&(data->condition), &(data->lock));
         pthread_mutex_unlock(&(data->lock));
     }
+
 
     sem_post(&finish);
     return NULL;
