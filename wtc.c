@@ -21,9 +21,10 @@ void print_adjacency_matrix(int * T, int number_of_vertices) {
 }
 
 int main(int argc, char ** argv) {
+    
     int number_of_processes, number_of_vertices;
     int i, j;
-    clock_t start, end;
+    struct timeval timeTaken;
     FILE * input_fd;
     int *result;
 
@@ -64,23 +65,20 @@ int main(int argc, char ** argv) {
             break;
         case 2:
             wtc_thr_init(T, number_of_vertices, number_of_processes);
-            start=clock();
-            result=wtc_thr();
-            end=clock();
+            result=wtc_thr(&timeTaken);
             printf("Output of method two is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %f s\n",(float)(end-start)/(float)CLOCKS_PER_SEC);
+            printf("Time: %ld s and %ld us\n", timeTaken.tv_sec, timeTaken.tv_usec);
             wtc_thr_destroy();
             break;
         case 3:
             break;
         case 4:
             wtc_thr_init(T, number_of_vertices, number_of_processes);
-            struct timeval timeTaken; 
             result=wtc_btthr(&timeTaken);
             printf("Output of method four is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %d s and %d us\n", timeTaken.tv_sec, timeTaken.tv_usec);
+            printf("Time: %ld s and %ld us\n", timeTaken.tv_sec, timeTaken.tv_usec);
             wtc_thr_destroy();
             break;
         default:

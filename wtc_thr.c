@@ -48,8 +48,9 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
 /*
  * Actually run warshal's algorithm
  */
-int *wtc_thr(){
+int *wtc_thr(struct timeval *timeTaken){
 
+    struct timeval start_time, end_time;
     int k, i, count;
     wtc_thr_args *args;
     pthread_t t;
@@ -79,6 +80,7 @@ int *wtc_thr(){
         pthread_detach(t);
     }
 
+    gettimeofday(&start_time, NULL);
 
     /* hold each vertex steady */
     while ( k < number_of_vertices ) {
@@ -97,6 +99,11 @@ int *wtc_thr(){
     for (i=0; i < number_of_threads; i++){
       sem_wait(&finish);
     }
+
+    gettimeofday(&end_time, NULL);
+
+    timeTaken -> tv_sec = end_time.tv_sec - start_time.tv_sec;
+    timeTaken -> tv_usec = end_time.tv_usec - start_time.tv_usec;
 
     pthread_cond_broadcast(&(args->condition));
 
