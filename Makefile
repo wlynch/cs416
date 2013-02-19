@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -pedantic -Wall -g
+CFLAGS ?= -gdwarf-2 -g3 -pedantic -Wall
 
 EXEC = wtc
 SRCS = wtc_thr.c wtc.c wtc_btthr.c
@@ -32,3 +32,4 @@ clean:
 	rm ./*.o
 
 .PHONEY: all clean
+
