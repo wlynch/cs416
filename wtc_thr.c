@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include <pthread.h>
 #include <semaphore.h>
@@ -116,6 +117,8 @@ int *wtc_thr(struct timeval *time_taken){
             time_taken -> tv_usec = 1000000 + time_taken -> tv_usec;
         }
     }
+
+    time_taken -> tv_usec = time_taken -> tv_usec + pow(10,6) * time_taken -> tv_sec;
 
     pthread_cond_broadcast(&(args->condition));
 

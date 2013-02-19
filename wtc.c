@@ -68,7 +68,7 @@ int main(int argc, char ** argv) {
             result=wtc_thr(&timeTaken);
             printf("Output of method two is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %ld s and %ld us\n", timeTaken.tv_sec, timeTaken.tv_usec);
+            printf("Time: %ld us\n", timeTaken.tv_usec);
             wtc_thr_destroy();
             break;
         case 3:
@@ -78,7 +78,7 @@ int main(int argc, char ** argv) {
             result=wtc_btthr(&timeTaken);
             printf("Output of method four is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %lu s and %lu us\n", timeTaken.tv_sec, timeTaken.tv_usec);
+            printf("Time: %lu us\n", timeTaken.tv_usec);
             wtc_thr_destroy();
             break;
         default:

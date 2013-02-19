@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include <stddef.h>
+#include <math.h>
 #include <stdbool.h>
 
 #include <pthread.h>
@@ -130,6 +131,8 @@ int *wtc_btthr(struct timeval *time_taken)
         }
     }
 
+    time_taken -> tv_usec = time_taken -> tv_usec + pow(10,6) * time_taken -> tv_sec;
+    
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }
