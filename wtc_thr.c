@@ -119,7 +119,6 @@ int *wtc_thr(struct timeval *time_taken){
     pthread_cond_destroy(&(args->condition));
     free(args);
 
-    printf("end time is %ld start time is %ld\n", end_time.tv_usec, start_time.tv_usec);
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }

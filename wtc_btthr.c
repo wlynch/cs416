@@ -50,7 +50,7 @@ struct timeval end_time;
 /*
  * Actually run Bag of Tasks algorithm
  */
-int *wtc_btthr(struct timeval *timeTaken)
+int *wtc_btthr(struct timeval *time_taken)
 {    
     int i, count, k, microsecondsTaken, secondsTaken;
     wtc_btthr_args *args;
@@ -118,8 +118,17 @@ int *wtc_btthr(struct timeval *timeTaken)
     microsecondsTaken = end_time.tv_usec - start_time.tv_usec;
     secondsTaken = end_time.tv_sec - start_time.tv_sec;
 
-    timeTaken -> tv_sec = secondsTaken;
-    timeTaken -> tv_usec = microsecondsTaken;
+    time_taken -> tv_sec = secondsTaken;
+    time_taken -> tv_usec = microsecondsTaken;
+   
+    if(end_time.tv_sec > start_time.tv_sec)
+    {
+        if(end_time.tv_usec < start_time.tv_usec)
+        {
+            time_taken -> tv_sec -= 1;
+            time_taken -> tv_usec = 1000000 + time_taken -> tv_usec;
+        }
+    }
 
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
