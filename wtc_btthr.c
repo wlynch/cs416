@@ -1,4 +1,3 @@
-#include <sys/time.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,19 +40,13 @@ void print_array();
 pthread_mutex_t row_lock;
 sem_t finish;
 
-/**
- * Structs to handle time
- */
-struct timeval start_time;
-struct timeval end_time;
-
 
 /*
  * Actually run Bag of Tasks algorithm
  */
-int *wtc_btthr(struct timeval *time_taken)
+int *wtc_btthr()
 {    
-    int i, count, k, microsecondsTaken, secondsTaken;
+    int i, count, k;
     wtc_btthr_args *args;
     pthread_t t;
     still_running=true;
@@ -84,8 +77,6 @@ int *wtc_btthr(struct timeval *time_taken)
         pthread_detach(t);
     }
 
-    gettimeofday(&start_time, NULL);
-    
     /* hold each vertex steady */
     while ( k < number_of_vertices) {
         /* Wait for all threads to finish before returning */
@@ -113,26 +104,6 @@ int *wtc_btthr(struct timeval *time_taken)
     pthread_cond_destroy(&(args->condition));
     free(args);
 
-    gettimeofday(&end_time, NULL);
-
-    /* Compute the amount of time taken */
-    microsecondsTaken = end_time.tv_usec - start_time.tv_usec;
-    secondsTaken = end_time.tv_sec - start_time.tv_sec;
-
-    time_taken -> tv_sec = secondsTaken;
-    time_taken -> tv_usec = microsecondsTaken;
-   
-    if(end_time.tv_sec > start_time.tv_sec)
-    {
-        if(end_time.tv_usec < start_time.tv_usec)
-        {
-            time_taken -> tv_sec -= 1;
-            time_taken -> tv_usec = 1000000 + time_taken -> tv_usec;
-        }
-    }
-
-    time_taken -> tv_usec = time_taken -> tv_usec + pow(10,6) * time_taken -> tv_sec;
-    
     /* return the most recently written array */
     return k % 2 == 0 ? odd_closure : even_closure;
 }
