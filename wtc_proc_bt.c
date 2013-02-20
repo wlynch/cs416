@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
+
 
 #include <semaphore.h>
 #include <pthread.h>
@@ -15,6 +11,7 @@
 #include <errno.h>
 
 #include "wtc_proc_bt.h"
+#include "shared_memory.h"
 
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
@@ -27,43 +24,28 @@ pthread_cond_t * k_cond;
 int * row, * running, * k;
 int number_of_vertices;
 
-int AllocateSharedMemory(int n) {
-  return shmget(IPC_PRIVATE, n, IPC_CREAT | SHM_R | SHM_W);
-}
-
-void* MapSharedMemory(int id) {
-  void* addr;
-  addr = shmat(id, NULL, 0); /* Attach the segment */
-  shmctl(id, IPC_RMID, NULL); /* mark it destroyed */
-  return addr;
-}
-
-void * give_memory(size_t num_bytes) {
-  return MapSharedMemory(AllocateSharedMemory(num_bytes));
-}
-
 void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
   sem_t * temp_sem;
   int process_number;
   pthread_condattr_t cond_attr;
   pthread_mutexattr_t lock_attr;
 
-  T = give_memory(sizeof(int) * n * n);
-  sem = give_memory(sizeof(int));
+  T = share_memory(sizeof(int) * n * n);
+  sem = share_memory(sizeof(int));
   temp_sem = sem_open("/semaphore", O_CREAT, 0644, 0);
 
   memcpy(&sem, &temp_sem, sizeof(int));
   memcpy(T, initial_matrix, sizeof(int) * n * n);
 
-  lock = give_memory(sizeof(pthread_mutex_t));
-  cond = give_memory(sizeof(pthread_cond_t));
+  lock = share_memory(sizeof(pthread_mutex_t));
+  cond = share_memory(sizeof(pthread_cond_t));
 
-  other_lock = give_memory(sizeof(pthread_mutex_t));
-  row_lock = give_memory(sizeof(pthread_mutex_t));
-  k_cond = give_memory(sizeof(pthread_cond_t));
-  running = give_memory(sizeof(int));
-  row = give_memory(sizeof(int));
-  k = give_memory(sizeof(int));
+  other_lock = share_memory(sizeof(pthread_mutex_t));
+  row_lock = share_memory(sizeof(pthread_mutex_t));
+  k_cond = share_memory(sizeof(pthread_cond_t));
+  running = share_memory(sizeof(int));
+  row = share_memory(sizeof(int));
+  k = share_memory(sizeof(int));
 
   *k = 0;
   *row = 0;
@@ -156,7 +138,6 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
           pthread_mutex_lock(row_lock);
         }
         pthread_mutex_unlock(row_lock);
-
 
         pthread_mutex_lock(other_lock);
         sem_post(sem);
