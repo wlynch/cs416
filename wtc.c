@@ -74,7 +74,7 @@ int main(int argc, char ** argv) {
 
       msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
                       - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-      printf("\nTime: %f s / %ld us\n", (double)msec/1000000, msec);
+      printf("\nTime: %lu us\n", msec);
 
       wtc_proc_cleanup();
       break;
@@ -84,7 +84,7 @@ int main(int argc, char ** argv) {
       puts("");
 
       print_adjacency_matrix(transitive_closure, number_of_vertices);
-      printf("Time: %ld us\n", timeTaken.tv_usec);
+      printf("Time: %i us\n", timeTaken.tv_usec);
       wtc_thr_destroy();
       break;
     case 3:
@@ -109,7 +109,7 @@ int main(int argc, char ** argv) {
       puts("");
 
       print_adjacency_matrix(transitive_closure, number_of_vertices);
-      printf("Time: %lu us\n", timeTaken.tv_usec);
+      printf("Time: %i us\n", timeTaken.tv_usec);
       wtc_thr_destroy();
       break;
     default:
