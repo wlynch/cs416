@@ -88,7 +88,7 @@ int main(int argc, char ** argv) {
       print_adjacency_matrix(transitive_closure, number_of_vertices);
 
       msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-                          - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+                      - (start_time.tv_sec * 1000000 + start_time.tv_usec));
       printf("\nTime: %f s / %ld us\n", (double)msec/1000000, msec);
 
       wtc_proc_bt_cleanup();
