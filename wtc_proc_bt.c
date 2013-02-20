@@ -25,6 +25,7 @@ pthread_cond_t * cond;
 pthread_mutex_t * row_lock, * other_lock;
 pthread_cond_t * k_cond;
 int * row, * running, * k;
+int number_of_vertices;
 
 int AllocateSharedMemory(int n) {
   return shmget(IPC_PRIVATE, n, IPC_CREAT | SHM_R | SHM_W);
@@ -61,9 +62,13 @@ void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
   k_cond = give_memory(sizeof(pthread_cond_t));
   running = give_memory(sizeof(int));
   row = give_memory(sizeof(int));
+  k = give_memory(sizeof(int));
+  perror("wtf");
 
+  *k = 0;
   *row = 0;
   *running = 1;
+  number_of_vertices = n;
 
   pthread_mutexattr_init(&lock_attr);
   pthread_mutexattr_setpshared(&lock_attr, PTHREAD_PROCESS_SHARED);
@@ -84,9 +89,9 @@ void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
 int dequeue() {
     int retval;
     /*If we still have more rows to give out, distribute it*/
-    if (row < number_of_vertices) {
-        retval=row;
-        row++;
+    if (*row < number_of_vertices) {
+        retval = *row;
+        *row += 1;
     } else {
        /*If we have no more items, just return negative one*/
         retval = -1;
@@ -127,7 +132,7 @@ int * wtc_proc_bt(int n, int number_of_processes) {
 
 void wtc_proc_create(int process_number, int number_of_processes, int n) {
   /* create forks, detach them, and make pools */
-  int pid, i, j, k;
+  int pid, i, j;
 
   pid = fork();
   switch (pid) {
@@ -135,24 +140,27 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
       perror("fork"); exit(1);
       break;
     case 0:
-      for (k = 0; k < n; k++) { /* each k */
-        for (i = process_number; i < n; i += number_of_processes) { /* row */
-          for (j = 0 ; j < n; j++) { /* column */
-            T[j + i*n] = T[j + i*n] | (T[j + k*n] & T[k + i*n]);
+      while (*running) {
+        pthread_mutex_lock(row_lock);
+        while (*row < n) {
+          i = dequeue();
+          pthread_mutex_unlock(row_lock);
+
+          if (i >= 0) {
+            for (j = 0 ; j < n; j++) { /* column */
+              T[j + i*n] = T[j + i*n] | (T[j + (*k)*n] & T[(*k) + i*n]);
+            }
           }
+
+          pthread_mutex_lock(row_lock);
         }
+        pthread_mutex_unlock(row_lock);
 
-        /* wait to continue to work on the next k */
-        pthread_mutex_lock(lock);
-
-        /* announce that we finished the row */
+        pthread_mutex_lock(other_lock);
         sem_post(sem);
-
-        /* wait to continue to work on the next k */
-        pthread_cond_wait(cond, lock);
-        pthread_mutex_unlock(lock);
+        pthread_cond_wait(k_cond, other_lock);
+        pthread_mutex_unlock(other_lock);
       }
-
       sem_post(sem);
       exit(0);
       break;
