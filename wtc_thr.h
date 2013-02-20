@@ -1,5 +1,6 @@
-#ifndef _WTC_THR_H
-#define _WTC_THR_H
+#pragma once
+
+#include <pthread.h>
 
 /* Struct to pass in all variables to a thread as single parameter */
 typedef struct wtc_thr_args{
@@ -18,4 +19,3 @@ void wtc_thr_destroy();
 int get_array_loc(int x, int y);
 void print_array(int *array);
 
-#endif
