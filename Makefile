@@ -3,7 +3,7 @@ CFLAGS ?=  -g -pedantic -Wall
 LIBS = -lpthread
 
 EXEC = wtc
-SRCS = shared_memory.c wtc_proc_bt.c wtc.c
+SRCS = shared_memory.c wtc_btproc.c wtc.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}

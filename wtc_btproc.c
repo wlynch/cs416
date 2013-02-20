@@ -10,7 +10,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include "wtc_proc_bt.h"
+#include "wtc_btproc.h"
 #include "shared_memory.h"
 
 /* shared vertices graph, will result in the transitive closure graph */

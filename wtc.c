@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "wtc_proc_bt.h"
+#include "wtc_btproc.h"
 
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
