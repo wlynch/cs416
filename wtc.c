@@ -33,6 +33,7 @@ int main(int argc, char ** argv) {
     struct timeval end_time;
     struct timeval timeTaken;
     unsigned long int msec;
+    int method = argv[1][0] - '0';
 
     if (argc != 3) {
         print_usage();
@@ -47,24 +48,18 @@ int main(int argc, char ** argv) {
 
     fscanf(input_fd, "%i", &number_of_processes);
     fscanf(input_fd, "%i", &number_of_vertices); /* n, for n by n matrix */
-    printf("%i processes\n%i vertices\n", number_of_processes, number_of_vertices);
 
     /* initialize E, the vertex graph*/
     initial_matrix = calloc(number_of_vertices * number_of_vertices, sizeof(int));
 
     while ( fscanf(input_fd, "%i %i", &i, &j) == 2 ) {
-        printf("(%i, %i)\n", i, j);
         initial_matrix[(i-1) + (j-1)*number_of_vertices] = 1;
     }
 
-    /* print the graph */
-    print_adjacency_matrix(initial_matrix, number_of_vertices);
-
     /* determine which method to use to solve the transitive graph */
-    switch (argv[1][0] - '0') {
+    switch (method) {
         case 1:
             wtc_proc_init(initial_matrix, number_of_vertices, number_of_processes);
-            puts("");
 
             gettimeofday(&start_time, NULL);
             transitive_closure = wtc_proc(number_of_vertices, number_of_processes);
@@ -75,7 +70,6 @@ int main(int argc, char ** argv) {
             break;
         case 2:
             wtc_thr_init(initial_matrix, number_of_vertices, number_of_processes);
-            puts("");
 
             gettimeofday(&start_time, NULL);
             transitive_closure = wtc_thr();
@@ -86,7 +80,6 @@ int main(int argc, char ** argv) {
             break;
         case 3:
             wtc_proc_bt_init(initial_matrix, number_of_vertices, number_of_processes);
-            puts("");
 
             gettimeofday(&start_time, NULL);
             transitive_closure = wtc_proc_bt(number_of_vertices, number_of_processes);
@@ -97,7 +90,6 @@ int main(int argc, char ** argv) {
             break;
         case 4:
             wtc_thr_init(initial_matrix, number_of_vertices, number_of_processes);
-            puts("");
 
             gettimeofday(&start_time, NULL);
             transitive_closure = wtc_btthr(&timeTaken);
@@ -108,14 +100,14 @@ int main(int argc, char ** argv) {
             break;
         default:
             fprintf(stderr, "invalid method %s\n", argv[1]);
-            exit(1);
             break;
     }
 
-    msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-            - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-    printf("\nTime: %lu us\n", msec);
-
+    if (method > 0 && method <=4) {
+        msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
+                - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+        printf("\nTime: %lu us\n", msec);
+    }
     /* clean up */
     free(initial_matrix);
 
