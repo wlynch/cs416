@@ -71,11 +71,6 @@ int main(int argc, char ** argv) {
             gettimeofday(&end_time, NULL);
 
             print_adjacency_matrix(transitive_closure, number_of_vertices);
-
-            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-                    - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-            printf("\nTime: %lu us\n", msec);
-
             wtc_proc_cleanup();
             break;
         case 2:
@@ -87,9 +82,6 @@ int main(int argc, char ** argv) {
             gettimeofday(&end_time,NULL);
 
             print_adjacency_matrix(transitive_closure, number_of_vertices);
-            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-                    - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-            printf("\nTime: %lu us\n", msec);
             wtc_thr_destroy();
             break;
         case 3:
@@ -101,11 +93,6 @@ int main(int argc, char ** argv) {
             gettimeofday(&end_time, NULL);
 
             print_adjacency_matrix(transitive_closure, number_of_vertices);
-
-            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-                    - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-            printf("\nTime: %lu us\n", msec);
-
             wtc_proc_bt_cleanup();
             break;
         case 4:
@@ -117,15 +104,17 @@ int main(int argc, char ** argv) {
             gettimeofday(&end_time, NULL);
 
             print_adjacency_matrix(transitive_closure, number_of_vertices);
-            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
-                    - (start_time.tv_sec * 1000000 + start_time.tv_usec));
-            printf("\nTime: %lu us\n", msec);
             wtc_thr_destroy();
             break;
         default:
             fprintf(stderr, "invalid method %s\n", argv[1]);
+            exit(1);
             break;
     }
+
+    msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
+            - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+    printf("\nTime: %lu us\n", msec);
 
     /* clean up */
     free(initial_matrix);
