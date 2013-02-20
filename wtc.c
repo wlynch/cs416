@@ -4,6 +4,7 @@
 #include <sys/time.h>
 
 #include "wtc_proc.h"
+#include "wtc_btproc.h"
 
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
@@ -25,7 +26,6 @@ int main(int argc, char ** argv) {
   int i, j;
   FILE * input_fd;
   int * initial_matrix, * transitive_closure;
-
 
   struct timeval start_time;
   struct timeval end_time;
@@ -78,6 +78,20 @@ int main(int argc, char ** argv) {
     case 2:
       break;
     case 3:
+      wtc_proc_bt_init(initial_matrix, number_of_vertices, number_of_processes);
+      puts("");
+
+      gettimeofday(&start_time, NULL);
+      transitive_closure = wtc_proc_bt(number_of_vertices, number_of_processes);
+      gettimeofday(&end_time, NULL);
+
+      print_adjacency_matrix(transitive_closure, number_of_vertices);
+
+      msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
+                          - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+      printf("\nTime: %f s / %ld us\n", (double)msec/1000000, msec);
+
+      wtc_proc_bt_cleanup();
       break;
     case 4:
       break;

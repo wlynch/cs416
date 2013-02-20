@@ -15,6 +15,7 @@
 #include <errno.h>
 
 #include "wtc_proc.h"
+#include "shared_memory.h"
 
 /* shared vertices graph, will result in the transitive closure graph */
 int * T;
@@ -22,36 +23,21 @@ sem_t * sem;
 pthread_mutex_t * lock;
 pthread_cond_t * cond;
 
-int AllocateSharedMemory(int n) {
-  return shmget(IPC_PRIVATE, n, IPC_CREAT | SHM_R | SHM_W);
-}
-
-void* MapSharedMemory(int id) {
-  void* addr;
-  addr = shmat(id, NULL, 0); /* Attach the segment */
-  shmctl(id, IPC_RMID, NULL); /* mark it destroyed */
-  return addr;
-}
-
-void * give_memory(size_t num_bytes) {
-  return MapSharedMemory(AllocateSharedMemory(num_bytes));
-}
-
 void wtc_proc_init(int * initial_matrix, int n, int number_of_processes) {
   sem_t * temp_sem;
   int process_number;
   pthread_condattr_t cond_attr;
   pthread_mutexattr_t lock_attr;
 
-  T = give_memory(sizeof(int) * n * n);
-  sem = give_memory(sizeof(int));
+  T = share_memory(sizeof(int) * n * n);
+  sem = share_memory(sizeof(int));
   temp_sem = sem_open("/semaphore", O_CREAT, 0644, 0);
 
   memcpy(&sem, &temp_sem, sizeof(int));
   memcpy(T, initial_matrix, sizeof(int) * n * n);
 
-  lock = give_memory(sizeof(pthread_mutex_t));
-  cond = give_memory(sizeof(pthread_cond_t));
+  lock = share_memory(sizeof(pthread_mutex_t));
+  cond = share_memory(sizeof(pthread_cond_t));
 
   pthread_mutexattr_init(&lock_attr);
   pthread_mutexattr_setpshared(&lock_attr, PTHREAD_PROCESS_SHARED);
@@ -134,6 +120,5 @@ void wtc_proc_cleanup() {
   if (sem_unlink("/semaphore") == -1) {
     perror("sem_unlink"); exit(EXIT_FAILURE);
   }
-
 }
 
