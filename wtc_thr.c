@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <sys/time.h>
-#include <time.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
@@ -52,9 +49,8 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
 /*
  * Actually run warshal's algorithm
  */
-int *wtc_thr(struct timeval *time_taken){
+int *wtc_thr(){
 
-    struct timeval start_time, end_time;
     int k, i, count;
     wtc_thr_args *args;
     pthread_t t;
@@ -84,8 +80,6 @@ int *wtc_thr(struct timeval *time_taken){
         pthread_detach(t);
     }
 
-    gettimeofday(&start_time, NULL);
-
     /* hold each vertex steady */
     while ( k < number_of_vertices ) {
         /* Wait for all threads to finish before returning */
@@ -103,22 +97,6 @@ int *wtc_thr(struct timeval *time_taken){
     for (i=0; i < number_of_threads; i++){
       sem_wait(&finish);
     }
-
-    gettimeofday(&end_time, NULL);
-
-    time_taken -> tv_sec = end_time.tv_sec - start_time.tv_sec;
-    time_taken -> tv_usec = end_time.tv_usec - start_time.tv_usec;
-
-    if(end_time.tv_sec > start_time.tv_sec)
-    {
-        if(end_time.tv_usec < start_time.tv_usec)
-        {
-            time_taken -> tv_sec -= 1;
-            time_taken -> tv_usec = 1000000 + time_taken -> tv_usec;
-        }
-    }
-
-    time_taken -> tv_usec = time_taken -> tv_usec + pow(10,6) * time_taken -> tv_sec;
 
     pthread_cond_broadcast(&(args->condition));
 

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "wtc_thr.h"
 #include "wtc_btthr.h"
@@ -24,9 +25,15 @@ int main(int argc, char ** argv) {
     
     int number_of_processes, number_of_vertices;
     int i, j;
-    struct timeval timeTaken;
     FILE * input_fd;
     int *result;
+
+    /**
+     * Structs to handle time
+     */
+    struct timeval start_time;
+    struct timeval end_time;
+    unsigned long int msec;
 
     /* the vertices graph, length number_of_vertices * number_of_vertices
      * to find a connection you look at E[x + y * number_of_vertices] */
@@ -65,20 +72,28 @@ int main(int argc, char ** argv) {
             break;
         case 2:
             wtc_thr_init(T, number_of_vertices, number_of_processes);
-            result=wtc_thr(&timeTaken);
+            gettimeofday(&start_time, NULL);
+            result=wtc_thr();
+            gettimeofday(&end_time, NULL);
             printf("Output of method two is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %ld us\n", timeTaken.tv_usec);
+            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
+                                  - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+            printf("Time: %f s / %ld us\n", (double)msec/1000000, msec); 
             wtc_thr_destroy();
             break;
         case 3:
             break;
         case 4:
             wtc_thr_init(T, number_of_vertices, number_of_processes);
-            result=wtc_btthr(&timeTaken);
+            gettimeofday(&start_time, NULL);
+            result=wtc_btthr();
+            gettimeofday(&end_time, NULL);
             printf("Output of method four is \n");
             print_adjacency_matrix(result, number_of_vertices);
-            printf("Time: %lu us\n", timeTaken.tv_usec);
+            msec=((end_time.tv_sec * 1000000 + end_time.tv_usec)
+                                  - (start_time.tv_sec * 1000000 + start_time.tv_usec));
+            printf("Time: %f s / %ld us\n", (double)msec/1000000, msec); 
             wtc_thr_destroy();
             break;
         default:
