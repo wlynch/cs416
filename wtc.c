@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "wtc_proc.h"
+#include "wtc_proc_bt.h"
 
 void print_usage() {
   fprintf(stderr, "usage: wtc <method> <input file>\n");
@@ -53,15 +53,15 @@ int main(int argc, char ** argv) {
   /* determine which method to use to solve the transitive graph */
   switch (argv[1][0] - '0') {
     case 1:
-      wtc_proc_init(initial_matrix, number_of_vertices, number_of_processes);
-      puts("");
-      transitive_closure = wtc_proc(number_of_vertices, number_of_processes);
-      print_adjacency_matrix(transitive_closure, number_of_vertices);
-      wtc_proc_cleanup();
       break;
     case 2:
       break;
     case 3:
+      wtc_proc_bt_init(initial_matrix, number_of_vertices, number_of_processes);
+      puts("");
+      transitive_closure = wtc_proc_bt(number_of_vertices, number_of_processes);
+      print_adjacency_matrix(transitive_closure, number_of_vertices);
+      wtc_proc_bt_cleanup();
       break;
     case 4:
       break;

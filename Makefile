@@ -3,7 +3,7 @@ CFLAGS ?=  -g -pedantic -Wall
 LIBS = -lpthread
 
 EXEC = wtc
-SRCS = wtc_proc.c wtc.c
+SRCS = wtc_proc_bt.c wtc.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}
@@ -14,7 +14,7 @@ all: ${EXEC}
 ${EXEC}: ${OBJS}
 	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS} ${LIBS}
 
-test: test_proc
+test: test_btproc
 
 test_proc: ${EXEC}
 	./${EXEC} 1 input.in
