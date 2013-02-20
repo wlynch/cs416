@@ -1,8 +1,9 @@
 CC ?= gcc
-CFLAGS ?= -gdwarf-2 -g3 -pedantic -Wall
+CFLAGS ?= -g -pedantic -Wall
+LIBS = -lpthread
 
 EXEC = wtc
-SRCS = wtc_thr.c wtc.c wtc_btthr.c
+SRCS = shared_memory.c wtc_proc.c wtc_btproc.c wtc_thr.c wtc_btthr.c wtc.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${EXEC}
@@ -11,9 +12,9 @@ all: ${EXEC}
 	${CC} ${CFLAGS} -o $@ -c $<
 
 ${EXEC}: ${OBJS}
-	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS} -lpthread
+	${CC} ${LDFLAGS} -o ${EXEC} ${OBJS} ${LIBS}
 
-test: test_proc
+test: test_btproc
 
 test_proc: ${EXEC}
 	./${EXEC} 1 input.in
