@@ -24,7 +24,7 @@ pthread_cond_t * cond;
 
 pthread_mutex_t * row_lock, * other_lock;
 pthread_cond_t * k_cond;
-int * row, * running;
+int * row, * running, * k;
 
 int AllocateSharedMemory(int n) {
   return shmget(IPC_PRIVATE, n, IPC_CREAT | SHM_R | SHM_W);
@@ -80,20 +80,42 @@ void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
   }
 }
 
-int * wtc_proc_bt(int n, int number_of_processes) {
-  int i, k;
+/* Dequeue a single row to be operated on */
+int dequeue() {
+    int retval;
+    /*If we still have more rows to give out, distribute it*/
+    if (row < number_of_vertices) {
+        retval=row;
+        row++;
+    } else {
+       /*If we have no more items, just return negative one*/
+        retval = -1;
+    }
+    return retval;
+}
 
-  for (k = 0; k < n; k++) { /* for each vertex */
+int * wtc_proc_bt(int n, int number_of_processes) {
+  int i;
+
+  while (*k < number_of_processes) { /* for each vertex */
     /* Wait for all threads to finish before returning */
-    for (i=0; i < number_of_processes; i++){
+    for (i = 0; i < number_of_processes; i++){
       sem_wait(sem);
     }
 
+    pthread_mutex_lock(row_lock);
+    *row = 0;
+    pthread_mutex_unlock(row_lock);
+
     /* send signal to start running again */
-    pthread_mutex_lock(lock);
-    pthread_cond_broadcast(cond);
-    pthread_mutex_unlock(lock);
+    pthread_mutex_lock(other_lock);
+    *k += 1;
+    pthread_cond_broadcast(k_cond);
+    pthread_mutex_unlock(other_lock);
   }
+
+  /* no more running */
+  *running = 0;
 
   /* wait for all of the processes to finish */
   for (i = 0; i < number_of_processes; i++) {
@@ -147,6 +169,7 @@ void wtc_proc_bt_cleanup() {
   shmdt(row_lock);
   shmdt(k_cond);
   shmdt(row);
+  shmdt(k);
 
   if (sem_close(sem) == -1) {
     perror("sem_close"); exit(EXIT_FAILURE);
