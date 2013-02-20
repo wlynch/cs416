@@ -58,12 +58,12 @@ void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
   lock = give_memory(sizeof(pthread_mutex_t));
   cond = give_memory(sizeof(pthread_cond_t));
 
+  other_lock = give_memory(sizeof(pthread_mutex_t));
   row_lock = give_memory(sizeof(pthread_mutex_t));
   k_cond = give_memory(sizeof(pthread_cond_t));
   running = give_memory(sizeof(int));
   row = give_memory(sizeof(int));
   k = give_memory(sizeof(int));
-  perror("wtf");
 
   *k = 0;
   *row = 0;
@@ -74,6 +74,7 @@ void wtc_proc_bt_init(int * initial_matrix, int n, int number_of_processes) {
   pthread_mutexattr_setpshared(&lock_attr, PTHREAD_PROCESS_SHARED);
   pthread_mutex_init(lock, &lock_attr);
   pthread_mutex_init(row_lock, &lock_attr);
+  pthread_mutex_init(other_lock, &lock_attr);
 
   pthread_condattr_init(&cond_attr);
   pthread_condattr_setpshared(&cond_attr, PTHREAD_PROCESS_SHARED);
@@ -102,7 +103,7 @@ int dequeue() {
 int * wtc_proc_bt(int n, int number_of_processes) {
   int i;
 
-  while (*k < number_of_processes) { /* for each vertex */
+  while (*k < n) { /* for each vertex */
     /* Wait for all threads to finish before returning */
     for (i = 0; i < number_of_processes; i++){
       sem_wait(sem);
@@ -155,6 +156,7 @@ void wtc_proc_create(int process_number, int number_of_processes, int n) {
           pthread_mutex_lock(row_lock);
         }
         pthread_mutex_unlock(row_lock);
+
 
         pthread_mutex_lock(other_lock);
         sem_post(sem);
