@@ -17,7 +17,6 @@
  * 
  * Representations and ways to get at the graph
  */
-int *odd_closure;
 int *even_closure;
 int **both_closures;
 int row;
@@ -105,7 +104,7 @@ int *wtc_btthr()
     free(args);
 
     /* return the most recently written array */
-    return k % 2 == 0 ? odd_closure : even_closure;
+    return even_closure;
 }
 
 /* Thread to run Bag of Tasks algo for the given row */
@@ -124,8 +123,8 @@ void *wtc_btthr_thread(void *args){
 
     while(still_running == true) {
         /* figure out which closure we are reading and which we are writing */
-        closure_writing = *k % 2 == 0 ? even_closure : odd_closure;
-        closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
+        closure_reading = even_closure;
+        closure_writing = even_closure;
 
         /* The main part of the thread. Does work for the given row */
         pthread_mutex_lock(&row_lock);
@@ -136,8 +135,8 @@ void *wtc_btthr_thread(void *args){
             if ( i >= 0 ) {
                 for( j = 0; j < number_of_vertices; j++ ) 
                 {
-                    index = get_array_loc(i, j);
-                    closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]);
+                    index = i*number_of_vertices + j;
+                    closure_writing[index] = closure_reading[index] | (closure_reading[i*number_of_vertices + *k] & closure_reading[*k * number_of_vertices + j]);
                 }
             }
             /* Lock before we check/dequeue the row */
@@ -172,9 +171,9 @@ int dequeue() {
     if (row < number_of_vertices) {
         retval=row;
         row++;
-        
+
     } else {
-       /*If we have no more items, just return negative one*/
+        /*If we have no more items, just return negative one*/
         retval = -1;
     }
     return retval;

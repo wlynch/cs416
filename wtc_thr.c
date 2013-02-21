@@ -10,7 +10,6 @@
 
 #include "wtc_thr.h"
 
-int *odd_closure;
 int *even_closure;
 int **both_closures;
 
@@ -31,17 +30,14 @@ void wtc_thr_init(int * T, size_t num_vertices, size_t num_threads){
     number_of_vertices = num_vertices;
 
     /* allocate both transitive closure objects */
-    odd_closure = (int *)malloc(size_of_graph);
     even_closure = (int *)malloc(size_of_graph);
 
     /* copy the current graph into both even and odd closures */
-    memcpy(odd_closure, T, size_of_graph);
     memcpy(even_closure, T, size_of_graph);
 
     /* initialize both transitive closures */
     both_closures = (int**)malloc(sizeof(int*) * 2);
     both_closures[0] = even_closure;
-    both_closures[1] = odd_closure;
 
     number_of_threads = num_threads;
 }
@@ -104,7 +100,7 @@ int *wtc_thr(){
     free(args);
 
     /* return the most recently written array */
-    return k % 2 == 0 ? odd_closure : even_closure;
+    return even_closure;
 }
 
 /* Thread to run Warshalls algo for the given row */
@@ -125,8 +121,8 @@ void *wtc_thr_thread(void *args){
     while(still_running == true)
     {
         /* figure out which closure we are reading and which we are writing */
-        closure_writing = *k % 2 == 0 ? even_closure : odd_closure;
-        closure_reading = *k % 2 == 1 ? even_closure : odd_closure;
+        closure_reading = even_closure;
+        closure_writing = even_closure;
 
         /* The main part of the thread. Does work for the given row */
         i = mod;
@@ -162,7 +158,6 @@ int get_array_loc(int x, int y){
  */
 void wtc_thr_destroy(){
     free(even_closure);
-    free(odd_closure);
     free(both_closures);
 }
 
