@@ -31,7 +31,6 @@ int main(int argc, char ** argv) {
 
     struct timeval start_time;
     struct timeval end_time;
-    struct timeval timeTaken;
     unsigned long int msec;
     int method = argv[1][0] - '0';
 
@@ -92,7 +91,7 @@ int main(int argc, char ** argv) {
             wtc_thr_init(initial_matrix, number_of_vertices, number_of_processes);
 
             gettimeofday(&start_time, NULL);
-            transitive_closure = wtc_btthr(&timeTaken);
+            transitive_closure = wtc_btthr();
             gettimeofday(&end_time, NULL);
 
             print_adjacency_matrix(transitive_closure, number_of_vertices);
