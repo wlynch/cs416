@@ -133,8 +133,8 @@ void *wtc_thr_thread(void *args){
         while(i < number_of_vertices){
             for( j = 0; j < number_of_vertices; j++ ) 
             {
-                index = get_array_loc(i, j);
-                closure_writing[index] = closure_reading[index] | (closure_reading[get_array_loc(i, *k)] & closure_reading[get_array_loc(*k, j)]);
+                index = i*number_of_vertices + j;
+                closure_writing[index] = closure_reading[index] | (closure_reading[i*number_of_vertices + *k] & closure_reading[*k * number_of_vertices + j]);
             }
             i+=number_of_threads;
         }
