@@ -1,0 +1,22 @@
+singleVertex.in 
+	1
+two_vertices
+1 0
+0 0
+
+two_vertices_single_path
+1 1
+0 0
+
+three_vertices
+1 1 1
+0 0 1
+0 0 0
+
+four_vertices
+1 1 1 1
+1 1 1 1
+1 1 1 1
+1 1 1 1
+
+

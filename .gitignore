@@ -1,0 +1,30 @@
+# The main executable
+wtc
+
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Mac Things
+*.DS_Store
+
+# Vim Swap Files
+*.swp
+*.swo
+*.*~
+3_vertices.in
+4_vertices.in
