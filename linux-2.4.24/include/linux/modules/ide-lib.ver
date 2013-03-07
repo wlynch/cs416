@@ -1,0 +1,16 @@
+#define __ver_ide_xfer_verbose	smp_e2daeb0a
+#define ide_xfer_verbose	_set_ver(ide_xfer_verbose)
+#define __ver_ide_dma_speed	smp_6cc431dc
+#define ide_dma_speed	_set_ver(ide_dma_speed)
+#define __ver_ide_rate_filter	smp_8691989a
+#define ide_rate_filter	_set_ver(ide_rate_filter)
+#define __ver_ide_dma_enable	smp_925977aa
+#define ide_dma_enable	_set_ver(ide_dma_enable)
+#define __ver_ide_pio_timings	smp_4186676c
+#define ide_pio_timings	_set_ver(ide_pio_timings)
+#define __ver_ide_get_best_pio_mode	smp_58dd5c41
+#define ide_get_best_pio_mode	_set_ver(ide_get_best_pio_mode)
+#define __ver_ide_toggle_bounce	smp_6681e833
+#define ide_toggle_bounce	_set_ver(ide_toggle_bounce)
+#define __ver_ide_set_xfer_rate	smp_77bbf917
+#define ide_set_xfer_rate	_set_ver(ide_set_xfer_rate)

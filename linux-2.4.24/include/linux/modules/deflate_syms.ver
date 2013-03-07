@@ -1,0 +1,16 @@
+#define __ver_zlib_deflate_workspacesize	smp_f0caf44b
+#define zlib_deflate_workspacesize	_set_ver(zlib_deflate_workspacesize)
+#define __ver_zlib_deflate	smp_28c35bd1
+#define zlib_deflate	_set_ver(zlib_deflate)
+#define __ver_zlib_deflateInit_	smp_c5e78d3e
+#define zlib_deflateInit_	_set_ver(zlib_deflateInit_)
+#define __ver_zlib_deflateInit2_	smp_262f9b2a
+#define zlib_deflateInit2_	_set_ver(zlib_deflateInit2_)
+#define __ver_zlib_deflateEnd	smp_cd8db61d
+#define zlib_deflateEnd	_set_ver(zlib_deflateEnd)
+#define __ver_zlib_deflateReset	smp_8abb5b63
+#define zlib_deflateReset	_set_ver(zlib_deflateReset)
+#define __ver_zlib_deflateCopy	smp_fd39628f
+#define zlib_deflateCopy	_set_ver(zlib_deflateCopy)
+#define __ver_zlib_deflateParams	smp_9088bbb2
+#define zlib_deflateParams	_set_ver(zlib_deflateParams)

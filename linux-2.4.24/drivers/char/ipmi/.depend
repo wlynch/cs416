@@ -1,0 +1,71 @@
+ipmi_devintf.o: ipmi_devintf.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/devfs_fs_kernel.h \
+   /home/user/linux-2.4.24/include/linux/ipmi.h \
+   /home/user/linux-2.4.24/include/asm/semaphore.h \
+   /home/user/linux-2.4.24/include/linux/init.h
+ipmi_kcs_intf.o: ipmi_kcs_intf.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/high/res/timers.h) \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/ipmi_smi.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   ipmi_kcs_sm.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipmi/kcs.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/acpi/interpreter.h) \
+   /home/user/linux-2.4.24/include/linux/acpi.h \
+   /home/user/linux-2.4.24/include/acpi/acpi.h \
+   /home/user/linux-2.4.24/include/acpi/actypes.h \
+   /home/user/linux-2.4.24/include/acpi/actbl.h
+ipmi_kcs_sm.o: ipmi_kcs_sm.c \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/string.h \
+   ipmi_kcs_sm.h
+ipmi_msghandler.o: ipmi_msghandler.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/rwsem.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/ipmi.h \
+   /home/user/linux-2.4.24/include/linux/ipmi_smi.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipmi/panic/event.h)
+ipmi_watchdog.o: ipmi_watchdog.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/ipmi.h \
+   /home/user/linux-2.4.24/include/linux/ipmi_smi.h \
+   /home/user/linux-2.4.24/include/linux/watchdog.h \
+   /home/user/linux-2.4.24/include/linux/miscdevice.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/rwsem.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/nmi.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/x86/local/apic.h) \
+   /home/user/linux-2.4.24/include/asm/apic.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/watchdog/nowayout.h)

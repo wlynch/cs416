@@ -1,0 +1,4 @@
+#define __ver_nand_manuf_ids	smp_a336feb7
+#define nand_manuf_ids	_set_ver(nand_manuf_ids)
+#define __ver_nand_flash_ids	smp_82c03f9f
+#define nand_flash_ids	_set_ver(nand_flash_ids)

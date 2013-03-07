@@ -1,0 +1,2 @@
+#define __ver_nand_scan	smp_f2567755
+#define nand_scan	_set_ver(nand_scan)

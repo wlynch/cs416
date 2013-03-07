@@ -1,0 +1,16 @@
+#define __ver_fbcon_iplan2p4	smp_637151d5
+#define fbcon_iplan2p4	_set_ver(fbcon_iplan2p4)
+#define __ver_fbcon_iplan2p4_setup	smp_d99b4586
+#define fbcon_iplan2p4_setup	_set_ver(fbcon_iplan2p4_setup)
+#define __ver_fbcon_iplan2p4_bmove	smp_ce38bdbc
+#define fbcon_iplan2p4_bmove	_set_ver(fbcon_iplan2p4_bmove)
+#define __ver_fbcon_iplan2p4_clear	smp_68ad3c48
+#define fbcon_iplan2p4_clear	_set_ver(fbcon_iplan2p4_clear)
+#define __ver_fbcon_iplan2p4_putc	smp_85246745
+#define fbcon_iplan2p4_putc	_set_ver(fbcon_iplan2p4_putc)
+#define __ver_fbcon_iplan2p4_putcs	smp_f926d2d4
+#define fbcon_iplan2p4_putcs	_set_ver(fbcon_iplan2p4_putcs)
+#define __ver_fbcon_iplan2p4_revc	smp_e193ec33
+#define fbcon_iplan2p4_revc	_set_ver(fbcon_iplan2p4_revc)
+#define __ver_fbcon_iplan2p4_clear_margins	smp_ae8e51c9
+#define fbcon_iplan2p4_clear_margins	_set_ver(fbcon_iplan2p4_clear_margins)

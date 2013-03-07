@@ -1,0 +1,4 @@
+#define __ver_hil_mlc_register	smp_ed1428c5
+#define hil_mlc_register	_set_ver(hil_mlc_register)
+#define __ver_hil_mlc_unregister	smp_a065d4e1
+#define hil_mlc_unregister	_set_ver(hil_mlc_unregister)

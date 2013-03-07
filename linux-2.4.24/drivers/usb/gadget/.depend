@@ -1,0 +1,93 @@
+ether.o: ether.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/uts.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/unaligned.h \
+   /home/user/linux-2.4.24/include/linux/usb_ch9.h \
+   /home/user/linux-2.4.24/include/linux/usb_gadget.h \
+   /home/user/linux-2.4.24/include/linux/random.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/etherdevice.h \
+   /home/user/linux-2.4.24/include/linux/ethtool.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/eth/net2280.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/eth/pxa2xx.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/eth/sa1100.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/eth/goku.h)
+net2280.o: net2280.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/usb_ch9.h \
+   /home/user/linux-2.4.24/include/linux/usb_gadget.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/unaligned.h \
+   net2280.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/x86.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ppc.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/not/coherent/cache.h)
+usbstring.o: usbstring.c \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/usb_ch9.h \
+   /home/user/linux-2.4.24/include/linux/usb_gadget.h
+zero.o: zero.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/uts.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/unaligned.h \
+   /home/user/linux-2.4.24/include/linux/usb_ch9.h \
+   /home/user/linux-2.4.24/include/linux/usb_gadget.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/zero/net2280.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/zero/pxa2xx.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/zero/sa1100.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/usb/zero/goku.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/source/sink.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/loopback.h)

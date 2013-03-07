@@ -1,0 +1,2 @@
+#define __ver_xor_block	smp_0f5d447c
+#define xor_block	_set_ver(xor_block)

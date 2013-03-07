@@ -1,0 +1,8 @@
+#define __ver_register_quota_format	smp_a6740d4d
+#define register_quota_format	_set_ver(register_quota_format)
+#define __ver_unregister_quota_format	smp_8b17f1e6
+#define unregister_quota_format	_set_ver(unregister_quota_format)
+#define __ver_dqstats	smp_f4f52f93
+#define dqstats	_set_ver(dqstats)
+#define __ver_init_dquot_operations	smp_95e793ea
+#define init_dquot_operations	_set_ver(init_dquot_operations)

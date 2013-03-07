@@ -1,0 +1,4 @@
+#define __ver_llc_oui	smp_b38117d4
+#define llc_oui	_set_ver(llc_oui)
+#define __ver_skb_migrate	smp_06d5bf10
+#define skb_migrate	_set_ver(skb_migrate)

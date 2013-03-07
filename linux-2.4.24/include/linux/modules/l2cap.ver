@@ -1,0 +1,2 @@
+#define __ver_l2cap_load	smp_fc31fe88
+#define l2cap_load	_set_ver(l2cap_load)

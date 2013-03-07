@@ -1,0 +1,40 @@
+af_packet.o: af_packet.c \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/fcntl.h \
+   /home/user/linux-2.4.24/include/linux/socket.h \
+   /home/user/linux-2.4.24/include/linux/in.h \
+   /home/user/linux-2.4.24/include/linux/inet.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/if_packet.h \
+   /home/user/linux-2.4.24/include/linux/wireless.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/net/ip.h \
+   /home/user/linux-2.4.24/include/net/protocol.h \
+   /home/user/linux-2.4.24/include/linux/skbuff.h \
+   /home/user/linux-2.4.24/include/net/sock.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/ioctls.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/if_bridge.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/divert.h) \
+   /home/user/linux-2.4.24/include/linux/divert.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/inet.h) \
+   /home/user/linux-2.4.24/include/net/inet_common.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/dlci.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/packet/multicast.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/packet/mmap.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/sock/packet.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/filter.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bridge.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bridge/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/radio.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/proc/fs.h)

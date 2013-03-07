@@ -1,0 +1,115 @@
+balloc.o: balloc.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/quotaops.h \
+   /home/user/linux-2.4.24/include/asm/bitops.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   swab.h \
+   util.h
+cylinder.o: cylinder.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/asm/bitops.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   swab.h \
+   util.h
+dir.o: dir.c \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   swab.h \
+   util.h
+file.o: file.c \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/fcntl.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/pagemap.h
+ialloc.o: ialloc.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/quotaops.h \
+   /home/user/linux-2.4.24/include/asm/bitops.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   swab.h \
+   util.h
+inode.o: inode.c \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   swab.h \
+   util.h
+namei.o: namei.c \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h
+super.o: super.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/asm/bitops.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/blkdev.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   swab.h \
+   util.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ufs/fs/write.h)
+symlink.o: symlink.c \
+   /home/user/linux-2.4.24/include/linux/fs.h
+truncate.o: truncate.c \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/ufs_fs.h \
+   /home/user/linux-2.4.24/include/linux/fcntl.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   swab.h \
+   util.h
+util.o: util.c \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   swab.h \
+   util.h
+util.h: \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   swab.h
+	@touch util.h
+.PRECIOUS:	util.h \
+

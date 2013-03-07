@@ -1,0 +1,16 @@
+#define __ver_video_device_alloc	smp_74fc6695
+#define video_device_alloc	_set_ver(video_device_alloc)
+#define __ver_video_device_release	smp_31fa10b4
+#define video_device_release	_set_ver(video_device_release)
+#define __ver_video_register_device	smp_0286bbb3
+#define video_register_device	_set_ver(video_register_device)
+#define __ver_video_unregister_device	smp_489743dd
+#define video_unregister_device	_set_ver(video_unregister_device)
+#define __ver_video_devdata	smp_38a858b6
+#define video_devdata	_set_ver(video_devdata)
+#define __ver_video_usercopy	smp_7e8dffb7
+#define video_usercopy	_set_ver(video_usercopy)
+#define __ver_video_exclusive_open	smp_e19d763b
+#define video_exclusive_open	_set_ver(video_exclusive_open)
+#define __ver_video_exclusive_release	smp_a8d1665e
+#define video_exclusive_release	_set_ver(video_exclusive_release)

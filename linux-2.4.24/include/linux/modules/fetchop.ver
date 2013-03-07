@@ -1,0 +1,4 @@
+#define __ver_fetchop_kalloc_page	smp_e91a903c
+#define fetchop_kalloc_page	_set_ver(fetchop_kalloc_page)
+#define __ver_fetchop_kfree_page	smp_c8054649
+#define fetchop_kfree_page	_set_ver(fetchop_kfree_page)

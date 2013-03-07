@@ -1,0 +1,16 @@
+#define __ver_sppp_input	smp_f1c75613
+#define sppp_input	_set_ver(sppp_input)
+#define __ver_sppp_close	smp_ef437152
+#define sppp_close	_set_ver(sppp_close)
+#define __ver_sppp_open	smp_ba6511ea
+#define sppp_open	_set_ver(sppp_open)
+#define __ver_sppp_reopen	smp_975636e0
+#define sppp_reopen	_set_ver(sppp_reopen)
+#define __ver_sppp_change_mtu	smp_3f8277c8
+#define sppp_change_mtu	_set_ver(sppp_change_mtu)
+#define __ver_sppp_do_ioctl	smp_11f0f542
+#define sppp_do_ioctl	_set_ver(sppp_do_ioctl)
+#define __ver_sppp_attach	smp_a0994372
+#define sppp_attach	_set_ver(sppp_attach)
+#define __ver_sppp_detach	smp_8e56b7ef
+#define sppp_detach	_set_ver(sppp_detach)

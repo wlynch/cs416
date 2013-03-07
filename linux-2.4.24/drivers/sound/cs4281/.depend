@@ -1,0 +1,32 @@
+cs4281m.o: cs4281m.c \
+   /home/user/linux-2.4.24/include/linux/list.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/sound.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/soundcard.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/bitops.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/wrapper.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/hardirq.h \
+   cs4281_hwdefs.h \
+   cs4281_wrapper.h \
+   cs4281pm-24.h \
+   cs4281pm-24.c
+cs4281pm-24.h: \
+   /home/user/linux-2.4.24/include/linux/pm.h \
+   cs4281pm.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/pm.h)
+	@touch cs4281pm-24.h
+.PRECIOUS:	cs4281pm-24.h \
+

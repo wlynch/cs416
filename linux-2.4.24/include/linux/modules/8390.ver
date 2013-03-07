@@ -1,0 +1,14 @@
+#define __ver_ei_open	smp_82cb882d
+#define ei_open	_set_ver(ei_open)
+#define __ver_ei_close	smp_fe5e2c1a
+#define ei_close	_set_ver(ei_close)
+#define __ver_ei_interrupt	smp_b93d8fa5
+#define ei_interrupt	_set_ver(ei_interrupt)
+#define __ver_ei_tx_timeout	smp_d8ad27a6
+#define ei_tx_timeout	_set_ver(ei_tx_timeout)
+#define __ver_ethdev_init	smp_75d0825d
+#define ethdev_init	_set_ver(ethdev_init)
+#define __ver_NS8390_init	smp_d8c538f8
+#define NS8390_init	_set_ver(NS8390_init)
+#define __ver_alloc_ei_netdev	smp_2db1a27b
+#define alloc_ei_netdev	_set_ver(alloc_ei_netdev)

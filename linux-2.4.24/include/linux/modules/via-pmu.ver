@@ -1,0 +1,14 @@
+#define __ver_pmu_poll	smp_646cc6ab
+#define pmu_poll	_set_ver(pmu_poll)
+#define __ver_pmu_suspend	smp_ca825895
+#define pmu_suspend	_set_ver(pmu_suspend)
+#define __ver_pmu_resume	smp_dcefb9a5
+#define pmu_resume	_set_ver(pmu_resume)
+#define __ver_pmu_i2c_combined_read	smp_245922c3
+#define pmu_i2c_combined_read	_set_ver(pmu_i2c_combined_read)
+#define __ver_pmu_i2c_stdsub_write	smp_5854d548
+#define pmu_i2c_stdsub_write	_set_ver(pmu_i2c_stdsub_write)
+#define __ver_pmu_i2c_simple_read	smp_e62e9555
+#define pmu_i2c_simple_read	_set_ver(pmu_i2c_simple_read)
+#define __ver_pmu_i2c_simple_write	smp_14ad4129
+#define pmu_i2c_simple_write	_set_ver(pmu_i2c_simple_write)

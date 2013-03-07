@@ -1,0 +1,65 @@
+sym53c8xx.h: \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/iomapped.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/ncr53c8xx/iomapped.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/default/tags.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/ncr53c8xx/default/tags.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/max/tags.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/ncr53c8xx/max/tags.h) \
+   /home/user/linux-2.4.24/include/scsi/scsicam.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/dma/addressing/mode.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/default/sync.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/scsi/sym53c8xx/max/lun.h)
+	@touch sym53c8xx.h
+sym_fw.o: sym_fw.c \
+   sym_glue.h \
+   sym_fw1.h \
+   sym_fw2.h
+sym_glue.o: sym_glue.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   sym_glue.h \
+   ../scsi_module.c
+sym_glue.h: \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/signal.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/time.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/blk.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   ../scsi.h \
+   ../hosts.h \
+   ../constants.h \
+   ../sd.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   sym53c8xx.h \
+   sym_misc.h \
+   sym_conf.h \
+   sym_defs.h \
+   sym_fw.h \
+   sym_hipd.h
+	@touch sym_glue.h
+sym_hipd.o: sym_hipd.c \
+   sym_glue.h
+sym_malloc.o: sym_malloc.c \
+   sym_glue.h
+sym_misc.o: sym_misc.c \
+   sym_glue.h
+sym_nvram.o: sym_nvram.c \
+   sym_glue.h
+.PRECIOUS:	sym53c8xx.h \
+	sym_glue.h \
+

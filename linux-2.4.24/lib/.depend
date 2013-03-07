@@ -1,0 +1,71 @@
+brlock.o: brlock.c \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h) \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/brlock.h
+bust_spinlocks.o: bust_spinlocks.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/vt_kern.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/vt.h)
+cmdline.o: cmdline.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/string.h
+crc32.o: crc32.c \
+   /home/user/linux-2.4.24/include/linux/crc32.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/asm/atomic.h \
+   crc32defs.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/crc32.h)
+ctype.o: ctype.c \
+   /home/user/linux-2.4.24/include/linux/ctype.h
+dec_and_lock.o: dec_and_lock.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/atomic.h
+dump_stack.o: dump_stack.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/module.h
+firmware_class.o: firmware_class.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h \
+   /home/user/linux-2.4.24/include/asm/hardirq.h \
+   /home/user/linux-2.4.24/include/linux/firmware.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/hotplug.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/fw/loader.h)
+gen_crc32table.o: gen_crc32table.c \
+   crc32defs.h
+rbtree.o: rbtree.c \
+   /home/user/linux-2.4.24/include/linux/rbtree.h \
+   /home/user/linux-2.4.24/include/linux/module.h
+rwsem.o: rwsem.c \
+   /home/user/linux-2.4.24/include/linux/rwsem.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/module.h
+rwsem-spinlock.o: rwsem-spinlock.c \
+   /home/user/linux-2.4.24/include/linux/rwsem.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/module.h
+string.o: string.c \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/ctype.h
+vsprintf.o: vsprintf.c \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/ctype.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/asm/div64.h \
+   /home/user/linux-2.4.24/include/asm/page.h

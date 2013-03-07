@@ -1,0 +1,8 @@
+#define __ver_ohci1394_stop_context	smp_85a7b362
+#define ohci1394_stop_context	_set_ver(ohci1394_stop_context)
+#define __ver_ohci1394_init_iso_tasklet	smp_1d5aeebc
+#define ohci1394_init_iso_tasklet	_set_ver(ohci1394_init_iso_tasklet)
+#define __ver_ohci1394_register_iso_tasklet	smp_74c336d8
+#define ohci1394_register_iso_tasklet	_set_ver(ohci1394_register_iso_tasklet)
+#define __ver_ohci1394_unregister_iso_tasklet	smp_9cc9d9b1
+#define ohci1394_unregister_iso_tasklet	_set_ver(ohci1394_unregister_iso_tasklet)

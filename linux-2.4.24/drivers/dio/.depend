@@ -1,0 +1,8 @@
+dio.o: dio.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/dio.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/dio/constants.h)

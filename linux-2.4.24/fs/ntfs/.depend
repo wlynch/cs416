@@ -1,0 +1,140 @@
+attr.o: attr.c \
+   ntfstypes.h \
+   struct.h \
+   attr.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs.h \
+   macros.h \
+   support.h \
+   util.h \
+   super.h \
+   inode.h \
+   unistr.h
+attr.h: \
+   /home/user/linux-2.4.24/include/linux/nls.h
+	@touch attr.h
+dir.o: dir.c \
+   ntfstypes.h \
+   struct.h \
+   dir.h \
+   macros.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   super.h \
+   inode.h \
+   attr.h \
+   support.h \
+   util.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/bitops.h
+fs.o: fs.c \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   ntfstypes.h \
+   struct.h \
+   util.h \
+   inode.h \
+   super.h \
+   dir.h \
+   support.h \
+   macros.h \
+   sysctl.h \
+   attr.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/blkdev.h \
+   /home/user/linux-2.4.24/include/asm/page.h \
+   /home/user/linux-2.4.24/include/linux/nls.h \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ntfs/rw.h)
+inode.o: inode.c \
+   ntfstypes.h \
+   ntfsendian.h \
+   struct.h \
+   inode.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   macros.h \
+   attr.h \
+   super.h \
+   dir.h \
+   support.h \
+   util.h \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h
+macros.h: \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs_i.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/asm/page.h
+	@touch macros.h
+ntfsendian.h: \
+   /home/user/linux-2.4.24/include/asm/byteorder.h
+	@touch ntfsendian.h
+ntfstypes.h: \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   ntfsendian.h \
+   /home/user/linux-2.4.24/include/asm/types.h \
+   /home/user/linux-2.4.24/include/asm/posix_types.h
+	@touch ntfstypes.h
+struct.h: \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs.h
+	@touch struct.h
+super.o: super.c \
+   /home/user/linux-2.4.24/include/linux/ntfs_fs.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/bitops.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   ntfstypes.h \
+   struct.h \
+   super.h \
+   macros.h \
+   inode.h \
+   support.h \
+   util.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h
+support.o: support.c \
+   ntfstypes.h \
+   struct.h \
+   support.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   util.h \
+   inode.h \
+   macros.h \
+   /home/user/linux-2.4.24/include/linux/nls.h \
+   sysctl.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h
+support.h: \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h
+	@touch support.h
+sysctl.o: sysctl.c \
+   sysctl.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/sysctl.h
+unistr.o: unistr.c \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   unistr.h \
+   macros.h
+unistr.h: \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/nls.h
+	@touch unistr.h
+util.o: util.c \
+   ntfstypes.h \
+   struct.h \
+   util.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/asm/div64.h \
+   support.h
+.PRECIOUS:	attr.h \
+	macros.h \
+	ntfsendian.h \
+	ntfstypes.h \
+	struct.h \
+	support.h \
+	unistr.h \
+

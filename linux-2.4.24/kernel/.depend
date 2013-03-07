@@ -1,0 +1,315 @@
+acct.o: acct.c \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/bsd/process/acct.h) \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/acct.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/file.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+capability.o: capability.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+context.o: context.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/unistd.h \
+   /home/user/linux-2.4.24/include/linux/signal.h \
+   /home/user/linux-2.4.24/include/linux/completion.h
+dma.o: dma.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/asm/system.h
+exec_domain.o: exec_domain.c \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/personality.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/sysctl.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h)
+exit.o: exit.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/linux/personality.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/namespace.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/bsd/process/acct.h) \
+   /home/user/linux-2.4.24/include/linux/acct.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/pgtable.h \
+   /home/user/linux-2.4.24/include/asm/mmu_context.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+fork.o: fork.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/unistd.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/linux/namespace.h \
+   /home/user/linux-2.4.24/include/linux/personality.h \
+   /home/user/linux-2.4.24/include/linux/compiler.h \
+   /home/user/linux-2.4.24/include/asm/pgtable.h \
+   /home/user/linux-2.4.24/include/asm/pgalloc.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/mmu_context.h \
+   /home/user/linux-2.4.24/include/asm/processor.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+info.o: info.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/unistd.h \
+   /home/user/linux-2.4.24/include/linux/swap.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+itimer.o: itimer.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+kmod.o: kmod.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/unistd.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/namespace.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/hotplug.h)
+ksyms.o: ksyms.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/blkdev.h \
+   /home/user/linux-2.4.24/include/linux/cdrom.h \
+   /home/user/linux-2.4.24/include/linux/kernel_stat.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h \
+   /home/user/linux-2.4.24/include/linux/sys.h \
+   /home/user/linux-2.4.24/include/linux/utsname.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/serial.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/random.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/linux/pagemap.h \
+   /home/user/linux-2.4.24/include/linux/sysctl.h \
+   /home/user/linux-2.4.24/include/linux/hdreg.h \
+   /home/user/linux-2.4.24/include/linux/skbuff.h \
+   /home/user/linux-2.4.24/include/linux/genhd.h \
+   /home/user/linux-2.4.24/include/linux/blkpg.h \
+   /home/user/linux-2.4.24/include/linux/swap.h \
+   /home/user/linux-2.4.24/include/linux/ctype.h \
+   /home/user/linux-2.4.24/include/linux/file.h \
+   /home/user/linux-2.4.24/include/linux/iobuf.h \
+   /home/user/linux-2.4.24/include/linux/console.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/mmzone.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/capability.h \
+   /home/user/linux-2.4.24/include/linux/highuid.h \
+   /home/user/linux-2.4.24/include/linux/brlock.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/in6.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/linux/seq_file.h \
+   /home/user/linux-2.4.24/include/linux/dnotify.h \
+   /home/user/linux-2.4.24/include/linux/crc32.h \
+   /home/user/linux-2.4.24/include/linux/firmware.h \
+   /home/user/linux-2.4.24/include/asm/checksum.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/proc/fs.h) \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/modversions.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/highmem.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ia64.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/arch/s390.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/uid16.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/crc32.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/fw/loader.h)
+module.o: module.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/asm/module.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/pgalloc.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/linux/seq_file.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/modules.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/kallsyms.h)
+panic.o: panic.c \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/sysrq.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/console.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/arch/s390.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/vt.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/x86.h)
+pm.o: pm.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/pm.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h
+printk.o: printk.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/tty_driver.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/console.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/log/buf/shift.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/multiquad.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ia64.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/arch/s390.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+ptrace.o: ptrace.c \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/highmem.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/pgtable.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+resource.o: resource.c \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/seq_file.h \
+   /home/user/linux-2.4.24/include/asm/io.h
+sched.o: sched.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/nmi.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/kernel_stat.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/linux/prefetch.h \
+   /home/user/linux-2.4.24/include/linux/compiler.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/mmu_context.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+signal.o: signal.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/unistd.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+softirq.o: softirq.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/kernel_stat.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/tqueue.h
+sys.o: sys.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/utsname.h \
+   /home/user/linux-2.4.24/include/linux/mman.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/linux/prctl.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/highuid.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/io.h
+sysctl.o: sysctl.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/sysctl.h \
+   /home/user/linux-2.4.24/include/linux/swapctl.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/ctype.h \
+   /home/user/linux-2.4.24/include/linux/utsname.h \
+   /home/user/linux-2.4.24/include/linux/capability.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/sysrq.h \
+   /home/user/linux-2.4.24/include/linux/highuid.h \
+   /home/user/linux-2.4.24/include/linux/swap.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/root/nfs.h) \
+   /home/user/linux-2.4.24/include/linux/nfs_fs.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/sysctl.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/hotplug.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/chr/dev/sg.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/sysvipc.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/arch/s390.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/mathemu.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ppc32.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bsd/process/acct.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/proc/fs.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/blk/dev/initrd.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/magic/sysrq.h)
+time.o: time.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/timex.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+timer.o: timer.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/timex.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/kernel_stat.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h)
+uid16.o: uid16.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/utsname.h \
+   /home/user/linux-2.4.24/include/linux/mman.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/linux/prctl.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/highuid.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h
+user.o: user.c \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/slab.h

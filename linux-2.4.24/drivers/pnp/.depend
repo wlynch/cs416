@@ -1,0 +1,34 @@
+isapnp.o: isapnp.c \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/isapnp.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/pci.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/proc/fs.h)
+isapnp_proc.o: isapnp_proc.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/vmalloc.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/isapnp.h
+quirks.o: quirks.c \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/isapnp.h \
+   /home/user/linux-2.4.24/include/linux/string.h

@@ -1,0 +1,11 @@
+inode.o: inode.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/romfs_fs.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h

@@ -1,0 +1,10 @@
+#define __ver_dmasound	smp_4146bd48
+#define dmasound	_set_ver(dmasound)
+#define __ver_dmasound_init	smp_47edde25
+#define dmasound_init	_set_ver(dmasound_init)
+#define __ver_dmasound_write_sq	smp_3d016c86
+#define dmasound_write_sq	_set_ver(dmasound_write_sq)
+#define __ver_dmasound_catchRadius	smp_4b9f5770
+#define dmasound_catchRadius	_set_ver(dmasound_catchRadius)
+#define __ver_get_afmt_string	smp_4fe63f06
+#define get_afmt_string	_set_ver(get_afmt_string)

@@ -1,0 +1,16 @@
+#define __ver_acsi_delay_start	smp_85ea4248
+#define acsi_delay_start	_set_ver(acsi_delay_start)
+#define __ver_acsi_delay_end	smp_3902412d
+#define acsi_delay_end	_set_ver(acsi_delay_end)
+#define __ver_acsi_wait_for_IRQ	smp_61338b97
+#define acsi_wait_for_IRQ	_set_ver(acsi_wait_for_IRQ)
+#define __ver_acsi_wait_for_noIRQ	smp_e6db4c75
+#define acsi_wait_for_noIRQ	_set_ver(acsi_wait_for_noIRQ)
+#define __ver_acsicmd_nodma	smp_a9ea147f
+#define acsicmd_nodma	_set_ver(acsicmd_nodma)
+#define __ver_acsi_getstatus	smp_27dbe046
+#define acsi_getstatus	_set_ver(acsi_getstatus)
+#define __ver_acsi_buffer	smp_56de8f12
+#define acsi_buffer	_set_ver(acsi_buffer)
+#define __ver_phys_acsi_buffer	smp_3586d143
+#define phys_acsi_buffer	_set_ver(phys_acsi_buffer)

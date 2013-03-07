@@ -1,0 +1,4 @@
+#define __ver_misc_register	smp_6ade89b0
+#define misc_register	_set_ver(misc_register)
+#define __ver_misc_deregister	smp_c66cd616
+#define misc_deregister	_set_ver(misc_deregister)

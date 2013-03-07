@@ -1,0 +1,14 @@
+#define __ver_add_mtd_device	smp_2efb8b1a
+#define add_mtd_device	_set_ver(add_mtd_device)
+#define __ver_del_mtd_device	smp_cee320f1
+#define del_mtd_device	_set_ver(del_mtd_device)
+#define __ver___get_mtd_device	smp_1e4b980f
+#define __get_mtd_device	_set_ver(__get_mtd_device)
+#define __ver_register_mtd_user	smp_dbdfa5ba
+#define register_mtd_user	_set_ver(register_mtd_user)
+#define __ver_unregister_mtd_user	smp_f0c547fc
+#define unregister_mtd_user	_set_ver(unregister_mtd_user)
+#define __ver_default_mtd_writev	smp_aa8740cf
+#define default_mtd_writev	_set_ver(default_mtd_writev)
+#define __ver_default_mtd_readv	smp_98d13b78
+#define default_mtd_readv	_set_ver(default_mtd_readv)

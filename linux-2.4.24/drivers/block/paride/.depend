@@ -1,0 +1,245 @@
+aten.o: aten.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+bpck6.o: bpck6.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport.h) \
+   /home/user/linux-2.4.24/include/linux/parport.h \
+   ppc6lnx.c \
+   paride.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport/pc/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport/pc.h)
+bpck.o: bpck.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+comm.o: comm.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+dstr.o: dstr.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+epat.o: epat.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/epatc8.h)
+epia.o: epia.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+fit2.o: fit2.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+fit3.o: fit3.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+friq.o: friq.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+frpw.o: frpw.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+kbic.o: kbic.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+ktti.o: ktti.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+on20.o: on20.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+on26.o: on26.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   paride.h
+paride.o: paride.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/parport.h) \
+   /home/user/linux-2.4.24/include/linux/parport.h \
+   paride.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/aten.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/bpck.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/comm.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/dstr.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/epat.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/epia.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/frpw.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/friq.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/fit2.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/fit3.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/kbic.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/ktti.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/on20.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/on26.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/pd.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/pcd.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/pf.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/pt.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/paride/pg.h)
+pcd.o: pcd.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/cdrom.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   setup.h \
+   paride.h \
+   /home/user/linux-2.4.24/include/linux/blk.h \
+   pseudo.h
+pd.o: pd.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/devfs_fs_kernel.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/genhd.h \
+   /home/user/linux-2.4.24/include/linux/hdreg.h \
+   /home/user/linux-2.4.24/include/linux/cdrom.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   setup.h \
+   paride.h \
+   /home/user/linux-2.4.24/include/linux/blk.h \
+   /home/user/linux-2.4.24/include/linux/blkpg.h \
+   pseudo.h
+pf.o: pf.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/genhd.h \
+   /home/user/linux-2.4.24/include/linux/hdreg.h \
+   /home/user/linux-2.4.24/include/linux/cdrom.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   setup.h \
+   paride.h \
+   /home/user/linux-2.4.24/include/linux/blk.h \
+   /home/user/linux-2.4.24/include/linux/blkpg.h \
+   pseudo.h
+pg.o: pg.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/devfs_fs_kernel.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/mtio.h \
+   /home/user/linux-2.4.24/include/linux/pg.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   setup.h \
+   paride.h
+pseudo.h: \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/tqueue.h
+	@touch pseudo.h
+pt.o: pt.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/devfs_fs_kernel.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/mtio.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   setup.h \
+   paride.h
+setup.h: \
+   /home/user/linux-2.4.24/include/linux/ctype.h \
+   /home/user/linux-2.4.24/include/linux/string.h
+	@touch setup.h
+.PRECIOUS:	pseudo.h \
+	setup.h \
+

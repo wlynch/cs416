@@ -1,0 +1,2 @@
+#define __ver_get_user_pages	smp_a48afdc4
+#define get_user_pages	_set_ver(get_user_pages)

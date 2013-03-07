@@ -1,0 +1,16 @@
+#define __ver_hp_sdc_request_timer_irq	smp_b12bc1bd
+#define hp_sdc_request_timer_irq	_set_ver(hp_sdc_request_timer_irq)
+#define __ver_hp_sdc_request_hil_irq	smp_cf402f97
+#define hp_sdc_request_hil_irq	_set_ver(hp_sdc_request_hil_irq)
+#define __ver_hp_sdc_request_cooked_irq	smp_4233a8eb
+#define hp_sdc_request_cooked_irq	_set_ver(hp_sdc_request_cooked_irq)
+#define __ver_hp_sdc_release_timer_irq	smp_9dccd37d
+#define hp_sdc_release_timer_irq	_set_ver(hp_sdc_release_timer_irq)
+#define __ver_hp_sdc_release_hil_irq	smp_2d7c4a70
+#define hp_sdc_release_hil_irq	_set_ver(hp_sdc_release_hil_irq)
+#define __ver_hp_sdc_release_cooked_irq	smp_d97b8d49
+#define hp_sdc_release_cooked_irq	_set_ver(hp_sdc_release_cooked_irq)
+#define __ver_hp_sdc_enqueue_transaction	smp_bc8a4399
+#define hp_sdc_enqueue_transaction	_set_ver(hp_sdc_enqueue_transaction)
+#define __ver_hp_sdc_dequeue_transaction	smp_04d7db42
+#define hp_sdc_dequeue_transaction	_set_ver(hp_sdc_dequeue_transaction)

@@ -1,0 +1,120 @@
+netsyms.o: netsyms.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/net.h \
+   /home/user/linux-2.4.24/include/linux/in.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/inetdevice.h \
+   /home/user/linux-2.4.24/include/linux/fddidevice.h \
+   /home/user/linux-2.4.24/include/linux/trdevice.h \
+   /home/user/linux-2.4.24/include/linux/fcdevice.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/ethtool.h \
+   /home/user/linux-2.4.24/include/net/neighbour.h \
+   /home/user/linux-2.4.24/include/net/snmp.h \
+   /home/user/linux-2.4.24/include/net/dst.h \
+   /home/user/linux-2.4.24/include/net/checksum.h \
+   /home/user/linux-2.4.24/include/linux/etherdevice.h \
+   /home/user/linux-2.4.24/include/net/route.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/hippi.h) \
+   /home/user/linux-2.4.24/include/linux/hippidevice.h \
+   /home/user/linux-2.4.24/include/net/pkt_sched.h \
+   /home/user/linux-2.4.24/include/net/scm.h \
+   /home/user/linux-2.4.24/include/linux/if_bridge.h \
+   /home/user/linux-2.4.24/include/linux/if_vlan.h \
+   /home/user/linux-2.4.24/include/linux/random.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/divert.h) \
+   /home/user/linux-2.4.24/include/linux/divert.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/net.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/inet.h) \
+   /home/user/linux-2.4.24/include/linux/ip.h \
+   /home/user/linux-2.4.24/include/net/protocol.h \
+   /home/user/linux-2.4.24/include/net/arp.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/atm/clip.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/atm/clip/module.h) \
+   /home/user/linux-2.4.24/include/net/atmclip.h \
+   /home/user/linux-2.4.24/include/net/ip.h \
+   /home/user/linux-2.4.24/include/net/udp.h \
+   /home/user/linux-2.4.24/include/net/tcp.h \
+   /home/user/linux-2.4.24/include/net/icmp.h \
+   /home/user/linux-2.4.24/include/net/inet_common.h \
+   /home/user/linux-2.4.24/include/linux/inet.h \
+   /home/user/linux-2.4.24/include/linux/mroute.h \
+   /home/user/linux-2.4.24/include/linux/igmp.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipv6.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipv6/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/khttpd.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/khttpd/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ip/sctp/module.h) \
+   /home/user/linux-2.4.24/include/linux/in6.h \
+   /home/user/linux-2.4.24/include/linux/icmpv6.h \
+   /home/user/linux-2.4.24/include/net/ipv6.h \
+   /home/user/linux-2.4.24/include/net/ndisc.h \
+   /home/user/linux-2.4.24/include/net/transp_v6.h \
+   /home/user/linux-2.4.24/include/net/addrconf.h \
+   /home/user/linux-2.4.24/include/linux/rtnetlink.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipx/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/atalk/module.h) \
+   /home/user/linux-2.4.24/include/net/sock.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/sysctl.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/filter.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/arpd.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/vlan/8021q.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/vlan/8021q/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bridge.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bridge/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/dlci/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/netlink/dev.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/netlink/dev/module.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/tr.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/fddi.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/hw/flowcontrol.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/fastroute.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/sched.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/estimator.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/cls/police.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/cls.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/netfilter.h) \
+   /home/user/linux-2.4.24/include/linux/netfilter.h \
+   /home/user/linux-2.4.24/include/linux/netfilter_ipv4.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/radio.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/pcmcia/radio.h) \
+   /home/user/linux-2.4.24/include/net/iw_handler.h
+socket.o: socket.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/socket.h \
+   /home/user/linux-2.4.24/include/linux/file.h \
+   /home/user/linux-2.4.24/include/linux/net.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/wanrouter.h \
+   /home/user/linux-2.4.24/include/linux/netlink.h \
+   /home/user/linux-2.4.24/include/linux/rtnetlink.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/cache.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/highmem.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/kmod.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net.h) \
+   /home/user/linux-2.4.24/include/linux/kmod.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/net/sock.h \
+   /home/user/linux-2.4.24/include/net/scm.h \
+   /home/user/linux-2.4.24/include/linux/netfilter.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/smp.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/wan/router.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/bluez.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/netlink/dev.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/netfilter.h)
+sysctl_net.o: sysctl_net.c \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/sysctl.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/inet.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/net.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ipv6.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/tr.h)

@@ -1,0 +1,27 @@
+divert_init.o: divert_init.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   isdn_divert.h
+divert_procfs.o: divert_procfs.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/proc/fs.h) \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/isdnif.h \
+   isdn_divert.h
+isdn_divert.o: isdn_divert.c \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   isdn_divert.h
+isdn_divert.h: \
+   /home/user/linux-2.4.24/include/linux/ioctl.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/isdnif.h \
+   /home/user/linux-2.4.24/include/linux/isdn_divertif.h
+	@touch isdn_divert.h
+.PRECIOUS:	isdn_divert.h \
+

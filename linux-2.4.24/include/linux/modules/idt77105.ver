@@ -1,0 +1,2 @@
+#define __ver_idt77105_init	smp_66c297dc
+#define idt77105_init	_set_ver(idt77105_init)

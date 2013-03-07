@@ -1,0 +1,42 @@
+balloc.o: balloc.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/locks.h
+dir.o: dir.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/pagemap.h
+file.o: file.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h
+ialloc.o: ialloc.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/stddef.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/locks.h
+inode.o: inode.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/highuid.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h
+itree.o: itree.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/locks.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h
+namei.o: namei.c \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/pagemap.h
+super.o: super.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/sysv_fs.h \
+   /home/user/linux-2.4.24/include/linux/init.h
+symlink.o: symlink.c \
+   /home/user/linux-2.4.24/include/linux/fs.h

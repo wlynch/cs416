@@ -1,0 +1,145 @@
+i2o_block.o: i2o_block.c \
+   /home/user/linux-2.4.24/include/linux/major.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/fs.h \
+   /home/user/linux-2.4.24/include/linux/stat.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/file.h \
+   /home/user/linux-2.4.24/include/linux/ioctl.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   /home/user/linux-2.4.24/include/linux/blkdev.h \
+   /home/user/linux-2.4.24/include/linux/blkpg.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/hdreg.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/notifier.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/semaphore.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/atomic.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/blk.h
+i2o_config.o: i2o_config.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/miscdevice.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/io.h
+i2o_core.o: i2o_core.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/bitops.h \
+   /home/user/linux-2.4.24/include/linux/wait.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/tqueue.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/asm/semaphore.h \
+   /home/user/linux-2.4.24/include/linux/completion.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/linux/reboot.h \
+   i2o_lan.h
+i2o_lan.o: i2o_lan.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/etherdevice.h \
+   /home/user/linux-2.4.24/include/linux/fddidevice.h \
+   /home/user/linux-2.4.24/include/linux/trdevice.h \
+   /home/user/linux-2.4.24/include/linux/fcdevice.h \
+   /home/user/linux-2.4.24/include/linux/skbuff.h \
+   /home/user/linux-2.4.24/include/linux/if_arp.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/linux/tqueue.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   i2o_lan.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/net/fc.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/tr.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/fddi.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/anylan.h)
+i2o_lan.h: \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/fddidevice.h
+	@touch i2o_lan.h
+i2o_pci.o: i2o_pci.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/mtrr.h) \
+   /home/user/linux-2.4.24/include/asm/mtrr.h
+i2o_proc.o: i2o_proc.c \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/spinlock.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/asm/byteorder.h \
+   i2o_lan.h
+i2o_scsi.o: i2o_scsi.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/proc_fs.h \
+   /home/user/linux-2.4.24/include/linux/prefetch.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/atomic.h \
+   /home/user/linux-2.4.24/include/linux/blk.h \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/i2o.h \
+   ../../scsi/scsi.h \
+   ../../scsi/hosts.h \
+   ../../scsi/sd.h \
+   i2o_scsi.h \
+   ../../scsi/scsi_module.c
+i2o_scsi.h: \
+   /home/user/linux-2.4.24/include/linux/version.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/kdev_t.h
+	@touch i2o_scsi.h
+.PRECIOUS:	i2o_lan.h \
+	i2o_scsi.h \
+

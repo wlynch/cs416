@@ -1,0 +1,4 @@
+#define __ver_phone_register_device	smp_fa631cdc
+#define phone_register_device	_set_ver(phone_register_device)
+#define __ver_phone_unregister_device	smp_575bc8b0
+#define phone_unregister_device	_set_ver(phone_unregister_device)

@@ -1,0 +1,12 @@
+#define __ver_get_au1000_avail_gpio_mask	smp_e91bf74e
+#define get_au1000_avail_gpio_mask	_set_ver(get_au1000_avail_gpio_mask)
+#define __ver_au1000gpio_tristate	smp_7f6782cd
+#define au1000gpio_tristate	_set_ver(au1000gpio_tristate)
+#define __ver_au1000gpio_in	smp_de204775
+#define au1000gpio_in	_set_ver(au1000gpio_in)
+#define __ver_au1000gpio_set	smp_277e7d26
+#define au1000gpio_set	_set_ver(au1000gpio_set)
+#define __ver_au1000gpio_clear	smp_7a87f2bf
+#define au1000gpio_clear	_set_ver(au1000gpio_clear)
+#define __ver_au1000gpio_out	smp_54c3d268
+#define au1000gpio_out	_set_ver(au1000gpio_out)

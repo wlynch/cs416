@@ -1,0 +1,2 @@
+#define __ver___ide_do_rw_disk	smp_ec23f12f
+#define __ide_do_rw_disk	_set_ver(__ide_do_rw_disk)

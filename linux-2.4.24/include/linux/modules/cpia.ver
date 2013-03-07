@@ -1,0 +1,4 @@
+#define __ver_cpia_register_camera	smp_c74ad235
+#define cpia_register_camera	_set_ver(cpia_register_camera)
+#define __ver_cpia_unregister_camera	smp_aa7bcd18
+#define cpia_unregister_camera	_set_ver(cpia_unregister_camera)

@@ -1,0 +1,2 @@
+#define __ver_fc_type_trans	smp_8f28b26d
+#define fc_type_trans	_set_ver(fc_type_trans)

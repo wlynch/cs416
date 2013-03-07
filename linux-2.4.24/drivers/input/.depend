@@ -1,0 +1,57 @@
+evdev.o: evdev.c \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/input.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h
+input.o: input.c \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/input.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/random.h
+joydev.o: joydev.c \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/system.h \
+   /home/user/linux-2.4.24/include/asm/segment.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/joystick.h \
+   /home/user/linux-2.4.24/include/linux/input.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/major.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/mm.h \
+   /home/user/linux-2.4.24/include/linux/miscdevice.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h
+keybdev.o: keybdev.c \
+   /home/user/linux-2.4.24/include/linux/kbd_ll.h \
+   /home/user/linux-2.4.24/include/linux/input.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/tty.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kbd_kern.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/x86.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ia64.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/sparc64.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/superh.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ppc.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/mac/emumousebtn.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/mac/adbkeycodes.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/adb/keyboard.h)
+mousedev.o: mousedev.c \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/poll.h \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/input.h \
+   /home/user/linux-2.4.24/include/linux/smp_lock.h \
+   /home/user/linux-2.4.24/include/linux/random.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/input/mousedev/screen/x.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/input/mousedev/screen/y.h)

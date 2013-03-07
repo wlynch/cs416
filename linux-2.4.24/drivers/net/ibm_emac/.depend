@@ -1,0 +1,81 @@
+ibm_emac.h: \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/emac4.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/440gp.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/440gx.h)
+	@touch ibm_emac.h
+ibm_ocp_debug.o: ibm_ocp_debug.c \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   ibm_ocp_mal.h \
+   ibm_ocp_zmii.h \
+   ibm_ocp_enet.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/40x.h)
+ibm_ocp_enet.o: ibm_ocp_enet.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/string.h \
+   /home/user/linux-2.4.24/include/linux/timer.h \
+   /home/user/linux-2.4.24/include/linux/ptrace.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/ioport.h \
+   /home/user/linux-2.4.24/include/linux/slab.h \
+   /home/user/linux-2.4.24/include/linux/interrupt.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/pci.h \
+   /home/user/linux-2.4.24/include/linux/ethtool.h \
+   /home/user/linux-2.4.24/include/linux/mii.h \
+   /home/user/linux-2.4.24/include/asm/processor.h \
+   /home/user/linux-2.4.24/include/asm/bitops.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/dma.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   /home/user/linux-2.4.24/include/asm/uaccess.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/etherdevice.h \
+   /home/user/linux-2.4.24/include/linux/skbuff.h \
+   /home/user/linux-2.4.24/include/linux/crc32.h \
+   ibm_ocp_enet.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/ocp/enet/gap.h)
+ibm_ocp_enet.h: \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/asm/mmu.h \
+   ibm_emac.h \
+   ibm_ocp_phy.h \
+   ibm_ocp_zmii.h \
+   ibm_ocp_mal.h \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/ocp/enet/tx/buff.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/ocp/enet/rx/buff.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/ocp/enet/skb/res.h) \
+   $(wildcard /home/user/linux-2.4.24/include/config/ibm/ocp/enet/error/msg.h)
+	@touch ibm_ocp_enet.h
+ibm_ocp_mal.o: ibm_ocp_mal.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/errno.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/init.h \
+   /home/user/linux-2.4.24/include/asm/io.h \
+   /home/user/linux-2.4.24/include/asm/irq.h \
+   ibm_ocp_mal.h
+ibm_ocp_mal.h: \
+   /home/user/linux-2.4.24/include/linux/list.h
+	@touch ibm_ocp_mal.h
+ibm_ocp_phy.o: ibm_ocp_phy.c \
+   /home/user/linux-2.4.24/include/linux/module.h \
+   /home/user/linux-2.4.24/include/linux/kernel.h \
+   /home/user/linux-2.4.24/include/linux/sched.h \
+   /home/user/linux-2.4.24/include/linux/types.h \
+   /home/user/linux-2.4.24/include/linux/netdevice.h \
+   /home/user/linux-2.4.24/include/linux/etherdevice.h \
+   /home/user/linux-2.4.24/include/linux/mii.h \
+   /home/user/linux-2.4.24/include/linux/ethtool.h \
+   /home/user/linux-2.4.24/include/linux/delay.h \
+   ibm_ocp_phy.h
+.PRECIOUS:	ibm_emac.h \
+	ibm_ocp_enet.h \
+	ibm_ocp_mal.h \
+

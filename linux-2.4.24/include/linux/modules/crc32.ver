@@ -1,0 +1,6 @@
+#define __ver_crc32_le	smp_a34f1ef5
+#define crc32_le	_set_ver(crc32_le)
+#define __ver_crc32_be	smp_b7b61546
+#define crc32_be	_set_ver(crc32_be)
+#define __ver_bitreverse	smp_baeb160c
+#define bitreverse	_set_ver(bitreverse)
