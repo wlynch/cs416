@@ -618,12 +618,14 @@ repeat_schedule:
 		p = list_entry(tmp, struct task_struct, run_list);
 		if (can_schedule(p, this_cpu)) {
 			int weight = goodness(p, this_cpu, prev->active_mm);
+            /* See if this user has ran a proc before */
 			if (p->user->hasRan == 0) {
 				c = 1;
 repeat_taskselect:
 				d = 0;
 				list_for_each(tmp2,&runqueue_head) {
 					s=list_entry(tmp2, struct task_struct,run_list);
+                    /* If not, look for one of their procs that have not finish their share of time yet */
 					if ((can_schedule(s,this_cpu)) && (s->current_weight > 0) && (s->user->uid==p->user->uid)) {
 						d=1;
 						s->current_weight--;
@@ -631,6 +633,7 @@ repeat_taskselect:
 						break;
 					}
 				}
+                /* If all of the users procs have been ran for their share of time, reset to their max weights */
 				if (d==0) {
 					list_for_each(tmp2,&runqueue_head) {
 						s = list_entry(tmp2, struct task_struct, run_list);
@@ -644,7 +647,7 @@ repeat_taskselect:
 			}
 		}
 	}
-
+    /* If all the users have ran, reset hasRan so they can now run again. */
 	if (c==0) {
 		struct task_struct *p;
 		spin_unlock_irq(&runqueue_lock);
