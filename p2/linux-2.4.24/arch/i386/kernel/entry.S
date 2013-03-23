@@ -663,7 +663,8 @@ ENTRY(sys_call_table)
 	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
-
+	.long SYMBOL_NAME(sys_myincreaseshare)  /* 259 */
+	
 	.rept NR_syscalls-(.-sys_call_table)/4
 		.long SYMBOL_NAME(sys_ni_syscall)
 	.endr

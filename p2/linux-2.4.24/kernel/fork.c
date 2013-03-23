@@ -79,6 +79,8 @@ void __init fork_init(unsigned long mempages)
 
 	init_task.rlim[RLIMIT_NPROC].rlim_cur = max_threads/2;
 	init_task.rlim[RLIMIT_NPROC].rlim_max = max_threads/2;
+	init_task.max_weight=1;
+	init_task.current_weight=1;
 }
 
 /* Protects next_safe and last_pid. */
@@ -803,6 +805,9 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 		list_add(&p->thread_group, &current->thread_group);
 	}
 
+	p->max_weight=1;
+	p->current_weight=1;
+	
 	SET_LINKS(p);
 	hash_pid(p);
 	nr_threads++;

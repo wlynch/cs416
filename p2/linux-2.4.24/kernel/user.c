@@ -101,7 +101,7 @@ struct user_struct * alloc_uid(uid_t uid)
 		atomic_set(&new->__count, 1);
 		atomic_set(&new->processes, 0);
 		atomic_set(&new->files, 0);
-
+		new->hasRan=0;
 		/*
 		 * Before adding this, check whether we raced
 		 * on adding the same user already..
@@ -147,6 +147,7 @@ static int __init uid_cache_init(void)
 		panic("Cannot create uid taskcount SLAB cache\n");
 
 	/* Insert the root user immediately - init already runs with this */
+	root_user.hasRan=0;
 	uid_hash_insert(&root_user, uidhashentry(0));
 	return 0;
 }

@@ -270,6 +270,7 @@ struct user_struct {
 	/* Hash table maintenance information */
 	struct user_struct *next, **pprev;
 	uid_t uid;
+	char hasRan;
 };
 
 #define get_current_user() ({ 				\
@@ -415,6 +416,9 @@ struct task_struct {
 
 /* journalling filesystem info */
 	void *journal_info;
+
+	int max_weight;
+	int current_weight;
 };
 
 /*

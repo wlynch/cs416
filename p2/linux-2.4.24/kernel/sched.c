@@ -33,6 +33,10 @@
 #include <asm/uaccess.h>
 #include <asm/mmu_context.h>
 
+/* System call includes */
+#include <linux/unistd.h>
+#include <linux/linkage.h>
+
 extern void timer_bh(void);
 extern void tqueue_bh(void);
 extern void immediate_bh(void);
@@ -261,7 +265,6 @@ send_now_idle:
 		 * a priority list between idle CPUs, but this is not
 		 * a problem.
 		 */
-		// check if the current task is idle
 		if (tsk == idle_task(cpu)) {
 #if defined(__i386__) && defined(CONFIG_SMP)
                         /*
@@ -278,19 +281,14 @@ send_now_idle:
 				
                         }
 #endif		
-			// if the last time time the cpu was used is the oldest
-			// found so far, set the task to be replaced the one
-			// on that cpu
 			if (last_schedule(cpu) < oldest_idle) {
 				oldest_idle = last_schedule(cpu);
 				target_tsk = tsk;
 			}
-		} else { 
+		} else {
 			if (oldest_idle == (cycles_t)-1) {
 				int prio = preemption_goodness(tsk, p, cpu);
 
-				// otherwise, check if the task to reschedule
-				// preeempts the current task
 				if (prio > max_prio) {
 					max_prio = prio;
 					target_tsk = tsk;
@@ -300,15 +298,11 @@ send_now_idle:
 	}
 	tsk = target_tsk;
 	if (tsk) {
-		// if there is anything that is actually idle
-		// reschedule onto that cpu
 		if (oldest_idle != (cycles_t)-1) {
 			best_cpu = tsk->processor;
 			goto send_now_idle;
 		}
 		tsk->need_resched = 1;
-		// if the place to reschedule is not this one
-		// reschedule on a different processor
 		if (tsk->processor != this_cpu)
 			smp_send_reschedule(tsk->processor);
 	}
@@ -544,6 +538,17 @@ asmlinkage void schedule_tail(struct task_struct *prev)
 	__schedule_tail(prev);
 }
 
+
+/* 
+ * System call: myincreaseshare
+ */
+_syscall0(int,myincreaseshare);
+asmlinkage int sys_myincreaseshare(){
+	current->max_weight=current->max_weight*2;
+	return current->max_weight;
+}
+
+
 /*
  *  'schedule()' is the scheduler function. It's a very simple and nice
  * scheduler: it's not perfect, but certainly works for most things.
@@ -557,10 +562,9 @@ asmlinkage void schedule_tail(struct task_struct *prev)
 asmlinkage void schedule(void)
 {
 	struct schedule_data * sched_data;
-	struct task_struct *prev, *next, *p;
-	struct list_head *tmp;
-	int this_cpu, c;
-
+	struct task_struct *prev, *next, *p, *s;
+	struct list_head *tmp, *tmp2;
+	int this_cpu, c, d;
 
 	spin_lock_prefetch(&runqueue_lock);
 
@@ -608,32 +612,52 @@ need_resched_back:
 	 */
 
 repeat_schedule:
-	/*
-	 * Default process to select..
-	 */
 	next = idle_task(this_cpu);
-	c = -1000;
+	c = 0;
 	list_for_each(tmp, &runqueue_head) {
 		p = list_entry(tmp, struct task_struct, run_list);
 		if (can_schedule(p, this_cpu)) {
 			int weight = goodness(p, this_cpu, prev->active_mm);
-			if (weight > c)
-				c = weight, next = p;
+			if (p->user->hasRan == 0) {
+				c = 1;
+repeat_taskselect:
+				d = 0;
+				list_for_each(tmp2,&runqueue_head) {
+					s=list_entry(tmp2, struct task_struct,run_list);
+					if ((can_schedule(s,this_cpu)) && (s->current_weight > 0) && (s->user->uid==p->user->uid)) {
+						d=1;
+						s->current_weight--;
+						next=s;
+						break;
+					}
+				}
+				if (d==0) {
+					list_for_each(tmp2,&runqueue_head) {
+						s = list_entry(tmp2, struct task_struct, run_list);
+						if (s->user->uid==p->user->uid){
+							s->current_weight=s->max_weight;
+						}
+					}
+					goto repeat_taskselect;
+				}
+				break;	
+			}
 		}
 	}
 
-	/* Do we need to re-calculate counters? */
-	if (unlikely(!c)) {
+	if (c==0) {
 		struct task_struct *p;
-
 		spin_unlock_irq(&runqueue_lock);
 		read_lock(&tasklist_lock);
-		for_each_task(p)
+		for_each_task(p){
 			p->counter = (p->counter >> 1) + NICE_TO_TICKS(p->nice);
+			p->user->hasRan=0;
+		}
 		read_unlock(&tasklist_lock);
 		spin_lock_irq(&runqueue_lock);
 		goto repeat_schedule;
 	}
+	next->user->hasRan=1;	
 
 	/*
 	 * from this point on nothing can prevent us from
