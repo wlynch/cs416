@@ -606,6 +606,7 @@ need_resched_back:
 		case TASK_RUNNING:;
 	}
 	prev->need_resched = 0;
+	
 
 	/*
 	 * this is the scheduler proper:
@@ -616,52 +617,46 @@ repeat_schedule:
 	c = 0;
 	list_for_each(tmp, &runqueue_head) {
 		p = list_entry(tmp, struct task_struct, run_list);
-		if (can_schedule(p, this_cpu)) {
-			int weight = goodness(p, this_cpu, prev->active_mm);
-            /* See if this user has ran a proc before */
-			if (p->user->hasRan == 0) {
-				c = 1;
+        if (p->user->hasRan == 0) {
+            c = 1;
 repeat_taskselect:
-				d = 0;
-				list_for_each(tmp2,&runqueue_head) {
-					s=list_entry(tmp2, struct task_struct,run_list);
-                    /* If not, look for one of their procs that have not finish their share of time yet */
-					if ((can_schedule(s,this_cpu)) && (s->current_weight > 0) && (s->user->uid==p->user->uid)) {
-						d=1;
-						s->current_weight--;
-						next=s;
-						break;
-					}
-				}
-                /* If all of the users procs have been ran for their share of time, reset to their max weights */
-				if (d==0) {
-					list_for_each(tmp2,&runqueue_head) {
-						s = list_entry(tmp2, struct task_struct, run_list);
-						if (s->user->uid==p->user->uid){
-							s->current_weight=s->max_weight;
-						}
-					}
-					goto repeat_taskselect;
-				}
-				break;	
-			}
-		}
+            d = 0;
+            list_for_each(tmp2,&runqueue_head) {
+                s=list_entry(tmp2, struct task_struct,run_list);
+                if ((s->current_weight > 0) && (s->user->uid==p->user->uid)) {
+                    d=1;
+                    s->current_weight--;
+                    next=s;
+                    break;
+                }
+            }
+            if (d==0) {
+                list_for_each(tmp2,&runqueue_head) {
+                    s = list_entry(tmp2, struct task_struct, run_list);
+                    if (s->user->uid==p->user->uid){
+                        s->current_weight=s->max_weight;
+                    }
+                }
+                goto repeat_taskselect;
+            }
+            break;	
+        }
 	}
-    /* If all the users have ran, reset hasRan so they can now run again. */
+
 	if (c==0) {
 		struct task_struct *p;
 		spin_unlock_irq(&runqueue_lock);
 		read_lock(&tasklist_lock);
 		for_each_task(p){
-			p->counter = (p->counter >> 1) + NICE_TO_TICKS(p->nice);
+			p->counter = NICE_TO_TICKS(0);
 			p->user->hasRan=0;
 		}
 		read_unlock(&tasklist_lock);
 		spin_lock_irq(&runqueue_lock);
 		goto repeat_schedule;
 	}
-	next->user->hasRan=1;	
-
+    
+    next->user->hasRan=1;
 	/*
 	 * from this point on nothing can prevent us from
 	 * switching to the next task, save this fact in
