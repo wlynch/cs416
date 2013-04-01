@@ -1,4 +1,0 @@
-#define __ver_ov511_register_decomp_module	smp_117748ec
-#define ov511_register_decomp_module	_set_ver(ov511_register_decomp_module)
-#define __ver_ov511_deregister_decomp_module	smp_7db9be3c
-#define ov511_deregister_decomp_module	_set_ver(ov511_deregister_decomp_module)

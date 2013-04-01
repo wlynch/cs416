@@ -1,2 +1,0 @@
-#define __ver_ipmi_delayed_shutdown	smp_8956742d
-#define ipmi_delayed_shutdown	_set_ver(ipmi_delayed_shutdown)

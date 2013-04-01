@@ -1,8 +1,0 @@
-#define __ver_attach_capi_interface	smp_a4194e54
-#define attach_capi_interface	_set_ver(attach_capi_interface)
-#define __ver_detach_capi_interface	smp_83c71232
-#define detach_capi_interface	_set_ver(detach_capi_interface)
-#define __ver_attach_capi_driver	smp_00e48c22
-#define attach_capi_driver	_set_ver(attach_capi_driver)
-#define __ver_detach_capi_driver	smp_9d80e48c
-#define detach_capi_driver	_set_ver(detach_capi_driver)

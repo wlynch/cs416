@@ -1,4 +1,0 @@
-#define __ver_rb_insert_color	smp_aa2b5a22
-#define rb_insert_color	_set_ver(rb_insert_color)
-#define __ver_rb_erase	smp_da226a80
-#define rb_erase	_set_ver(rb_erase)

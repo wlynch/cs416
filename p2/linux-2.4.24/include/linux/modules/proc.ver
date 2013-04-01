@@ -1,2 +1,0 @@
-#define __ver_atm_proc_root	smp_e6e99fa2
-#define atm_proc_root	_set_ver(atm_proc_root)

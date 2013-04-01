@@ -1,4 +1,0 @@
-#define __ver_mmu_cr4_features	smp_dad5638d
-#define mmu_cr4_features	_set_ver(mmu_cr4_features)
-#define __ver_acpi_disabled	smp_1a45cb6c
-#define acpi_disabled	_set_ver(acpi_disabled)

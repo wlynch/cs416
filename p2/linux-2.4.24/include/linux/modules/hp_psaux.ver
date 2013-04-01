@@ -1,2 +1,0 @@
-#define __ver_register_ps2_keybfuncs	smp_50f75b19
-#define register_ps2_keybfuncs	_set_ver(register_ps2_keybfuncs)

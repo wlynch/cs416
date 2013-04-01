@@ -1,6 +1,0 @@
-#define __ver_pci_hp_register	smp_4d9ad099
-#define pci_hp_register	_set_ver(pci_hp_register)
-#define __ver_pci_hp_deregister	smp_29d88f68
-#define pci_hp_deregister	_set_ver(pci_hp_deregister)
-#define __ver_pci_hp_change_slot_info	smp_07451a48
-#define pci_hp_change_slot_info	_set_ver(pci_hp_change_slot_info)

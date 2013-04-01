@@ -1,6 +1,0 @@
-#define __ver_tty_register_ldisc	smp_9f19029c
-#define tty_register_ldisc	_set_ver(tty_register_ldisc)
-#define __ver_tty_register_devfs	smp_176e6090
-#define tty_register_devfs	_set_ver(tty_register_devfs)
-#define __ver_tty_unregister_devfs	smp_9d565fac
-#define tty_unregister_devfs	_set_ver(tty_unregister_devfs)

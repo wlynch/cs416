@@ -1,8 +1,0 @@
-#define __ver_release_firmware	smp_33934162
-#define release_firmware	_set_ver(release_firmware)
-#define __ver_request_firmware	smp_38ce5074
-#define request_firmware	_set_ver(request_firmware)
-#define __ver_request_firmware_nowait	smp_5d6ba2b0
-#define request_firmware_nowait	_set_ver(request_firmware_nowait)
-#define __ver_register_firmware	smp_711cccd3
-#define register_firmware	_set_ver(register_firmware)

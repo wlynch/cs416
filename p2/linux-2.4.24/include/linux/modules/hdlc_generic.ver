@@ -1,6 +1,0 @@
-#define __ver_hdlc_ioctl	smp_a05b71c7
-#define hdlc_ioctl	_set_ver(hdlc_ioctl)
-#define __ver_register_hdlc_device	smp_da835f07
-#define register_hdlc_device	_set_ver(register_hdlc_device)
-#define __ver_unregister_hdlc_device	smp_531df04f
-#define unregister_hdlc_device	_set_ver(unregister_hdlc_device)
