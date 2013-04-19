@@ -1,6 +1,6 @@
 CC = gcc
 CCFLAGS = -c -g -pedantic -Wall
-SERVER_LIBS = -L/usr/local/lib   -lxmlrpc_server_abyss -lxmlrpc_server -lxmlrpc_abyss  -lpthread -lxmlrpc -lxmlrpc_util  libxmlrpc_xmlparse.a libxmlrpc_xmltok.a
+SERVER_LIBS = -L/usr/local/lib   ../lib/libxmlrpc_server_abyss.a ../lib/libxmlrpc_server.a ../lib/libxmlrpc_abyss.a  -lpthread ../lib/libxmlrpc.a ../lib/libxmlrpc_util.a  ../lib/libxmlrpc_xmlparse.a ../lib/libxmlrpc_xmltok.a
 
 
 SERVER_EXEC = serverSNFS
