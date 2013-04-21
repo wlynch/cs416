@@ -33,6 +33,7 @@ sample_add(xmlrpc_env *envP,
 
     /* Add our two numbers. */
     z = x + y;
+    fprintf(stderr, "z is %d\n", z);
 
     /* Return our result. */
     return xmlrpc_build_value(envP, "i", z);
