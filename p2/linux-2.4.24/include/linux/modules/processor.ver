@@ -1,2 +1,0 @@
-#define __ver_acpi_processor_set_thermal_limit	smp_e8a3605f
-#define acpi_processor_set_thermal_limit	_set_ver(acpi_processor_set_thermal_limit)

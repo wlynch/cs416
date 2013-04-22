@@ -1,2 +1,0 @@
-#define __ver_n_tty_ioctl	smp_98df96cd
-#define n_tty_ioctl	_set_ver(n_tty_ioctl)

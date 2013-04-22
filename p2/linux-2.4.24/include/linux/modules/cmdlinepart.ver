@@ -1,2 +1,0 @@
-#define __ver_parse_cmdline_partitions	smp_14d8a512
-#define parse_cmdline_partitions	_set_ver(parse_cmdline_partitions)

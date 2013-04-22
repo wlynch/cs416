@@ -1,4 +1,0 @@
-#define __ver_matroxfb_g450_connect	smp_1c03ca9c
-#define matroxfb_g450_connect	_set_ver(matroxfb_g450_connect)
-#define __ver_matroxfb_g450_shutdown	smp_58d0d5ed
-#define matroxfb_g450_shutdown	_set_ver(matroxfb_g450_shutdown)

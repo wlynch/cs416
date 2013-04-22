@@ -1,2 +1,0 @@
-#define __ver_change_page_attr	smp_1c0c3b99
-#define change_page_attr	_set_ver(change_page_attr)

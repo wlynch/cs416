@@ -1,2 +1,0 @@
-#define __ver_i8253_lock	smp_ac2d2492
-#define i8253_lock	_set_ver(i8253_lock)

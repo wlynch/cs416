@@ -1,8 +1,0 @@
-#define __ver_ide_setup_pci_device	smp_ea7f5aa5
-#define ide_setup_pci_device	_set_ver(ide_setup_pci_device)
-#define __ver_ide_setup_pci_devices	smp_bea2bd50
-#define ide_setup_pci_devices	_set_ver(ide_setup_pci_devices)
-#define __ver_ide_pci_register_driver	smp_58a62316
-#define ide_pci_register_driver	_set_ver(ide_pci_register_driver)
-#define __ver_ide_pci_unregister_driver	smp_18313763
-#define ide_pci_unregister_driver	_set_ver(ide_pci_unregister_driver)

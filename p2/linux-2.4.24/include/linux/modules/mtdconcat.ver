@@ -1,4 +1,0 @@
-#define __ver_mtd_concat_create	smp_5f22e6e1
-#define mtd_concat_create	_set_ver(mtd_concat_create)
-#define __ver_mtd_concat_destroy	smp_8739cf4e
-#define mtd_concat_destroy	_set_ver(mtd_concat_destroy)
