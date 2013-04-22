@@ -1,6 +1,8 @@
 CC = gcc
 CCFLAGS = -c -g -pedantic -Wall -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse
-CLIENT_LIBS = -L/usr/local/lib -lxmlrpc_client -lpthread -lxmlrpc -lxmlrpc_util  ../lib/libxmlrpc_xmlparse.a ../lib/libxmlrpc_xmltok.a -L/lib64 -lfuse -lrt -ldl
+XMLRPC_C_CONFIG = xmlrpc-c-config
+CLIENT_FLAGS = $(shell $(XMLRPC_C_CONIFG) client --cflags)
+CLIENT_LIBS = $(shell $(XMLRPC_C_CONFIG) client --libs) 
 
 
 CLIENT_EXEC = clientSNFS
@@ -13,10 +15,10 @@ ${CLIENT_EXEC}:${OBJS}
 	${CC} -o ${CLIENT_EXEC} ${OBJS} ${CLIENT_LIBS}
 
 filesystem.o: filesystem.c
-	${CC} ${CCFLAGS} filesystem.c
+	${CC} ${CLIENT_FLAGS} ${CCFLAGS} filesystem.c
 
 client.o: client.c
-	${CC} ${CCFLAGS} client.c
+	${CC} ${CLIENT_FLGAS} ${CCFLAGS} client.c
 
 clean: 
 	rm -rf ${CLIENT_EXEC}
