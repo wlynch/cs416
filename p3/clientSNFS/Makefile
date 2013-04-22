@@ -1,26 +1,31 @@
 CC = gcc
-CCFLAGS = -c -g -pedantic -Wall 
+CFLAGS = -c -g -pedantic -Wall
 XMLRPC_C_CONFIG = xmlrpc-c-config
-CLIENT_FLAGS = $(shell $(XMLRPC_C_CONIFG) client --cflags)
-CLIENT_LIBS = $(shell $(XMLRPC_C_CONFIG) client --libs) 
-CLIENT_FLAGS +=  $(shell pkg-config fuse --cflags)
-CLIENT_LIBS += $(shell pkg-config fuse --libs)
+CFLAGS += $(shell $(XMLRPC_C_CONIFG) client --cflags)
+CFLAGS +=  $(shell pkg-config fuse --cflags)
+LDFLAGS += $(shell $(XMLRPC_C_CONFIG) client --libs)
+LDFLAGS += $(shell pkg-config fuse --libs)
 
 CLIENT_EXEC = clientSNFS
-OBJS = client.o filesystem.o 
 
+SRCS= client.c filesystem.c
+OBJS = ${SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}
 
-${CLIENT_EXEC}:${OBJS} 
-	${CC} -o ${CLIENT_EXEC} ${OBJS} ${CLIENT_LIBS} ${FUSE_LIBS}
+.c.o:
+	${CC} ${CFLAGS} -o $@ -c $<
 
-filesystem.o: filesystem.c
-	${CC} ${CLIENT_FLAGS} ${CCFLAGS} filesystem.c
+${CLIENT_EXEC}:${OBJS}
+	${CC} -o ${CLIENT_EXEC} ${OBJS} ${LDFLAGS}
 
-client.o: client.c
-	${CC} ${CLIENT_FLAGS} ${CCFLAGS} client.c
+test: ${CLIENT_EXEC} kill
+	# a very opinionated test scenario
+	./${CLIENT_EXEC} -mount ./temp -port 8080 -address localhost
 
-clean: 
+kill: ${CLIENT_EXEC}
+	$(shell pkill clientSNFS)
+
+clean:
 	rm -rf ${CLIENT_EXEC}
-	rm -rf *.o
+	rm -rf ${OBJS}

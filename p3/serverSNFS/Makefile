@@ -1,25 +1,34 @@
 CC = gcc
-CCFLAGS = -c -g -pedantic -Wall
+CFLAGS = -c -g -pedantic -Wall
 XMLRPC_C_CONFIG = xmlrpc-c-config
 FUSE_C_CONFIG = pkg-config fuse
-SERVER_FLAGS = $(shell $(XMLRPC_C_CONIFG) abyss-server --cflags)
-SERVER_LIBS = $(shell $(XMLRPC_C_CONFIG) abyss-server --libs)
 
-SERVER_FLAGS += $(shell (FUSE_C_CONFIG) --cflags)
-SERVER_LIBS += $(shell (FUSE_C_CONFIG) --libs)
+CFLAGS += $(shell $(XMLRPC_C_CONIFG) abyss-server --cflags)
+LDFLAGS += $(shell $(XMLRPC_C_CONFIG) abyss-server --libs)
+
+CFLAGS += $(shell (FUSE_C_CONFIG) --cflags)
+LDFLAGS += $(shell (FUSE_C_CONFIG) --libs)
 
 SERVER_EXEC = serverSNFS
-OBJS = server.o
 
+SRCS = server.c
+OBJS = ${SRCS:.c=.o}
 
 all: ${SERVER_EXEC}
 
+.c.o:
+	${CC} ${CFLAGS} -o $@ -c $<
+
 ${SERVER_EXEC}: server.o
-	${CC} -o ${SERVER_EXEC} server.o ${SERVER_LIBS}
+	${CC} -o ${SERVER_EXEC} ${OBJS} ${LDFLAGS}
 
-server.o: server.c
-	${CC} ${SERVER_FLAGS} ${CCFLAGS} server.c
+test: ${SERVER_EXEC} kill
+	# a very opinionated test for the server
+	./${SERVER_EXEC} -mount ./temp -port 8080
 
-clean: 
+kill: ${SERVER_EXEC}
+	$(shell pkill serverSNFS)
+
+clean:
 	rm -rf ${SERVER_EXEC}
-	rm -rf *.o
+	rm -rf ${OBJS}
