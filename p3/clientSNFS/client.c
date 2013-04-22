@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     xmlrpc_DECREF(result);*/
 
     fuse_args[2] = "-o";
-    fuse_args[3] = "user_allow_other";
+    fuse_args[3] = "allow_other";
     fuse_args[4] = "-o";
     fuse_args[5] = "allow_root";
 
