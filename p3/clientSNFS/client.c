@@ -1,6 +1,11 @@
 #define FUSE_USE_VERSION 26
 
 #include <fuse.h>
+
+#ifdef __APPLE__
+  #include <fuse_darwin.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -30,7 +35,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    parsed = parse_input(argv, fuse_args); 
+    parsed = parse_input(argv, fuse_args);
 
     if(!parsed)
     {
@@ -38,7 +43,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    address = create_addr(); 
+    address = create_addr();
     init_client();
 
     /*xmlrpc_client_call2f(&env, client, address, methodName, &result,
@@ -78,7 +83,7 @@ bool parse_input(char **argv, char **fuse_args)
         }
         else
         {
-            return false; 
+            return false;
         }
     }
 
@@ -88,7 +93,7 @@ bool parse_input(char **argv, char **fuse_args)
 char *create_addr()
 {
     char number[7];
-    char *addr = (char *)malloc((strlen(address) + 19)*sizeof(char)); 
+    char *addr = (char *)malloc((strlen(address) + 19)*sizeof(char));
     addr[0] = '\0';
 
     sprintf(number, "%d", port_number);
