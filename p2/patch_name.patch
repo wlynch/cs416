@@ -1,0 +1,519 @@
+Only in linux-2.4.24.changed/arch/i386/kernel: .depend
+diff -crB linux-2.4.24/arch/i386/kernel/entry.S linux-2.4.24.changed/arch/i386/kernel/entry.S
+*** linux-2.4.24/arch/i386/kernel/entry.S	2003-06-13 10:51:29.000000000 -0400
+--- linux-2.4.24.changed/arch/i386/kernel/entry.S	2013-03-23 17:16:21.000000000 -0400
+***************
+*** 663,669 ****
+  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
+! 
+  	.rept NR_syscalls-(.-sys_call_table)/4
+  		.long SYMBOL_NAME(sys_ni_syscall)
+  	.endr
+--- 663,670 ----
+  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
+! 	.long SYMBOL_NAME(sys_myincreaseshare)  /* 259 */
+! 	
+  	.rept NR_syscalls-(.-sys_call_table)/4
+  		.long SYMBOL_NAME(sys_ni_syscall)
+  	.endr
+Only in linux-2.4.24.changed/arch/i386/lib: .depend
+Only in linux-2.4.24.changed/arch/i386/mm: .depend
+Only in linux-2.4.24.changed/: build.sh
+Only in linux-2.4.24.changed/: .config
+Only in linux-2.4.24.changed/: .config.old
+Only in linux-2.4.24.changed/crypto: .depend
+Only in linux-2.4.24.changed/: .depend
+Only in linux-2.4.24.changed/drivers/acorn/scsi: .depend
+Only in linux-2.4.24.changed/drivers/acpi: .depend
+Only in linux-2.4.24.changed/drivers/atm: .depend
+Only in linux-2.4.24.changed/drivers/block: .depend
+Only in linux-2.4.24.changed/drivers/block/paride: .depend
+Only in linux-2.4.24.changed/drivers/bluetooth: .depend
+Only in linux-2.4.24.changed/drivers/cdrom: .depend
+Only in linux-2.4.24.changed/drivers/char/agp: .depend
+Only in linux-2.4.24.changed/drivers/char: .depend
+Only in linux-2.4.24.changed/drivers/char/drm: .depend
+Only in linux-2.4.24.changed/drivers/char/drm-4.0: .depend
+Only in linux-2.4.24.changed/drivers/char/ftape/compressor: .depend
+Only in linux-2.4.24.changed/drivers/char/ftape: .depend
+Only in linux-2.4.24.changed/drivers/char/ftape/lowlevel: .depend
+Only in linux-2.4.24.changed/drivers/char/ftape/zftape: .depend
+Only in linux-2.4.24.changed/drivers/char/ipmi: .depend
+Only in linux-2.4.24.changed/drivers/char/joystick: .depend
+Only in linux-2.4.24.changed/drivers/char/mwave: .depend
+Only in linux-2.4.24.changed/drivers/char/pcmcia: .depend
+Only in linux-2.4.24.changed/drivers/char/rio: .depend
+Only in linux-2.4.24.changed/drivers: .depend
+Only in linux-2.4.24.changed/drivers/dio: .depend
+Only in linux-2.4.24.changed/drivers/fc4: .depend
+Only in linux-2.4.24.changed/drivers/gsc: .depend
+Only in linux-2.4.24.changed/drivers/hil: .depend
+Only in linux-2.4.24.changed/drivers/hotplug: .depend
+Only in linux-2.4.24.changed/drivers/i2c: .depend
+Only in linux-2.4.24.changed/drivers/ide/arm: .depend
+Only in linux-2.4.24.changed/drivers/ide: .depend
+Only in linux-2.4.24.changed/drivers/ide/legacy: .depend
+Only in linux-2.4.24.changed/drivers/ide/pci: .depend
+Only in linux-2.4.24.changed/drivers/ide/ppc: .depend
+Only in linux-2.4.24.changed/drivers/ide/raid: .depend
+Only in linux-2.4.24.changed/drivers/ieee1394: .depend
+Only in linux-2.4.24.changed/drivers/input: .depend
+Only in linux-2.4.24.changed/drivers/isdn/act2000: .depend
+Only in linux-2.4.24.changed/drivers/isdn/avmb1: .depend
+Only in linux-2.4.24.changed/drivers/isdn: .depend
+Only in linux-2.4.24.changed/drivers/isdn/divert: .depend
+Only in linux-2.4.24.changed/drivers/isdn/eicon: .depend
+Only in linux-2.4.24.changed/drivers/isdn/hisax: .depend
+Only in linux-2.4.24.changed/drivers/isdn/hysdn: .depend
+Only in linux-2.4.24.changed/drivers/isdn/icn: .depend
+Only in linux-2.4.24.changed/drivers/isdn/isdnloop: .depend
+Only in linux-2.4.24.changed/drivers/isdn/pcbit: .depend
+Only in linux-2.4.24.changed/drivers/isdn/sc: .depend
+Only in linux-2.4.24.changed/drivers/isdn/tpam: .depend
+Only in linux-2.4.24.changed/drivers/macintosh: .depend
+Only in linux-2.4.24.changed/drivers/md: .depend
+Only in linux-2.4.24.changed/drivers/media: .depend
+Only in linux-2.4.24.changed/drivers/media/radio: .depend
+Only in linux-2.4.24.changed/drivers/media/video: .depend
+Only in linux-2.4.24.changed/drivers/message/fusion: .depend
+Only in linux-2.4.24.changed/drivers/message/i2o: .depend
+Only in linux-2.4.24.changed/drivers/misc: .depend
+Only in linux-2.4.24.changed/drivers/mtd/chips: .depend
+Only in linux-2.4.24.changed/drivers/mtd: .depend
+Only in linux-2.4.24.changed/drivers/mtd/devices: .depend
+Only in linux-2.4.24.changed/drivers/mtd/maps: .depend
+Only in linux-2.4.24.changed/drivers/mtd/nand: .depend
+Only in linux-2.4.24.changed/drivers/net/appletalk: .depend
+Only in linux-2.4.24.changed/drivers/net/arcnet: .depend
+Only in linux-2.4.24.changed/drivers/net/bonding: .depend
+Only in linux-2.4.24.changed/drivers/net: .depend
+Only in linux-2.4.24.changed/drivers/net/e100: .depend
+Only in linux-2.4.24.changed/drivers/net/e1000: .depend
+Only in linux-2.4.24.changed/drivers/net/fc: .depend
+Only in linux-2.4.24.changed/drivers/net/hamradio: .depend
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: .depend
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: gentbl
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_afsk1200.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_afsk2400_7.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_afsk2400_8.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_afsk2666.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_fsk9600.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_hapn4800.h
+Only in linux-2.4.24.changed/drivers/net/hamradio/soundmodem: sm_tbl_psk4800.h
+Only in linux-2.4.24.changed/drivers/net/ibm_emac: .depend
+Only in linux-2.4.24.changed/drivers/net/irda: .depend
+Only in linux-2.4.24.changed/drivers/net/pcmcia: .depend
+Only in linux-2.4.24.changed/drivers/net/sk98lin: .depend
+Only in linux-2.4.24.changed/drivers/net/skfp: .depend
+Only in linux-2.4.24.changed/drivers/net/tokenring: .depend
+Only in linux-2.4.24.changed/drivers/net/tulip: .depend
+Only in linux-2.4.24.changed/drivers/net/wan/8253x: .depend
+Only in linux-2.4.24.changed/drivers/net/wan: .depend
+Only in linux-2.4.24.changed/drivers/net/wan/lmc: .depend
+Only in linux-2.4.24.changed/drivers/net/wireless: .depend
+Only in linux-2.4.24.changed/drivers/nubus: .depend
+Only in linux-2.4.24.changed/drivers/parport: .depend
+Only in linux-2.4.24.changed/drivers/pci: .depend
+Only in linux-2.4.24.changed/drivers/pcmcia: .depend
+Only in linux-2.4.24.changed/drivers/pnp: .depend
+Only in linux-2.4.24.changed/drivers/sbus/audio: .depend
+Only in linux-2.4.24.changed/drivers/sbus/char: .depend
+Only in linux-2.4.24.changed/drivers/sbus: .depend
+Only in linux-2.4.24.changed/drivers/scsi/aacraid: .depend
+Only in linux-2.4.24.changed/drivers/scsi/aic7xxx: .depend
+Only in linux-2.4.24.changed/drivers/scsi: .depend
+Only in linux-2.4.24.changed/drivers/scsi/pcmcia: .depend
+Only in linux-2.4.24.changed/drivers/scsi/sym53c8xx_2: .depend
+Only in linux-2.4.24.changed/drivers/sound/cs4281: .depend
+Only in linux-2.4.24.changed/drivers/sound: .depend
+Only in linux-2.4.24.changed/drivers/sound/dmasound: .depend
+Only in linux-2.4.24.changed/drivers/sound/emu10k1: .depend
+Only in linux-2.4.24.changed/drivers/tc: .depend
+Only in linux-2.4.24.changed/drivers/telephony: .depend
+Only in linux-2.4.24.changed/drivers/usb: .depend
+Only in linux-2.4.24.changed/drivers/usb/gadget: .depend
+Only in linux-2.4.24.changed/drivers/usb/host: .depend
+Only in linux-2.4.24.changed/drivers/usb/serial: .depend
+Only in linux-2.4.24.changed/drivers/usb/storage: .depend
+Only in linux-2.4.24.changed/drivers/video/aty: .depend
+Only in linux-2.4.24.changed/drivers/video: .depend
+Only in linux-2.4.24.changed/drivers/video/intel: .depend
+Only in linux-2.4.24.changed/drivers/video/matrox: .depend
+Only in linux-2.4.24.changed/drivers/video/riva: .depend
+Only in linux-2.4.24.changed/drivers/video/sis: .depend
+Only in linux-2.4.24.changed/drivers/video/sti: .depend
+Only in linux-2.4.24.changed/drivers/zorro: .depend
+Only in linux-2.4.24.changed/fs/adfs: .depend
+Only in linux-2.4.24.changed/fs/affs: .depend
+Only in linux-2.4.24.changed/fs/autofs: .depend
+Only in linux-2.4.24.changed/fs/autofs4: .depend
+Only in linux-2.4.24.changed/fs/befs: .depend
+Only in linux-2.4.24.changed/fs/bfs: .depend
+Only in linux-2.4.24.changed/fs/coda: .depend
+Only in linux-2.4.24.changed/fs/cramfs: .depend
+Only in linux-2.4.24.changed/fs: .depend
+Only in linux-2.4.24.changed/fs/devfs: .depend
+Only in linux-2.4.24.changed/fs/devpts: .depend
+Only in linux-2.4.24.changed/fs/efs: .depend
+Only in linux-2.4.24.changed/fs/ext2: .depend
+Only in linux-2.4.24.changed/fs/ext3: .depend
+Only in linux-2.4.24.changed/fs/fat: .depend
+Only in linux-2.4.24.changed/fs/freevxfs: .depend
+Only in linux-2.4.24.changed/fs/hfs: .depend
+Only in linux-2.4.24.changed/fs/hfsplus: .depend
+Only in linux-2.4.24.changed/fs/hpfs: .depend
+Only in linux-2.4.24.changed/fs/intermezzo: .depend
+Only in linux-2.4.24.changed/fs/isofs: .depend
+Only in linux-2.4.24.changed/fs/jbd: .depend
+Only in linux-2.4.24.changed/fs/jffs: .depend
+Only in linux-2.4.24.changed/fs/jffs2: .depend
+Only in linux-2.4.24.changed/fs/jfs: .depend
+Only in linux-2.4.24.changed/fs/lockd: .depend
+Only in linux-2.4.24.changed/fs/minix: .depend
+Only in linux-2.4.24.changed/fs/msdos: .depend
+Only in linux-2.4.24.changed/fs/ncpfs: .depend
+Only in linux-2.4.24.changed/fs/nfs: .depend
+Only in linux-2.4.24.changed/fs/nfsd: .depend
+Only in linux-2.4.24.changed/fs/nls: .depend
+Only in linux-2.4.24.changed/fs/ntfs: .depend
+Only in linux-2.4.24.changed/fs/openpromfs: .depend
+Only in linux-2.4.24.changed/fs/partitions: .depend
+Only in linux-2.4.24.changed/fs/proc: .depend
+Only in linux-2.4.24.changed/fs/qnx4: .depend
+Only in linux-2.4.24.changed/fs/ramfs: .depend
+Only in linux-2.4.24.changed/fs/reiserfs: .depend
+Only in linux-2.4.24.changed/fs/romfs: .depend
+Only in linux-2.4.24.changed/fs/smbfs: .depend
+Only in linux-2.4.24.changed/fs/sysv: .depend
+Only in linux-2.4.24.changed/fs/udf: .depend
+Only in linux-2.4.24.changed/fs/ufs: .depend
+Only in linux-2.4.24.changed/fs/umsdos: .depend
+Only in linux-2.4.24.changed/fs/vfat: .depend
+Only in linux-2.4.24.changed/: .hdepend
+Only in linux-2.4.24.changed/include: asm
+diff -crB linux-2.4.24/include/asm-i386/unistd.h linux-2.4.24.changed/include/asm-i386/unistd.h
+*** linux-2.4.24/include/asm-i386/unistd.h	2002-11-28 18:53:15.000000000 -0500
+--- linux-2.4.24.changed/include/asm-i386/unistd.h	2013-03-23 17:17:41.000000000 -0400
+***************
+*** 257,262 ****
+--- 257,263 ----
+  #define __NR_alloc_hugepages	250
+  #define __NR_free_hugepages	251
+  #define __NR_exit_group		252
++ #define __NR_myincreaseshare	259
+  
+  /* user-visible error numbers are in the range -1 - -124: see <asm-i386/errno.h> */
+  
+Only in linux-2.4.24.changed/include: config
+Only in linux-2.4.24.changed/include/linux: autoconf.h
+Only in linux-2.4.24.changed/include/linux: modules
+Only in linux-2.4.24.changed/include/linux: modversions.h
+diff -crB linux-2.4.24/include/linux/sched.h linux-2.4.24.changed/include/linux/sched.h
+*** linux-2.4.24/include/linux/sched.h	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24.changed/include/linux/sched.h	2013-03-23 15:17:59.000000000 -0400
+***************
+*** 270,275 ****
+--- 270,276 ----
+  	/* Hash table maintenance information */
+  	struct user_struct *next, **pprev;
+  	uid_t uid;
++ 	char hasRan;
+  };
+  
+  #define get_current_user() ({ 				\
+***************
+*** 415,420 ****
+--- 416,424 ----
+  
+  /* journalling filesystem info */
+  	void *journal_info;
++ 
++ 	int max_weight;
++ 	int current_weight;
+  };
+  
+  /*
+Only in linux-2.4.24.changed/include/linux: version.h
+Only in linux-2.4.24.changed/ipc: .depend
+Only in linux-2.4.24.changed/kernel: .depend
+diff -crB linux-2.4.24/kernel/fork.c linux-2.4.24.changed/kernel/fork.c
+*** linux-2.4.24/kernel/fork.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24.changed/kernel/fork.c	2013-03-23 15:09:58.000000000 -0400
+***************
+*** 79,84 ****
+--- 79,86 ----
+  
+  	init_task.rlim[RLIMIT_NPROC].rlim_cur = max_threads/2;
+  	init_task.rlim[RLIMIT_NPROC].rlim_max = max_threads/2;
++ 	init_task.max_weight=1;
++ 	init_task.current_weight=1;
+  }
+  
+  /* Protects next_safe and last_pid. */
+***************
+*** 803,808 ****
+--- 805,813 ----
+  		list_add(&p->thread_group, &current->thread_group);
+  	}
+  
++ 	p->max_weight=1;
++ 	p->current_weight=1;
++ 	
+  	SET_LINKS(p);
+  	hash_pid(p);
+  	nr_threads++;
+diff -crB linux-2.4.24/kernel/sched.c linux-2.4.24.changed/kernel/sched.c
+*** linux-2.4.24/kernel/sched.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24.changed/kernel/sched.c	2013-03-23 21:06:11.000000000 -0400
+***************
+*** 33,38 ****
+--- 33,42 ----
+  #include <asm/uaccess.h>
+  #include <asm/mmu_context.h>
+  
++ /* System call includes */
++ #include <linux/unistd.h>
++ #include <linux/linkage.h>
++ 
+  extern void timer_bh(void);
+  extern void tqueue_bh(void);
+  extern void immediate_bh(void);
+***************
+*** 534,539 ****
+--- 538,554 ----
+  	__schedule_tail(prev);
+  }
+  
++ 
++ /* 
++  * System call: myincreaseshare
++  */
++ _syscall0(int,myincreaseshare);
++ asmlinkage int sys_myincreaseshare(){
++ 	current->max_weight=current->max_weight*2;
++ 	return current->max_weight;
++ }
++ 
++ 
+  /*
+   *  'schedule()' is the scheduler function. It's a very simple and nice
+   * scheduler: it's not perfect, but certainly works for most things.
+***************
+*** 547,556 ****
+  asmlinkage void schedule(void)
+  {
+  	struct schedule_data * sched_data;
+! 	struct task_struct *prev, *next, *p;
+! 	struct list_head *tmp;
+! 	int this_cpu, c;
+! 
+  
+  	spin_lock_prefetch(&runqueue_lock);
+  
+--- 562,570 ----
+  asmlinkage void schedule(void)
+  {
+  	struct schedule_data * sched_data;
+! 	struct task_struct *prev, *next, *p, *s;
+! 	struct list_head *tmp, *tmp2;
+! 	int this_cpu, c, d;
+  
+  	spin_lock_prefetch(&runqueue_lock);
+  
+***************
+*** 592,630 ****
+  		case TASK_RUNNING:;
+  	}
+  	prev->need_resched = 0;
+  
+  	/*
+  	 * this is the scheduler proper:
+  	 */
+  
+  repeat_schedule:
+- 	/*
+- 	 * Default process to select..
+- 	 */
+  	next = idle_task(this_cpu);
+! 	c = -1000;
+  	list_for_each(tmp, &runqueue_head) {
+  		p = list_entry(tmp, struct task_struct, run_list);
+! 		if (can_schedule(p, this_cpu)) {
+! 			int weight = goodness(p, this_cpu, prev->active_mm);
+! 			if (weight > c)
+! 				c = weight, next = p;
+! 		}
+  	}
+  
+! 	/* Do we need to re-calculate counters? */
+! 	if (unlikely(!c)) {
+  		struct task_struct *p;
+- 
+  		spin_unlock_irq(&runqueue_lock);
+  		read_lock(&tasklist_lock);
+! 		for_each_task(p)
+! 			p->counter = (p->counter >> 1) + NICE_TO_TICKS(p->nice);
+  		read_unlock(&tasklist_lock);
+  		spin_lock_irq(&runqueue_lock);
+  		goto repeat_schedule;
+  	}
+! 
+  	/*
+  	 * from this point on nothing can prevent us from
+  	 * switching to the next task, save this fact in
+--- 606,662 ----
+  		case TASK_RUNNING:;
+  	}
+  	prev->need_resched = 0;
++ 	
+  
+  	/*
+  	 * this is the scheduler proper:
+  	 */
+  
+  repeat_schedule:
+  	next = idle_task(this_cpu);
+! 	c = 0;
+  	list_for_each(tmp, &runqueue_head) {
+  		p = list_entry(tmp, struct task_struct, run_list);
+!         if (p->user->hasRan == 0) {
+!             c = 1;
+! repeat_taskselect:
+!             d = 0;
+!             list_for_each(tmp2,&runqueue_head) {
+!                 s=list_entry(tmp2, struct task_struct,run_list);
+!                 if ((s->current_weight > 0) && (s->user->uid==p->user->uid)) {
+!                     d=1;
+!                     s->current_weight--;
+!                     next=s;
+!                     break;
+!                 }
+!             }
+!             if (d==0) {
+!                 list_for_each(tmp2,&runqueue_head) {
+!                     s = list_entry(tmp2, struct task_struct, run_list);
+!                     if (s->user->uid==p->user->uid){
+!                         s->current_weight=s->max_weight;
+!                     }
+!                 }
+!                 goto repeat_taskselect;
+!             }
+!             break;	
+!         }
+  	}
+  
+! 	if (c==0) {
+  		struct task_struct *p;
+  		spin_unlock_irq(&runqueue_lock);
+  		read_lock(&tasklist_lock);
+! 		for_each_task(p){
+! 			p->counter = NICE_TO_TICKS(0);
+! 			p->user->hasRan=0;
+! 		}
+  		read_unlock(&tasklist_lock);
+  		spin_lock_irq(&runqueue_lock);
+  		goto repeat_schedule;
+  	}
+!     
+!     next->user->hasRan=1;
+  	/*
+  	 * from this point on nothing can prevent us from
+  	 * switching to the next task, save this fact in
+diff -crB linux-2.4.24/kernel/user.c linux-2.4.24.changed/kernel/user.c
+*** linux-2.4.24/kernel/user.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24.changed/kernel/user.c	2013-03-23 15:10:12.000000000 -0400
+***************
+*** 101,107 ****
+  		atomic_set(&new->__count, 1);
+  		atomic_set(&new->processes, 0);
+  		atomic_set(&new->files, 0);
+! 
+  		/*
+  		 * Before adding this, check whether we raced
+  		 * on adding the same user already..
+--- 101,107 ----
+  		atomic_set(&new->__count, 1);
+  		atomic_set(&new->processes, 0);
+  		atomic_set(&new->files, 0);
+! 		new->hasRan=0;
+  		/*
+  		 * Before adding this, check whether we raced
+  		 * on adding the same user already..
+***************
+*** 147,152 ****
+--- 147,153 ----
+  		panic("Cannot create uid taskcount SLAB cache\n");
+  
+  	/* Insert the root user immediately - init already runs with this */
++ 	root_user.hasRan=0;
+  	uid_hash_insert(&root_user, uidhashentry(0));
+  	return 0;
+  }
+Only in linux-2.4.24.changed/lib: crc32table.h
+Only in linux-2.4.24.changed/lib: .depend
+Only in linux-2.4.24.changed/lib: gen_crc32table
+Only in linux-2.4.24.changed/lib/zlib_deflate: .depend
+Only in linux-2.4.24.changed/lib/zlib_inflate: .depend
+diff -crB linux-2.4.24/Makefile linux-2.4.24.changed/Makefile
+*** linux-2.4.24/Makefile	2004-01-05 08:53:56.000000000 -0500
+--- linux-2.4.24.changed/Makefile	2013-03-23 15:09:46.000000000 -0400
+***************
+*** 1,7 ****
+  VERSION = 2
+  PATCHLEVEL = 4
+  SUBLEVEL = 24
+! EXTRAVERSION =
+  
+  KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
+  
+--- 1,7 ----
+  VERSION = 2
+  PATCHLEVEL = 4
+  SUBLEVEL = 24
+! EXTRAVERSION = test
+  
+  KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
+  
+Only in linux-2.4.24.changed/mm: .depend
+Only in linux-2.4.24.changed/net/802: .depend
+Only in linux-2.4.24.changed/net/8021q: .depend
+Only in linux-2.4.24.changed/net/appletalk: .depend
+Only in linux-2.4.24.changed/net/atm: .depend
+Only in linux-2.4.24.changed/net/ax25: .depend
+Only in linux-2.4.24.changed/net/bluetooth/bnep: .depend
+Only in linux-2.4.24.changed/net/bluetooth/cmtp: .depend
+Only in linux-2.4.24.changed/net/bluetooth: .depend
+Only in linux-2.4.24.changed/net/bluetooth/rfcomm: .depend
+Only in linux-2.4.24.changed/net/bridge: .depend
+Only in linux-2.4.24.changed/net/core: .depend
+Only in linux-2.4.24.changed/net/decnet: .depend
+Only in linux-2.4.24.changed/net: .depend
+Only in linux-2.4.24.changed/net/econet: .depend
+Only in linux-2.4.24.changed/net/ethernet: .depend
+Only in linux-2.4.24.changed/net/ipv4: .depend
+Only in linux-2.4.24.changed/net/ipv4/netfilter: .depend
+Only in linux-2.4.24.changed/net/ipv6: .depend
+Only in linux-2.4.24.changed/net/ipx: .depend
+Only in linux-2.4.24.changed/net/irda: .depend
+Only in linux-2.4.24.changed/net/irda/ircomm: .depend
+Only in linux-2.4.24.changed/net/irda/irlan: .depend
+Only in linux-2.4.24.changed/net/irda/irnet: .depend
+Only in linux-2.4.24.changed/net/khttpd: .depend
+Only in linux-2.4.24.changed/net/lapb: .depend
+Only in linux-2.4.24.changed/net/netlink: .depend
+Only in linux-2.4.24.changed/net/netrom: .depend
+Only in linux-2.4.24.changed/net/packet: .depend
+Only in linux-2.4.24.changed/net/rose: .depend
+Only in linux-2.4.24.changed/net/sched: .depend
+Only in linux-2.4.24.changed/net/sctp: .depend
+Only in linux-2.4.24.changed/net/sunrpc: .depend
+Only in linux-2.4.24.changed/net/unix: .depend
+Only in linux-2.4.24.changed/net/wanrouter: .depend
+Only in linux-2.4.24.changed/net/x25: .depend
+Only in linux-2.4.24.changed/scripts: mkdep
+Only in linux-2.4.24.changed/scripts: split-include
+Only in linux-2.4.24.changed/: .version
