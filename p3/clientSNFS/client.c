@@ -1,3 +1,6 @@
+#define FUSE_USE_VERSION 26
+
+#include <fuse.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -7,68 +10,53 @@
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 
-#define CLIENT_NAME "XML-RPC CS416 Test Client"
-#define CLIENT_VERSION "1.0"
+#include "client.h"
 
-bool parse_input(char **);
+bool parse_input(char **, char **);
 char *create_addr();
+extern struct fuse_operations ops;
 
 int port_number;
-char *address;
-char *mount_path;
 
 int main(int argc, char **argv)
 {
-    int sum;
+    char * fuse_args[6];
     bool parsed;
-    xmlrpc_env env;
-    xmlrpc_client *client;
-    xmlrpc_value *result;
-    char *methodName = "sample.add";
 
     if(argc != 7)
     {
-        printf("Error, your input must contain input arguments" \
-                "please supply a -port, -address, and -mount option");
+       printf("Error, your input must contain input arguments" \
+                "please supply a -port, -address, and -mount option\n");
         return 1;
     }
 
-    parsed = parse_input(argv); 
+    parsed = parse_input(argv, fuse_args); 
 
     if(!parsed)
     {
-        printf("Error, you must supply a -mount, -address, and -port flag");
+        printf("Error, you must supply a -mount, -address, and -port flag\n");
         return 1;
     }
 
     address = create_addr(); 
-    
+    init_client();
 
-    xmlrpc_env_init(&env);
-    xmlrpc_client_setup_global_const(&env);
-    xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS, CLIENT_NAME, \
-            CLIENT_VERSION, NULL, 0, &client);
-
-    fprintf(stderr, "Got through client creation\n");
-    fprintf(stderr, "address is %s\n", address);
-
-    xmlrpc_client_call2f(&env, client, address, methodName, &result,
+    /*xmlrpc_client_call2f(&env, client, address, methodName, &result,
             "(ii)", (xmlrpc_int32) 7, (xmlrpc_int32) 7);
 
-    fprintf(stderr, "Made the client call\n");
-
     xmlrpc_read_int(&env, result, &sum);
-    printf("The sum is %d\n", sum);
 
-    xmlrpc_DECREF(result);
+    xmlrpc_DECREF(result);*/
 
-    xmlrpc_env_clean(&env);
-    xmlrpc_client_destroy(client);
-    xmlrpc_client_teardown_global_const();
-    return 0;
+    fuse_args[2] = "-o";
+    fuse_args[3] = "user_allow_other";
+    fuse_args[4] = "-o";
+    fuse_args[5] = "allow_root";
+
+    return fuse_main(4, fuse_args, &ops, NULL);
 }
 
-bool parse_input(char **argv)
+bool parse_input(char **argv, char **fuse_args)
 {
     int i;
 
@@ -76,6 +64,8 @@ bool parse_input(char **argv)
     {
         if(strcmp(argv[i], "-mount") == 0)
         {
+            fuse_args[0] = "-mount";
+            fuse_args[1] = argv[i + 1];
             mount_path = argv[i + 1];
         }
         else if(strcmp(argv[i], "-port") == 0)
@@ -97,10 +87,10 @@ bool parse_input(char **argv)
 
 char *create_addr()
 {
+    char number[7];
     char *addr = (char *)malloc((strlen(address) + 19)*sizeof(char)); 
     addr[0] = '\0';
 
-    char number[7];
     sprintf(number, "%d", port_number);
 
     strcat(addr, "http://");
