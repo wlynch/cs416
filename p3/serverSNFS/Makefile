@@ -1,7 +1,8 @@
 CC = gcc
 CCFLAGS = -c -g -pedantic -Wall
-SERVER_LIBS = -L/usr/local/lib   ../lib/libxmlrpc_server_abyss.a ../lib/libxmlrpc_server.a ../lib/libxmlrpc_abyss.a  -lpthread ../lib/libxmlrpc.a ../lib/libxmlrpc_util.a  ../lib/libxmlrpc_xmlparse.a ../lib/libxmlrpc_xmltok.a
-
+XMLRPC_C_CONFIG = xmlrpc-c-config
+SERVER_FLAGS = $(shell $(XMLRPC_C_CONIFG) abyss-server --cflags)
+SERVER_LIBS = $(shell $(XMLRPC_C_CONFIG) abyss-server --libs) 
 
 SERVER_EXEC = serverSNFS
 OBJS = server.o
@@ -13,7 +14,7 @@ ${SERVER_EXEC}: server.o
 	${CC} -o ${SERVER_EXEC} server.o ${SERVER_LIBS}
 
 server.o: server.c
-	${CC} ${CCFLAGS} server.c
+	${CC} ${SERVER_FLAGS} ${CCFLAGS} server.c
 
 clean: 
 	rm -rf ${SERVER_EXEC}
