@@ -1,11 +1,13 @@
 CC = gcc
 CFLAGS = -c -g -pedantic -Wall
 CFLAGS += $(shell pkg-config fuse --cflags)
+CFLAGS += $(shell pkg-config libprotobuf-c --cflags)
 LDFLAGS += $(shell pkg-config fuse --libs)
+LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
 SERVER_EXEC = serverSNFS
 
-SRCS = server.c
+SRCS = server.c ../protobuf-model/ping.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${SERVER_EXEC}
