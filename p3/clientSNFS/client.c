@@ -10,6 +10,7 @@
 
 #include "client.h"
 
+#include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
 
 /* globals are bad, stop this */
@@ -24,6 +25,25 @@ int main (int argc, char ** argv) {
   void * ping_buf;
   unsigned ping_buf_length;
 
+  ProtobufCService * service;
+  ProtobufC_RPC_Client * client;
+
+  // give the client a name
+  const char * name = malloc(7);
+  sprintf(name, "client");
+
+  // initiate the service
+  service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
+
+  // create the client to communicate with the service
+  client = (ProtobufC_RPC_Client *) service;
+
+  // run the client in the background to handle responses
+  fprintf(stdout, "Connecting...");
+  while (!protobuf_c_rpc_client_is_connected (client))
+    protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
+  fprintf(stdout, "done!\n");
+
   // create the message
   ping.origin = strdup("localhost:8080");
 
@@ -35,10 +55,30 @@ int main (int argc, char ** argv) {
   ping__pack(&ping, ping_buf);
 
   // send it on it's way
-  fwrite(ping_buf, ping_buf_length, 1, stdout);
+  for (;;) {
+    protobuf_c_boolean is_done = 0;
+
+    printf("sending ping...");
+
+    // actually make the rpc call by sending a Ping,
+    // handle_ping_response will be called with the resulting PingResponse
+    ping_service__reply_to_ping(service, &ping, handle_ping_response, &is_done);
+
+    while (!is_done)
+        protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
+  }
+
 
   free(ping_buf);
   //return start_fuse(argc, argv);
+}
+
+static void handle_ping_response (const PingResponse *result,
+                                   void *closure_data) {
+
+  printf("ping reply: %s\n", result->reply);
+
+  *(protobuf_c_boolean *) closure_data = 1;
 }
 
 int start_fuse (int argc, char ** argv) {
