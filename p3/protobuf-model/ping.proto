@@ -1,0 +1,11 @@
+message Ping {
+  required string origin = 1;
+}
+
+message PingResponse {
+  required string reply = 1;
+}
+
+service PingService {
+  rpc ReplyToPing (Ping) returns (PingResponse);
+}

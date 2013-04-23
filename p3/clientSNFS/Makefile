@@ -1,14 +1,12 @@
 CC = gcc
 CFLAGS = -c -g -pedantic -Wall
-XMLRPC_C_CONFIG = xmlrpc-c-config
-CFLAGS += $(shell $(XMLRPC_C_CONIFG) client --cflags)
 CFLAGS +=  $(shell pkg-config fuse --cflags)
-LDFLAGS += $(shell $(XMLRPC_C_CONFIG) client --libs)
 LDFLAGS += $(shell pkg-config fuse --libs)
+LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
 CLIENT_EXEC = clientSNFS
 
-SRCS= client.c filesystem.c
+SRCS= client.c filesystem.c ../protobuf-model/ping.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}
