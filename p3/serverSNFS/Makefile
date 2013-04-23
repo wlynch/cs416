@@ -1,13 +1,7 @@
 CC = gcc
 CFLAGS = -c -g -pedantic -Wall
-XMLRPC_C_CONFIG = xmlrpc-c-config
-FUSE_C_CONFIG = pkg-config fuse
-
-CFLAGS += $(shell $(XMLRPC_C_CONIFG) abyss-server --cflags)
-LDFLAGS += $(shell $(XMLRPC_C_CONFIG) abyss-server --libs)
-
-CFLAGS += $(shell (FUSE_C_CONFIG) --cflags)
-LDFLAGS += $(shell (FUSE_C_CONFIG) --libs)
+CFLAGS += $(shell pkg-config fuse --cflags)
+LDFLAGS += $(shell pkg-config fuse --libs)
 
 SERVER_EXEC = serverSNFS
 
