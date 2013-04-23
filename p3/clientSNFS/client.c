@@ -50,7 +50,11 @@ int main(int argc, char **argv)
     xmlrpc_DECREF(result);*/
 
     fuse_args[2] = "-o";
-    fuse_args[3] = "allow_other";
+    #ifdef __APPLE__
+        fuse_args[3] = "allow_other";
+    #else
+        fuse_args[3] = "user_allow_other";
+    #endif
     fuse_args[4] = "-o";
     fuse_args[5] = "allow_root";
 
