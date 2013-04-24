@@ -9,14 +9,15 @@
 #include "../protobuf-model/ping.pb-c.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
 
-#define DPRINT(str) { fprintf(stderr, "%s\n", str); fflush(stderr); }
+#define DPRINT(str) { fprintf(stderr, "%s", str); fflush(stderr); }
+#define DPRINTLN(str) { DPRINT(str "\n") }
 
 void print_usage() {
   printf("Error, you must call this program in the format ./serverSNFS " \
    "-port [port number] -mount [mount location]\n");
 }
 
-static protobuf_c_boolean starts_with (const char *str, const char *prefix) {
+static int starts_with (const char *str, const char *prefix) {
   return memcmp (str, prefix, strlen (prefix)) == 0;
 }
 
@@ -24,23 +25,23 @@ void ping__reply_to_ping(PingService_Service * service,
  const Ping * input,
  PingResponse_Closure closure,
  void * closure_data) {
+
+  DPRINT("got a message, ");
+
   // init the message
   PingResponse ping_response = PING_RESPONSE__INIT;
-  void * ping_response_buf;
-  unsigned ping_response_buf_length;
+
+  DPRINT("building a response, ");
 
   // set the reply string
   ping_response.reply = strdup("hi");
 
-  // get the lenght of the response and malloc some space
-  ping_response_buf_length = ping_response__get_packed_size(&ping_response);
-  ping_response_buf = malloc(ping_response_buf_length);
-
-  // pack it into the buffer
-  ping_response__pack(&ping_response, ping_response_buf);
+  DPRINT("sending, ");
 
   // respond with the ping_response buffer
-  closure(ping_response_buf, closure_data);
+  closure(&ping_response, closure_data);
+
+  DPRINTLN("SENT");
 }
 
 static PingService_Service ping_service =

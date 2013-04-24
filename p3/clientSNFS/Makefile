@@ -19,7 +19,7 @@ ${CLIENT_EXEC}:${OBJS}
 
 test: ${CLIENT_EXEC} kill
 	# a very opinionated test scenario
-	./${CLIENT_EXEC} -mount ./temp -port 8080 -address localhost
+	./${CLIENT_EXEC} -mount ./temp --tcp=localhost:8080
 
 kill: ${CLIENT_EXEC}
 	$(shell pkill clientSNFS)

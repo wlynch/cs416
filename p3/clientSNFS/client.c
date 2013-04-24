@@ -22,36 +22,45 @@ char * address, * mount_path;
 /* super bad, no no no */
 extern struct fuse_operations ops;
 
+static int starts_with (const char *str, const char *prefix) {
+  return memcmp (str, prefix, strlen (prefix)) == 0;
+}
+
 int main (int argc, char ** argv) {
   Ping ping = PING__INIT;
   void * ping_buf;
   unsigned ping_buf_length;
 
-  ProtobufCService * service;
+  ProtobufCService *service;
   ProtobufC_RPC_Client * client;
+  const char *name = NULL;
+  unsigned i;
 
-  // give the client a name
-  const char * name = malloc(10);
-  sprintf(name, "localhost");
+  for (i = 1; i < (unsigned) argc; i++)
+    {
+      if (starts_with (argv[i], "--tcp="))
+        {
+          name = strchr (argv[i], '=') + 1;
+        }
+    }
 
-  // initiate the service
-  service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
-
-  if (service == NULL) {
-    perror("server: ");
+  if (name == NULL) {
+    fprintf(stderr, "missing --tcp=HOST:PORT");
     return 1;
   }
 
-  // create the client to communicate with the service
+  service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
+  if (service == NULL) {
+    perror("service: ");
+    return 1;
+  }
+
   client = (ProtobufC_RPC_Client *) service;
 
-  // run the client in the background to handle responses
-  DPRINT("Connecting...");
-  while (!protobuf_c_rpc_client_is_connected (client)) {
-    DPRINT("retrying...");
+  fprintf (stderr, "Connecting... ");
+  while (!protobuf_c_rpc_client_is_connected (client))
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-  }
-  DPRINT("done!\n");
+  fprintf (stderr, "done.\n");
 
   // create the message
   ping.origin = strdup("localhost:8080");
@@ -64,10 +73,10 @@ int main (int argc, char ** argv) {
   ping__pack(&ping, ping_buf);
 
   // send it on it's way
-  for (;;) {
+  //for (;;) {
     protobuf_c_boolean is_done = 0;
 
-    printf("sending ping...");
+    DPRINT("sending ping...");
 
     // actually make the rpc call by sending a Ping,
     // handle_ping_response will be called with the resulting PingResponse
@@ -75,7 +84,7 @@ int main (int argc, char ** argv) {
 
     while (!is_done)
         protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-  }
+  //}
 
 
   free(ping_buf);
@@ -85,6 +94,7 @@ int main (int argc, char ** argv) {
 static void handle_ping_response (const PingResponse *result,
                                    void *closure_data) {
 
+  DPRINT("got a response");
   printf("ping reply: %s\n", result->reply);
 
   *(protobuf_c_boolean *) closure_data = 1;
