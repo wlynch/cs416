@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "server.h"
-
 #include "../protobuf-model/ping.pb-c.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
 
@@ -39,6 +37,11 @@ int main(int argc, char **argv) {
     if (starts_with(argv[i], "--port=")) {
       name = strchr (argv[i], '=') + 1;
     }
+  }
+
+  if (name == NULL) {
+    fprintf(stderr, "missing --tcp=HOST:PORT");
+    return 1;
   }
 
   server = protobuf_c_rpc_server_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, (ProtobufCService *) &ping_service, NULL);

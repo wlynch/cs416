@@ -4,8 +4,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "client.h"
-
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
 
@@ -15,7 +13,6 @@ static int starts_with (const char *str, const char *prefix) {
 
 static void handle_ping_response (const Ping *result,
  void *closure_data) {
-
   printf("ping reply: %s\n", result->message);
   *(protobuf_c_boolean *) closure_data = 1;
 }
@@ -60,7 +57,4 @@ int main (int argc, char ** argv) {
 
   while (!is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-  //}
-
-  //return start_fuse(argc, argv);
 }
