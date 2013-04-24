@@ -9,7 +9,6 @@ PROTOBUF_C_BEGIN_DECLS
 
 
 typedef struct _Ping Ping;
-typedef struct _PingResponse PingResponse;
 
 
 /* --- enums --- */
@@ -20,20 +19,10 @@ typedef struct _PingResponse PingResponse;
 struct  _Ping
 {
   ProtobufCMessage base;
-  char *origin;
+  char *message;
 };
 #define PING__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&ping__descriptor) \
-    , NULL }
-
-
-struct  _PingResponse
-{
-  ProtobufCMessage base;
-  char *reply;
-};
-#define PING_RESPONSE__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&ping_response__descriptor) \
     , NULL }
 
 
@@ -56,32 +45,10 @@ Ping *
 void   ping__free_unpacked
                      (Ping *message,
                       ProtobufCAllocator *allocator);
-/* PingResponse methods */
-void   ping_response__init
-                     (PingResponse         *message);
-size_t ping_response__get_packed_size
-                     (const PingResponse   *message);
-size_t ping_response__pack
-                     (const PingResponse   *message,
-                      uint8_t             *out);
-size_t ping_response__pack_to_buffer
-                     (const PingResponse   *message,
-                      ProtobufCBuffer     *buffer);
-PingResponse *
-       ping_response__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
-void   ping_response__free_unpacked
-                     (PingResponse *message,
-                      ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
 typedef void (*Ping_Closure)
                  (const Ping *message,
-                  void *closure_data);
-typedef void (*PingResponse_Closure)
-                 (const PingResponse *message,
                   void *closure_data);
 
 /* --- services --- */
@@ -92,7 +59,7 @@ struct _PingService_Service
   ProtobufCService base;
   void (*reply_to_ping)(PingService_Service *service,
                         const Ping *input,
-                        PingResponse_Closure closure,
+                        Ping_Closure closure,
                         void *closure_data);
 };
 typedef void (*PingService_ServiceDestroy)(PingService_Service *);
@@ -105,13 +72,12 @@ void ping_service__init (PingService_Service *service,
       function_prefix__ ## reply_to_ping  }
 void ping_service__reply_to_ping(ProtobufCService *service,
                                  const Ping *input,
-                                 PingResponse_Closure closure,
+                                 Ping_Closure closure,
                                  void *closure_data);
 
 /* --- descriptors --- */
 
 extern const ProtobufCMessageDescriptor ping__descriptor;
-extern const ProtobufCMessageDescriptor ping_response__descriptor;
 extern const ProtobufCServiceDescriptor ping_service__descriptor;
 
 PROTOBUF_C_END_DECLS

@@ -49,58 +49,15 @@ void   ping__free_unpacked
   PROTOBUF_C_ASSERT (message->base.descriptor == &ping__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
-void   ping_response__init
-                     (PingResponse         *message)
-{
-  static PingResponse init_value = PING_RESPONSE__INIT;
-  *message = init_value;
-}
-size_t ping_response__get_packed_size
-                     (const PingResponse *message)
-{
-  PROTOBUF_C_ASSERT (message->base.descriptor == &ping_response__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
-}
-size_t ping_response__pack
-                     (const PingResponse *message,
-                      uint8_t       *out)
-{
-  PROTOBUF_C_ASSERT (message->base.descriptor == &ping_response__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
-}
-size_t ping_response__pack_to_buffer
-                     (const PingResponse *message,
-                      ProtobufCBuffer *buffer)
-{
-  PROTOBUF_C_ASSERT (message->base.descriptor == &ping_response__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
-}
-PingResponse *
-       ping_response__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
-{
-  return (PingResponse *)
-     protobuf_c_message_unpack (&ping_response__descriptor,
-                                allocator, len, data);
-}
-void   ping_response__free_unpacked
-                     (PingResponse *message,
-                      ProtobufCAllocator *allocator)
-{
-  PROTOBUF_C_ASSERT (message->base.descriptor == &ping_response__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
-}
 static const ProtobufCFieldDescriptor ping__field_descriptors[1] =
 {
   {
-    "origin",
+    "message",
     1,
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Ping, origin),
+    PROTOBUF_C_OFFSETOF(Ping, message),
     NULL,
     NULL,
     0,            /* packed */
@@ -108,7 +65,7 @@ static const ProtobufCFieldDescriptor ping__field_descriptors[1] =
   },
 };
 static const unsigned ping__field_indices_by_name[] = {
-  0,   /* field[0] = origin */
+  0,   /* field[0] = message */
 };
 static const ProtobufCIntRange ping__number_ranges[1 + 1] =
 {
@@ -130,47 +87,9 @@ const ProtobufCMessageDescriptor ping__descriptor =
   (ProtobufCMessageInit) ping__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor ping_response__field_descriptors[1] =
-{
-  {
-    "reply",
-    1,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_STRING,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(PingResponse, reply),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-};
-static const unsigned ping_response__field_indices_by_name[] = {
-  0,   /* field[0] = reply */
-};
-static const ProtobufCIntRange ping_response__number_ranges[1 + 1] =
-{
-  { 1, 0 },
-  { 0, 1 }
-};
-const ProtobufCMessageDescriptor ping_response__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "PingResponse",
-  "PingResponse",
-  "PingResponse",
-  "",
-  sizeof(PingResponse),
-  1,
-  ping_response__field_descriptors,
-  ping_response__field_indices_by_name,
-  1,  ping_response__number_ranges,
-  (ProtobufCMessageInit) ping_response__init,
-  NULL,NULL,NULL    /* reserved[123] */
-};
 static const ProtobufCMethodDescriptor ping_service__method_descriptors[1] =
 {
-  { "ReplyToPing", &ping__descriptor, &ping_response__descriptor },
+  { "ReplyToPing", &ping__descriptor, &ping__descriptor },
 };
 const unsigned ping_service__method_indices_by_name[] = {
   0         /* ReplyToPing */
@@ -188,7 +107,7 @@ const ProtobufCServiceDescriptor ping_service__descriptor =
 };
 void ping_service__reply_to_ping(ProtobufCService *service,
                                  const Ping *input,
-                                 PingResponse_Closure closure,
+                                 Ping_Closure closure,
                                  void *closure_data)
 {
   PROTOBUF_C_ASSERT (service->descriptor == &ping_service__descriptor);
