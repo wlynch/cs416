@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CFLAGS = -c -g -pedantic -Wall
 CFLAGS += $(shell pkg-config fuse --cflags)
 CFLAGS += $(shell pkg-config libprotobuf-c --cflags)
@@ -15,12 +15,12 @@ all: ${SERVER_EXEC}
 .c.o:
 	${CC} ${CFLAGS} -o $@ -c $<
 
-${SERVER_EXEC}: server.o
+${SERVER_EXEC}: ${OBJS}
 	${CC} -o ${SERVER_EXEC} ${OBJS} ${LDFLAGS}
 
 test: ${SERVER_EXEC} kill
 	# a very opinionated test for the server
-	./${SERVER_EXEC} -mount ./temp -port 8080
+	./${SERVER_EXEC} --port=8080
 
 kill: ${SERVER_EXEC}
 	$(shell pkill serverSNFS)

@@ -13,6 +13,8 @@
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
 
+#define DPRINT(str) { fprintf(stderr, "%s\n", str); fflush(stderr); }
+
 /* globals are bad, stop this */
 int port_number;
 char * address, * mount_path;
@@ -29,20 +31,27 @@ int main (int argc, char ** argv) {
   ProtobufC_RPC_Client * client;
 
   // give the client a name
-  const char * name = malloc(7);
-  sprintf(name, "client");
+  const char * name = malloc(10);
+  sprintf(name, "localhost");
 
   // initiate the service
   service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
+
+  if (service == NULL) {
+    perror("server: ");
+    return 1;
+  }
 
   // create the client to communicate with the service
   client = (ProtobufC_RPC_Client *) service;
 
   // run the client in the background to handle responses
-  fprintf(stdout, "Connecting...");
-  while (!protobuf_c_rpc_client_is_connected (client))
+  DPRINT("Connecting...");
+  while (!protobuf_c_rpc_client_is_connected (client)) {
+    DPRINT("retrying...");
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-  fprintf(stdout, "done!\n");
+  }
+  DPRINT("done!\n");
 
   // create the message
   ping.origin = strdup("localhost:8080");

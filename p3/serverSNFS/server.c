@@ -5,19 +5,25 @@
 #include <stdbool.h>
 
 #include "server.h"
-#include "../protobuf-model/ping.pb-c.h"
 
+#include "../protobuf-model/ping.pb-c.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
+
+#define DPRINT(str) { fprintf(stderr, "%s\n", str); fflush(stderr); }
 
 void print_usage() {
   printf("Error, you must call this program in the format ./serverSNFS " \
    "-port [port number] -mount [mount location]\n");
 }
 
-void ping__reply_to_ping(ProtobufCService * service,
-                                 const Ping * input,
-                                 PingResponse_Closure closure,
-                                 void * closure_data) {
+static protobuf_c_boolean starts_with (const char *str, const char *prefix) {
+  return memcmp (str, prefix, strlen (prefix)) == 0;
+}
+
+void ping__reply_to_ping(PingService_Service * service,
+ const Ping * input,
+ PingResponse_Closure closure,
+ void * closure_data) {
   // init the message
   PingResponse ping_response = PING_RESPONSE__INIT;
   void * ping_response_buf;
@@ -34,74 +40,33 @@ void ping__reply_to_ping(ProtobufCService * service,
   ping_response__pack(&ping_response, ping_response_buf);
 
   // respond with the ping_response buffer
-  closure(&ping_response_buf, closure_data);
+  closure(ping_response_buf, closure_data);
 }
 
-static PingService_Service ping_service = PING_SERVICE__INIT(ping__);
+static PingService_Service ping_service =
+PING_SERVICE__INIT(ping__);
 
 int main(int argc, char **argv) {
   ProtobufC_RPC_Server * server;
-  const char * name = malloc(6);
+  const char *name = NULL;
+  unsigned i;
 
-  struct server_param * params = setup(argc, argv);
-  if (!params) {
-    fprintf(stderr, "could not parse params\n");
-  } else {
-    sprintf(name, "%d", params->port);
+  for (i = 1; i < (unsigned) argc; i++) {
+    if (starts_with(argv[i], "--port=")) {
+      name = strchr (argv[i], '=') + 1;
+    }
   }
 
-  printf("Starting server, mount: %s, port: %i\n", params->mount, params->port);
+  server = protobuf_c_rpc_server_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, (ProtobufCService *) &ping_service, NULL);
 
-  server = protobuf_c_rpc_server_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, (ProtobufCService *) &(ping_service), NULL);
-
-  if (!server) {
+  if (server == NULL) {
     perror("server: ");
-    return 1;
+    return 0;
   }
 
   for (;;)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
 
-  perror("dispatch: ");
-
-  return 0;
-}
-
-struct server_param * setup(int argc, char ** argv) {
-  int parsed_error;
-  struct server_param * params = malloc(sizeof(struct server_param));
-
-  if(argc != 5) {
-    print_usage();
-    free(params);
-    return 0;
-  }
-
-  parsed_error = parse_server_params(argc, argv, params);
-
-  if(parsed_error) {
-    printf("Error, unable to parse your input arguments, " \
-           "please only use -mount and -port arguments\n");
-    return 0;
-  }
-
-  return params;
-}
-
-int parse_server_params(int argc, char ** argv, struct server_param * param) {
-  int i;
-
-  for (i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "-port") == 0) {
-      param->port = atoi(argv[++i]);
-      printf("port: %i\n", param->port);
-    } else if (strcmp(argv[i], "-mount") == 0) {
-      param->mount = strdup(argv[++i]);
-      printf("mount: %s\n", param->mount);
-    } else {
-      return 1;
-    }
-  }
-
+  protobuf_c_rpc_server_destroy(server, 1);
   return 0;
 }
