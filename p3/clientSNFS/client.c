@@ -1,11 +1,17 @@
+#define FUSE_USE_VERSION 26
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdbool.h>
 
+#include <fuse.h>
+
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
+
+extern struct fuse_operations ops;
 
 static int starts_with (const char *str, const char *prefix) {
   return memcmp (str, prefix, strlen (prefix)) == 0;
@@ -20,7 +26,8 @@ static void handle_ping_response (const Ping *result,
 int main (int argc, char ** argv) {
   ProtobufCService *service;
   ProtobufC_RPC_Client * client;
-  const char * name = NULL;
+  const char * name = NULL, * mount = NULL;
+  char ** fuse_args[6];
   unsigned i;
 
   // the ping message we will be sending
@@ -28,12 +35,17 @@ int main (int argc, char ** argv) {
 
   for (i = 1; i < (unsigned) argc; i++) {
     if (starts_with (argv[i], "--tcp=")) {
-      name = strchr (argv[i], '=') + 1;
+      name = strchr(argv[i], '=') + 1;
+    } else if (starts_with (argv[i], "--mount=")) {
+      mount = strchr(argv[i], '=') + 1;
     }
   }
 
   if (name == NULL) {
-    fprintf(stderr, "missing --tcp=HOST:PORT");
+    fprintf(stderr, "missing --tcp=HOST:PORT\n");
+    return 1;
+  } else if (mount == NULL) {
+    fprintf(stderr, "missing --mount=DIR\n");
     return 1;
   }
 
@@ -46,6 +58,14 @@ int main (int argc, char ** argv) {
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
   fprintf (stderr, "done.\n");
 
+  fuse_args = {0, 0, "-o", "user_allow_other", "-o", "allow_root"};
+
+  #ifdef __APPLE__
+      fuse_args[3] = "allow_other";
+  #endif
+
+  fuse_main(4, fuse_args, &ops, NULL);
+
   // create the message
   ping.message = strdup("HELLO WORLD");
 
@@ -57,4 +77,6 @@ int main (int argc, char ** argv) {
 
   while (!is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
+
+  return 0;
 }

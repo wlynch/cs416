@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -c -g -pedantic -Wall
 CFLAGS +=  $(shell pkg-config fuse --cflags)
+CFLAGS +=  $(shell pkg-config libprotobuf-c --cflags)
 LDFLAGS += $(shell pkg-config fuse --libs)
 LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
