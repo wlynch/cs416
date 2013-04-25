@@ -21,7 +21,8 @@ int port_number;
 
 int main(int argc, char **argv)
 {
-    char * fuse_args[6];
+    char * fuse_args[5];
+    fuse_args[0] = argv[0];
     bool parsed;
 
     if(argc != 7)
@@ -48,17 +49,8 @@ int main(int argc, char **argv)
     xmlrpc_read_int(&env, result, &sum);
 
     xmlrpc_DECREF(result);*/
-
-    fuse_args[2] = "-o";
-    #ifdef __APPLE__
-        fuse_args[3] = "allow_other";
-    #else
-        fuse_args[3] = "user_allow_other";
-    #endif
-    fuse_args[4] = "-o";
-    fuse_args[5] = "allow_root";
-
-    return fuse_main(4, fuse_args, &ops, NULL);
+    
+    return fuse_main(2, fuse_args, &ops, NULL);
 }
 
 bool parse_input(char **argv, char **fuse_args)
@@ -69,7 +61,6 @@ bool parse_input(char **argv, char **fuse_args)
     {
         if(strcmp(argv[i], "-mount") == 0)
         {
-            fuse_args[0] = "-mount";
             fuse_args[1] = argv[i + 1];
             mount_path = argv[i + 1];
         }
