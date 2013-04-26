@@ -7,7 +7,7 @@ LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
 CLIENT_EXEC = clientSNFS
 
-SRCS= client.c filesystem.c ../protobuf-model/ping.pb-c.c
+SRCS= fuse_ops.c client.c ../protobuf-model/ping.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}
@@ -20,7 +20,7 @@ ${CLIENT_EXEC}:${OBJS}
 
 test: ${CLIENT_EXEC} kill
 	# a very opinionated test scenario
-	./${CLIENT_EXEC} -mount ./temp --tcp=localhost:8080
+	./${CLIENT_EXEC} --mount=./temp --tcp=localhost:8080
 
 kill: ${CLIENT_EXEC}
 	$(shell pkill clientSNFS)

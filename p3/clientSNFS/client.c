@@ -27,17 +27,23 @@ int main (int argc, char ** argv) {
   ProtobufCService *service;
   ProtobufC_RPC_Client * client;
   const char * name = NULL, * mount = NULL;
-  char ** fuse_args[6];
+  char ** fuse_args[] = {"-mount", 0, "-o", "user_allow_other"};
+  int fuse_argc = 4;
   unsigned i;
 
   // the ping message we will be sending
   Ping ping = PING__INIT;
+
+  #ifdef __APPLE__
+    fuse_args[3] = "allow_other";
+  #endif
 
   for (i = 1; i < (unsigned) argc; i++) {
     if (starts_with (argv[i], "--tcp=")) {
       name = strchr(argv[i], '=') + 1;
     } else if (starts_with (argv[i], "--mount=")) {
       mount = strchr(argv[i], '=') + 1;
+      fuse_args[1] = mount;
     }
   }
 
@@ -58,13 +64,7 @@ int main (int argc, char ** argv) {
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
   fprintf (stderr, "done.\n");
 
-  fuse_args = {0, 0, "-o", "user_allow_other", "-o", "allow_root"};
-
-  #ifdef __APPLE__
-      fuse_args[3] = "allow_other";
-  #endif
-
-  fuse_main(4, fuse_args, &ops, NULL);
+  fuse_main(fuse_argc, fuse_args, &ops, NULL);
 
   // create the message
   ping.message = strdup("HELLO WORLD");
