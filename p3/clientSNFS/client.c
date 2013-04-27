@@ -11,23 +11,19 @@
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
 
+#include "rpc.h"
+
 extern struct fuse_operations ops;
+extern ProtobufC_RPC_Client * rpc_client;
 
 static int starts_with (const char *str, const char *prefix) {
   return memcmp (str, prefix, strlen (prefix)) == 0;
 }
 
-static void handle_ping_response (const Ping *result,
- void *closure_data) {
-  printf("ping reply: %s\n", result->message);
-  *(protobuf_c_boolean *) closure_data = 1;
-}
-
 int main (int argc, char ** argv) {
   ProtobufCService *service;
-  ProtobufC_RPC_Client * client;
   const char * name = NULL, * mount = NULL;
-  char ** fuse_args[] = {"-mount", 0, "-o", "user_allow_other"};
+  char * fuse_args[] = {"-mount", 0, "-o", "user_allow_other"};
   int fuse_argc = 4;
   unsigned i;
 
@@ -57,10 +53,10 @@ int main (int argc, char ** argv) {
 
   // service creates an rpc client, and client is a special cast
   service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
-  client = (ProtobufC_RPC_Client *) service;
+  rpc_client = (ProtobufC_RPC_Client *) service;
 
   fprintf (stderr, "Connecting... ");
-  while (!protobuf_c_rpc_client_is_connected (client))
+  while (!protobuf_c_rpc_client_is_connected (rpc_client))
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
   fprintf (stderr, "done.\n");
 

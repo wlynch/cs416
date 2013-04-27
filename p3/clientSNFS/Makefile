@@ -7,7 +7,7 @@ LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
 CLIENT_EXEC = clientSNFS
 
-SRCS= fuse_ops.c client.c ../protobuf-model/ping.pb-c.c
+SRCS= rpc.c fuse_ops.c client.c ../protobuf-model/ping.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}

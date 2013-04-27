@@ -9,6 +9,8 @@
 
 #include <fuse.h>
 
+#include "rpc.h"
+
 static int getattr(const char *path, struct stat *stbuf) {
   int res = 0;
 
