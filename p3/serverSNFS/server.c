@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   }
 
   if (name == NULL) {
-    fprintf(stderr, "missing --tcp=HOST:PORT");
+    fprintf(stderr, "missing --port=PORT");
     return 1;
   }
 
