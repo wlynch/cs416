@@ -1,0 +1,20 @@
+message readdir {
+  required string path = 1;
+}
+
+message readdir_response {
+  required string contents = 1;
+}
+
+message getattr {
+  required string path = 1;
+}
+
+message getattr_response {
+  required string stat = 1;
+}
+
+service FuseService {
+  rpc ReplyToReadDir (readdir) returns (readdir_response);
+  rpc ReplyToGetAttr (getattr) returns (getattr_response);
+}
