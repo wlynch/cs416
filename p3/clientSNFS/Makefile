@@ -1,6 +1,7 @@
 CC = gcc
 
 export PKG_CONFIG_PATH=/filer/tmp2/contrib/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/filer/tmp2/contrib/lib:$LD_LIBRARY_PATH
 
 CFLAGS = -c -g -pedantic -Wall
 CFLAGS +=  $(shell pkg-config fuse --cflags)
