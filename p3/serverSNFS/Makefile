@@ -7,7 +7,7 @@ LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
 
 SERVER_EXEC = serverSNFS
 
-SRCS = server.c ../protobuf-model/ping.pb-c.c
+SRCS = server.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${SERVER_EXEC}
@@ -20,7 +20,7 @@ ${SERVER_EXEC}: ${OBJS}
 
 test: ${SERVER_EXEC} kill
 	# a very opinionated test for the server
-	./${SERVER_EXEC} --port=8080
+	./${SERVER_EXEC} -port 8080 -mount ./temp
 
 kill: ${SERVER_EXEC}
 	$(shell pkill serverSNFS)

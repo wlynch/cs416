@@ -1,0 +1,15 @@
+import "ping.proto";
+
+message Create {
+  required string path = 1;
+  required int32 mode = 2;
+}
+
+message CreateResp {
+  required int32 result = 1;
+}
+
+service FSService {
+  rpc ReplyToPing (Ping) returns (Ping);
+  rpc CreateFile (Create) returns (CreateResp);
+}

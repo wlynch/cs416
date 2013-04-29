@@ -12,3 +12,9 @@ extern void handle_ping_response (const Ping *result,
   printf("ping reply: %s\n", result->message);
   *(protobuf_c_boolean *) closure_data = 1;
 }
+
+extern void handle_create_response(const CreateResp *result,
+  void * closure_data){
+  printf("Got a response to my create message!\n");
+  *(protobuf_c_boolean *) closure_data = 1;
+}

@@ -87,36 +87,3 @@ const ProtobufCMessageDescriptor ping__descriptor =
   (ProtobufCMessageInit) ping__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCMethodDescriptor ping_service__method_descriptors[1] =
-{
-  { "ReplyToPing", &ping__descriptor, &ping__descriptor },
-};
-const unsigned ping_service__method_indices_by_name[] = {
-  0         /* ReplyToPing */
-};
-const ProtobufCServiceDescriptor ping_service__descriptor =
-{
-  PROTOBUF_C_SERVICE_DESCRIPTOR_MAGIC,
-  "PingService",
-  "ReplyToPing",
-  "PingService",
-  "",
-  1,
-  ping_service__method_descriptors,
-  ping_service__method_indices_by_name
-};
-void ping_service__reply_to_ping(ProtobufCService *service,
-                                 const Ping *input,
-                                 Ping_Closure closure,
-                                 void *closure_data)
-{
-  PROTOBUF_C_ASSERT (service->descriptor == &ping_service__descriptor);
-  service->invoke(service, 0, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void ping_service__init (PingService_Service *service,
-                         PingService_ServiceDestroy destroy)
-{
-  protobuf_c_service_generated_init (&service->base,
-                                     &ping_service__descriptor,
-                                     (ProtobufCServiceDestroy) destroy);
-}

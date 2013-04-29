@@ -53,32 +53,10 @@ typedef void (*Ping_Closure)
 
 /* --- services --- */
 
-typedef struct _PingService_Service PingService_Service;
-struct _PingService_Service
-{
-  ProtobufCService base;
-  void (*reply_to_ping)(PingService_Service *service,
-                        const Ping *input,
-                        Ping_Closure closure,
-                        void *closure_data);
-};
-typedef void (*PingService_ServiceDestroy)(PingService_Service *);
-void ping_service__init (PingService_Service *service,
-                         PingService_ServiceDestroy destroy);
-#define PING_SERVICE__BASE_INIT \
-    { &ping_service__descriptor, protobuf_c_service_invoke_internal, NULL }
-#define PING_SERVICE__INIT(function_prefix__) \
-    { PING_SERVICE__BASE_INIT,\
-      function_prefix__ ## reply_to_ping  }
-void ping_service__reply_to_ping(ProtobufCService *service,
-                                 const Ping *input,
-                                 Ping_Closure closure,
-                                 void *closure_data);
 
 /* --- descriptors --- */
 
 extern const ProtobufCMessageDescriptor ping__descriptor;
-extern const ProtobufCServiceDescriptor ping_service__descriptor;
 
 PROTOBUF_C_END_DECLS
 
