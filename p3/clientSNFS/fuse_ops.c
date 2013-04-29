@@ -61,13 +61,14 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
   fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);
 
-  fprintf(stderr, "path is %s and mode is %d\n", path, mode);
-  
   while (!is_done.is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
 
-  printf("result is %d\n", is_done.result);
-  return is_done.result;
+  if(is_done.result > 0){
+    fi->fh = is_done.result;
+  }
+
+  return is_done.result > 0 ? 0 : is_done.result;
 
 }
 

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #include "../protobuf-model/fs.pb-c.h"
 #include "filesystem.h"
@@ -32,13 +33,20 @@ void fs__create_file(FSService_Service * service,
   const Create * input,
   const CreateResp_Closure closure,
   void * closure_data){
+  int create_res;
   printf("incoming path is %s and mode is %d\n", input->path, input->mode);
 
   CreateResp create_handle = CREATE_RESP__INIT;
   char * full_path = get_full_path(input->path);
-  create_handle.result = creat(full_path, input->mode);
+  create_res = creat(full_path, input->mode);
+
+  if(create_res < 0){
+    create_res = -errno; 
+  }
   
+  printf("create_res has a value of %d\n", create_res);
   free(full_path);
+  create_handle.result = create_res;
 
   closure(&create_handle, closure_data);
 }
