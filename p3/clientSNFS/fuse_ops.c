@@ -13,7 +13,6 @@
 #include "../protobuf-model/ping.pb-c.h"
 
 #include "rpc.h"
-
 #include "externs.h"
 
 static int getattr(const char *path, struct stat *stbuf) {
