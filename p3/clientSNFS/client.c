@@ -36,7 +36,6 @@ static int starts_with (const char *str, const char *prefix) {
 }
 
 int main (int argc, char ** argv) {
-  const char * mount = NULL;
   char * fuse_args[] = {NULL, NULL};
   int fuse_argc = 2;
   char * name = NULL, * host = NULL, * port = NULL;
@@ -56,8 +55,7 @@ int main (int argc, char ** argv) {
     if (strcmp (argv[i], "-address") == 0) {
       host = argv[i + 1];
     } else if (strcmp (argv[i], "-mount") == 0) {
-      fuse_args[1] = argv[i + 1];
-      mount = argv[i + 1];
+      fuse_args[1] = argv[i + 1]; /* mount path */
     }
     else if(strcmp (argv[i], "-port") == 0){
       port = argv[i + 1];
@@ -68,7 +66,7 @@ int main (int argc, char ** argv) {
     }
   }
 
-  name = (char *)malloc(sizeof(char) * (strlen(host) + strlen(port) + 2)); 
+  name = (char *)malloc((strlen(host) + strlen(port) + 2));
   sprintf(name, "%s:%s", host, port);
 
   // service creates an rpc client, and client is a special cast
