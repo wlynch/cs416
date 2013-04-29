@@ -16,5 +16,7 @@ extern void handle_ping_response (const Ping *result,
 extern void handle_create_response(const CreateResp *result,
   void * closure_data){
   printf("Got a response to my create message!\n");
-  *(protobuf_c_boolean *) closure_data = 1;
+  CreateResp * create_resp = (CreateResp *) closure_data;
+  create_resp->is_done = 1;
+  create_resp->result = result->result;
 }

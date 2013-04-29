@@ -33,10 +33,12 @@ struct  _CreateResp
 {
   ProtobufCMessage base;
   int32_t result;
+  protobuf_c_boolean has_is_done;
+  protobuf_c_boolean is_done;
 };
 #define CREATE_RESP__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&create_resp__descriptor) \
-    , 0 }
+    , 0, 0,0 }
 
 
 /* Create methods */

@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <fcntl.h>
 
 #include "../protobuf-model/fs.pb-c.h"
 #include "filesystem.h"
@@ -31,10 +32,13 @@ void fs__create_file(FSService_Service * service,
   const Create * input,
   const CreateResp_Closure closure,
   void * closure_data){
-  printf("incoming path is %s\n", input->path);
+  printf("incoming path is %s and mode is %d\n", input->path, input->mode);
 
   CreateResp create_handle = CREATE_RESP__INIT;
-  create_handle.result = 1;
+  char * full_path = get_full_path(input->path);
+  create_handle.result = creat(full_path, input->mode);
+  
+  free(full_path);
 
   closure(&create_handle, closure_data);
 }

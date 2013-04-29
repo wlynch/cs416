@@ -7,6 +7,7 @@ message Create {
 
 message CreateResp {
   required int32 result = 1;
+  optional bool is_done = 2;
 }
 
 service FSService {

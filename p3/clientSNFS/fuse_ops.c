@@ -53,19 +53,21 @@ static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
 }
 
 static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
-  fprintf(stderr, "Got a create call for path %s with mode %d\n", path, mode);
 
   Create create = CREATE__INIT;
   create.path = strdup(path);
   create.mode = mode;
-  protobuf_c_boolean is_done = 0;
+  CreateResp is_done = CREATE_RESP__INIT; 
 
   fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);
+
+  fprintf(stderr, "path is %s and mode is %d\n", path, mode);
   
-  while (!is_done)
+  while (!is_done.is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
 
-  return 0;
+  printf("result is %d\n", is_done.result);
+  return is_done.result;
 
 }
 

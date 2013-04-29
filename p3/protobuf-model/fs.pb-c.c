@@ -143,7 +143,7 @@ const ProtobufCMessageDescriptor create__descriptor =
   (ProtobufCMessageInit) create__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor create_resp__field_descriptors[1] =
+static const ProtobufCFieldDescriptor create_resp__field_descriptors[2] =
 {
   {
     "result",
@@ -157,14 +157,27 @@ static const ProtobufCFieldDescriptor create_resp__field_descriptors[1] =
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
+  {
+    "is_done",
+    2,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_BOOL,
+    PROTOBUF_C_OFFSETOF(CreateResp, has_is_done),
+    PROTOBUF_C_OFFSETOF(CreateResp, is_done),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
 };
 static const unsigned create_resp__field_indices_by_name[] = {
+  1,   /* field[1] = is_done */
   0,   /* field[0] = result */
 };
 static const ProtobufCIntRange create_resp__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 1 }
+  { 0, 2 }
 };
 const ProtobufCMessageDescriptor create_resp__descriptor =
 {
@@ -174,7 +187,7 @@ const ProtobufCMessageDescriptor create_resp__descriptor =
   "CreateResp",
   "",
   sizeof(CreateResp),
-  1,
+  2,
   create_resp__field_descriptors,
   create_resp__field_indices_by_name,
   1,  create_resp__number_ranges,
