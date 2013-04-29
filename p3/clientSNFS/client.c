@@ -36,34 +36,40 @@ static int starts_with (const char *str, const char *prefix) {
 }
 
 int main (int argc, char ** argv) {
-  const char * name = NULL, * mount = NULL;
-  char * fuse_args[] = {"-mount", 0, "-o", "user_allow_other"};
-  int fuse_argc = 4;
+  const char * mount = NULL;
+  char * fuse_args[] = {NULL, NULL};
+  int fuse_argc = 2;
+  char * name = NULL, * host = NULL, * port = NULL;
   unsigned i;
 
-  // the ping message we will be sending
+  if(argc != 7){
+    fprintf(stderr, "Error, you must supply -port, -address, and -mount options\n");
+    return 1;
+  }
+
+  fuse_args[0] = argv[0];
+
+    // the ping message we will be sending
   Ping ping = PING__INIT;
 
-  #ifdef __APPLE__
-    fuse_args[3] = "allow_other";
-  #endif
-
-  for (i = 1; i < (unsigned) argc; i++) {
-    if (starts_with (argv[i], "--tcp=")) {
-      name = strchr(argv[i], '=') + 1;
-    } else if (starts_with (argv[i], "--mount=")) {
-      mount = strchr(argv[i], '=') + 1;
-      fuse_args[1] = mount;
+  for (i = 1; i < (unsigned) argc; i += 2) {
+    if (strcmp (argv[i], "-address") == 0) {
+      host = argv[i + 1];
+    } else if (strcmp (argv[i], "-mount") == 0) {
+      fuse_args[1] = argv[i + 1];
+      mount = argv[i + 1];
+    }
+    else if(strcmp (argv[i], "-port") == 0){
+      port = argv[i + 1];
+    }
+    else{
+      fprintf(stderr, "Error, invalid argument %s\n", argv[i]);
+      return 1;
     }
   }
 
-  if (name == NULL) {
-    fprintf(stderr, "missing --tcp=HOST:PORT\n");
-    return 1;
-  } else if (mount == NULL) {
-    fprintf(stderr, "missing --mount=DIR\n");
-    return 1;
-  }
+  name = (char *)malloc(sizeof(char) * (strlen(host) + strlen(port) + 2)); 
+  sprintf(name, "%s:%s", host, port);
 
   // service creates an rpc client, and client is a special cast
   rpc_service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
