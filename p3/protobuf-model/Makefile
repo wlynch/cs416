@@ -1,3 +1,5 @@
+export PATH=/filer/tmp2/contrib/bin:$PATH
+
 CC= protoc-c
 
 MODELS= ping.proto fs.proto
