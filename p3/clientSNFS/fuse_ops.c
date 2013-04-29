@@ -11,6 +11,7 @@
 
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/ping.pb-c.h"
+#include "../protobuf-model/fs.pb-c.h"
 
 #include "rpc.h"
 #include "externs.h"
@@ -43,12 +44,32 @@ static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
   Ping ping = PING__INIT;
   ping.message = strdup("reddir result...");
   protobuf_c_boolean is_done = 0;
-  ping_service__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
+  fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
 
   while (!is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
 
   return 0;
+}
+
+static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
+
+  Create create = CREATE__INIT;
+  create.path = strdup(path);
+  create.mode = mode;
+  CreateResp is_done = CREATE_RESP__INIT; 
+
+  fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);
+
+  while (!is_done.is_done)
+    protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
+
+  if(is_done.result > 0){
+    fi->fh = is_done.result;
+  }
+
+  return is_done.result > 0 ? 0 : is_done.result;
+
 }
 
 static int ex_open(const char *path, struct fuse_file_info *fi) {
@@ -64,5 +85,6 @@ static int ex_open(const char *path, struct fuse_file_info *fi) {
 struct fuse_operations ops = {
   .readdir = readdir,
   .getattr = getattr,
-  .open = ex_open
+  .open = ex_open,
+  .create = create
 };

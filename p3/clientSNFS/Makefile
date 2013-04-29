@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc 
 CFLAGS = -c -g -pedantic -Wall
 CFLAGS +=  $(shell pkg-config fuse --cflags)
 CFLAGS +=  $(shell pkg-config libprotobuf-c --cflags)
@@ -8,7 +8,7 @@ LDFLAGS += -lpthread
 
 CLIENT_EXEC = clientSNFS
 
-SRCS= rpc.c fuse_ops.c client.c ../protobuf-model/ping.pb-c.c
+SRCS= rpc.c fuse_ops.c client.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}

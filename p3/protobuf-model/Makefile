@@ -1,6 +1,6 @@
 CC= protoc-c
 
-MODELS= ping.proto
+MODELS= ping.proto fs.proto
 IMPLS= ${MODELS:.proto=.pb-c.c}
 HEADERS = ${MODELS:.proto=.pb-c.h}
 

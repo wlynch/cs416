@@ -11,7 +11,7 @@
 #include <fuse.h>
 
 #include <google/protobuf-c/protobuf-c-rpc.h>
-#include "../protobuf-model/ping.pb-c.h"
+#include "../protobuf-model/fs.pb-c.h"
 
 #include "rpc.h"
 #include "externs.h"
@@ -70,7 +70,7 @@ int main (int argc, char ** argv) {
   sprintf(name, "%s:%s", host, port);
 
   // service creates an rpc client, and client is a special cast
-  rpc_service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &ping_service__descriptor, NULL);
+  rpc_service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &fsservice__descriptor, NULL);
   rpc_client = (ProtobufC_RPC_Client *) rpc_service;
 
   fprintf (stderr, "Connecting... ");
@@ -91,7 +91,7 @@ int main (int argc, char ** argv) {
   protobuf_c_boolean is_done = 0;
   printf("sending ping... ");
   // handle_ping_response will be called with the resulting PingResponse
-  ping_service__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
+  fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
 
   while (!is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
