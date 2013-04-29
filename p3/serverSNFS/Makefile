@@ -3,11 +3,11 @@ CC = gcc
 export PKG_CONFIG_PATH=/filer/tmp2/contrib/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=/filer/tmp2/contrib/lib:$LD_LIBRARY_PATH
 
-CFLAGS = -c -g -pedantic -Wall
+CFLAGS = -c -g -Wall
 CFLAGS += $(shell pkg-config fuse --cflags)
-CFLAGS += $(shell pkg-config libprotobuf-c --cflags)
+CFLAGS += $(shell PKG_CONFIG_PATH=${PKG_CONFIG_PATH} pkg-config libprotobuf-c --cflags)
 LDFLAGS += $(shell pkg-config fuse --libs)
-LDFLAGS += $(shell pkg-config libprotobuf-c --libs)
+LDFLAGS += $(shell PKG_CONFIG_PATH=${PKG_CONFIG_PATH} pkg-config libprotobuf-c --libs)
 
 SERVER_EXEC = serverSNFS
 
