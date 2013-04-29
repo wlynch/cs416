@@ -20,7 +20,7 @@ ${SERVER_EXEC}: ${OBJS}
 
 test: ${SERVER_EXEC} kill
 	# a very opinionated test for the server
-	./${SERVER_EXEC} -port 8080 -mount ./temp
+	./${SERVER_EXEC} -port 8080 -mount ./temp/
 
 kill: ${SERVER_EXEC}
 	$(shell pkill serverSNFS)

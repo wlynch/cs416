@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "../protobuf-model/fs.pb-c.h"
+#include "filesystem.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
 
 static int starts_with (const char *str, const char *prefix) {
@@ -44,6 +45,7 @@ int main(int argc, char **argv) {
   ProtobufC_RPC_Server * server;
   const char * port = NULL, * mount = NULL;
   unsigned i;
+  bool set_root;
 
   if(argc != 5){
     fprintf(stderr, "Error, please supply a -mount and -port option\n");
@@ -61,6 +63,13 @@ int main(int argc, char **argv) {
       fprintf(stderr, "Error, %s is an invalid argument\n", argv[i]);
       return 1;
     }
+  }
+
+  set_root = set_root_path(mount);
+  if(!set_root){
+    fprintf(stderr, "Error, couldn't set the root path to %s "\
+        "please enter a path that both exists and is a directory\n", mount);
+    return 1;
   }
 
   server = protobuf_c_rpc_server_new (PROTOBUF_C_RPC_ADDRESS_TCP, port, (ProtobufCService *) &fs_service, NULL);
