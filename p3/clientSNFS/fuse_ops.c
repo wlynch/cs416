@@ -10,7 +10,6 @@
 #include <fuse.h>
 
 #include <google/protobuf-c/protobuf-c-rpc.h>
-#include "../protobuf-model/ping.pb-c.h"
 #include "../protobuf-model/fs.pb-c.h"
 
 #include "rpc.h"

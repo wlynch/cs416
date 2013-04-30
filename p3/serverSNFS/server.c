@@ -31,7 +31,7 @@ void fs__reply_to_ping(FSService_Service * service,
 
 void fs__create_file(FSService_Service * service,
   const Create * input,
-  const FileRespone_Closure closure,
+  FileRespone_Closure closure,
   void * closure_data){
   int create_res;
   printf("incoming path is %s and mode is %d\n", input->path, input->mode);

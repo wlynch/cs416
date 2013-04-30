@@ -436,12 +436,6 @@ void   read_response__free_unpacked
   PROTOBUF_C_ASSERT (message->base.descriptor == &read_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
-void   get_attr_response__stat__init
-                     (GetAttrResponse__Stat         *message)
-{
-  static GetAttrResponse__Stat init_value = GET_ATTR_RESPONSE__STAT__INIT;
-  *message = init_value;
-}
 void   get_attr_response__init
                      (GetAttrResponse         *message)
 {
@@ -1008,7 +1002,7 @@ const ProtobufCMessageDescriptor read_response__descriptor =
   (ProtobufCMessageInit) read_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors[13] =
+static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[13] =
 {
   {
     "st_dev",
@@ -1016,7 +1010,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_dev),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_dev),
     NULL,
     NULL,
     0,            /* packed */
@@ -1028,7 +1022,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_ino),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_ino),
     NULL,
     NULL,
     0,            /* packed */
@@ -1040,7 +1034,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_mode),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_mode),
     NULL,
     NULL,
     0,            /* packed */
@@ -1052,7 +1046,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_nlink),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_nlink),
     NULL,
     NULL,
     0,            /* packed */
@@ -1064,7 +1058,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_uid),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_uid),
     NULL,
     NULL,
     0,            /* packed */
@@ -1076,7 +1070,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_gid),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_gid),
     NULL,
     NULL,
     0,            /* packed */
@@ -1088,7 +1082,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_rdev),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_rdev),
     NULL,
     NULL,
     0,            /* packed */
@@ -1098,45 +1092,45 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     "st_size",
     8,
     PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
+    PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_size),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_size),
     NULL,
     NULL,
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
-    "st_atime",
+    "atime",
     9,
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT64,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_atime),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, atime),
     NULL,
     NULL,
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
-    "st_mtime",
+    "mtime",
     10,
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT64,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_mtime),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, mtime),
     NULL,
     NULL,
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
-    "st_ctime",
+    "ctime",
     11,
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT64,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_ctime),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, ctime),
     NULL,
     NULL,
     0,            /* packed */
@@ -1148,7 +1142,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_blksize),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_blksize),
     NULL,
     NULL,
     0,            /* packed */
@@ -1160,57 +1154,7 @@ static const ProtobufCFieldDescriptor get_attr_response__stat__field_descriptors
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse__Stat, st_blocks),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-};
-static const unsigned get_attr_response__stat__field_indices_by_name[] = {
-  8,   /* field[8] = st_atime */
-  11,   /* field[11] = st_blksize */
-  12,   /* field[12] = st_blocks */
-  10,   /* field[10] = st_ctime */
-  0,   /* field[0] = st_dev */
-  5,   /* field[5] = st_gid */
-  1,   /* field[1] = st_ino */
-  2,   /* field[2] = st_mode */
-  9,   /* field[9] = st_mtime */
-  3,   /* field[3] = st_nlink */
-  6,   /* field[6] = st_rdev */
-  7,   /* field[7] = st_size */
-  4,   /* field[4] = st_uid */
-};
-static const ProtobufCIntRange get_attr_response__stat__number_ranges[1 + 1] =
-{
-  { 1, 0 },
-  { 0, 13 }
-};
-const ProtobufCMessageDescriptor get_attr_response__stat__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "GetAttrResponse.stat",
-  "Stat",
-  "GetAttrResponse__Stat",
-  "",
-  sizeof(GetAttrResponse__Stat),
-  13,
-  get_attr_response__stat__field_descriptors,
-  get_attr_response__stat__field_indices_by_name,
-  1,  get_attr_response__stat__number_ranges,
-  (ProtobufCMessageInit) get_attr_response__stat__init,
-  NULL,NULL,NULL    /* reserved[123] */
-};
-static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[1] =
-{
-  {
-    "error_code",
-    1,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(GetAttrResponse, error_code),
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, st_blocks),
     NULL,
     NULL,
     0,            /* packed */
@@ -1218,12 +1162,24 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[1] =
   },
 };
 static const unsigned get_attr_response__field_indices_by_name[] = {
-  0,   /* field[0] = error_code */
+  8,   /* field[8] = atime */
+  10,   /* field[10] = ctime */
+  9,   /* field[9] = mtime */
+  11,   /* field[11] = st_blksize */
+  12,   /* field[12] = st_blocks */
+  0,   /* field[0] = st_dev */
+  5,   /* field[5] = st_gid */
+  1,   /* field[1] = st_ino */
+  2,   /* field[2] = st_mode */
+  3,   /* field[3] = st_nlink */
+  6,   /* field[6] = st_rdev */
+  7,   /* field[7] = st_size */
+  4,   /* field[4] = st_uid */
 };
 static const ProtobufCIntRange get_attr_response__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 1 }
+  { 0, 13 }
 };
 const ProtobufCMessageDescriptor get_attr_response__descriptor =
 {
@@ -1233,7 +1189,7 @@ const ProtobufCMessageDescriptor get_attr_response__descriptor =
   "GetAttrResponse",
   "",
   sizeof(GetAttrResponse),
-  1,
+  13,
   get_attr_response__field_descriptors,
   get_attr_response__field_indices_by_name,
   1,  get_attr_response__number_ranges,

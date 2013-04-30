@@ -52,22 +52,20 @@ message ReadResponse {
 }
 
 message GetAttrResponse{
-  message stat {
-    required int32 st_dev = 1;
-    required int32 st_ino = 2;
-    required int32 st_mode = 3;
-    required int32 st_nlink = 4;
-    required int32 st_uid = 5;
-    required int32 st_gid = 6;
-    required int32 st_rdev = 7;
-    required int32 st_blksize = 12;
-    required int32 st_blocks = 13;
-    required int64 st_size = 8;
-    required int64 st_atime = 9;
-    required int64 st_mtime = 10;
-    required int64 st_ctime = 11;
-  }
-  required int32 error_code = 1;
+  required int32 st_dev = 1;
+  required int32 st_ino = 2;
+  required int32 st_mode = 3;
+  required int32 st_nlink = 4;
+  required int32 st_uid = 5;
+  required int32 st_gid = 6;
+  required int32 st_rdev = 7;
+  required int32 st_blksize = 12;
+  required int32 st_blocks = 13;
+  required int32 st_size = 8;
+  required int64 atime = 9;
+  required int64 mtime = 10;
+  required int64 ctime = 11;
+  required int32 error_code = 14;
 }
 
 service FSService {

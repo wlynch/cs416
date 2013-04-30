@@ -20,7 +20,6 @@ typedef struct _FileResponse FileResponse;
 typedef struct _ErrorResponse ErrorResponse;
 typedef struct _ReadResponse ReadResponse;
 typedef struct _GetAttrResponse GetAttrResponse;
-typedef struct _GetAttrResponse__Stat GetAttrResponse__Stat;
 
 
 /* --- enums --- */
@@ -143,7 +142,7 @@ struct  _ReadResponse
     , {0,NULL}, 0, 0,0 }
 
 
-struct  _GetAttrResponse__Stat
+struct  _GetAttrResponse
 {
   ProtobufCMessage base;
   int32_t st_dev;
@@ -155,24 +154,14 @@ struct  _GetAttrResponse__Stat
   int32_t st_rdev;
   int32_t st_blksize;
   int32_t st_blocks;
-  int64_t st_size;
-  int64_t st_atime;
-  int64_t st_mtime;
-  int64_t st_ctime;
-};
-#define GET_ATTR_RESPONSE__STAT__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__stat__descriptor) \
-    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-
-
-struct  _GetAttrResponse
-{
-  ProtobufCMessage base;
-  int32_t error_code;
+  int32_t st_size;
+  int64_t atime;
+  int64_t mtime;
+  int64_t ctime;
 };
 #define GET_ATTR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
-    , 0 }
+    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
 /* Create methods */
@@ -365,9 +354,6 @@ ReadResponse *
 void   read_response__free_unpacked
                      (ReadResponse *message,
                       ProtobufCAllocator *allocator);
-/* GetAttrResponse__Stat methods */
-void   get_attr_response__stat__init
-                     (GetAttrResponse__Stat         *message);
 /* GetAttrResponse methods */
 void   get_attr_response__init
                      (GetAttrResponse         *message);
@@ -419,9 +405,6 @@ typedef void (*ErrorResponse_Closure)
 typedef void (*ReadResponse_Closure)
                  (const ReadResponse *message,
                   void *closure_data);
-typedef void (*GetAttrResponse__Stat_Closure)
-                 (const GetAttrResponse__Stat *message,
-                  void *closure_data);
 typedef void (*GetAttrResponse_Closure)
                  (const GetAttrResponse *message,
                   void *closure_data);
@@ -472,7 +455,6 @@ extern const ProtobufCMessageDescriptor file_response__descriptor;
 extern const ProtobufCMessageDescriptor error_response__descriptor;
 extern const ProtobufCMessageDescriptor read_response__descriptor;
 extern const ProtobufCMessageDescriptor get_attr_response__descriptor;
-extern const ProtobufCMessageDescriptor get_attr_response__stat__descriptor;
 extern const ProtobufCServiceDescriptor fsservice__descriptor;
 
 PROTOBUF_C_END_DECLS
