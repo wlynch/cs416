@@ -153,12 +153,12 @@ struct  _GetAttrResponse__Stat
   int32_t st_uid;
   int32_t st_gid;
   int32_t st_rdev;
+  int32_t st_blksize;
+  int32_t st_blocks;
   int64_t st_size;
   int64_t st_atime;
   int64_t st_mtime;
   int64_t st_ctime;
-  int32_t st_blksize;
-  int32_t st_blocks;
 };
 #define GET_ATTR_RESPONSE__STAT__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__stat__descriptor) \

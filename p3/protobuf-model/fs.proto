@@ -60,12 +60,12 @@ message GetAttrResponse{
     required int32 st_uid = 5;
     required int32 st_gid = 6;
     required int32 st_rdev = 7;
+    required int32 st_blksize = 12;
+    required int32 st_blocks = 13;
     required int64 st_size = 8;
     required int64 st_atime = 9;
     required int64 st_mtime = 10;
     required int64 st_ctime = 11;
-    required int32 st_blksize = 12;
-    required int32 st_blocks = 13;
   }
   required int32 error_code = 1;
 }

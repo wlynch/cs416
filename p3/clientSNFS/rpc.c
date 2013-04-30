@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "rpc.h"
-#include "../protobuf-models/fs-pb-c.h"
+#include "../protobuf-model/fs.pb-c.h"
 
 ProtobufC_RPC_Client * rpc_client;
 ProtobufCService * rpc_service;

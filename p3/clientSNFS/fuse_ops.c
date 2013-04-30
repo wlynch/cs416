@@ -64,11 +64,11 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
   while (!is_done.is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
 
-  if(is_done.result > 0){
-    fi->fh = is_done.result;
+  if(is_done.fd > 0){
+    fi->fh = is_done.fd;
   }
 
-  return is_done.result > 0 ? 0 : is_done.result;
+  return is_done.fd > 0 ? 0 : is_done.fd;
 
 }
 
