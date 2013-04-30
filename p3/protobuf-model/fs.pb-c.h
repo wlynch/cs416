@@ -158,10 +158,11 @@ struct  _GetAttrResponse
   int64_t atime;
   int64_t mtime;
   int64_t ctime;
+  int32_t error_code;
 };
 #define GET_ATTR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
-    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
 /* Create methods */

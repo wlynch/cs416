@@ -6,9 +6,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include "../protobuf-model/fs.pb-c.h"
 #include "filesystem.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
+#include "../protobuf-model/fs.pb-c.h"
 
 static int starts_with (const char *str, const char *prefix) {
   return memcmp (str, prefix, strlen (prefix)) == 0;
@@ -31,7 +31,7 @@ void fs__reply_to_ping(FSService_Service * service,
 
 void fs__create_file(FSService_Service * service,
   const Create * input,
-  FileRespone_Closure closure,
+  FileResponse_Closure closure,
   void * closure_data){
   int create_res;
   printf("incoming path is %s and mode is %d\n", input->path, input->mode);

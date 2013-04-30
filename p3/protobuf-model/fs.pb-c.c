@@ -1002,7 +1002,7 @@ const ProtobufCMessageDescriptor read_response__descriptor =
   (ProtobufCMessageInit) read_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[13] =
+static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
 {
   {
     "st_dev",
@@ -1160,10 +1160,23 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[13] =
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
+  {
+    "error_code",
+    14,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, error_code),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
 };
 static const unsigned get_attr_response__field_indices_by_name[] = {
   8,   /* field[8] = atime */
   10,   /* field[10] = ctime */
+  13,   /* field[13] = error_code */
   9,   /* field[9] = mtime */
   11,   /* field[11] = st_blksize */
   12,   /* field[12] = st_blocks */
@@ -1179,7 +1192,7 @@ static const unsigned get_attr_response__field_indices_by_name[] = {
 static const ProtobufCIntRange get_attr_response__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 13 }
+  { 0, 14 }
 };
 const ProtobufCMessageDescriptor get_attr_response__descriptor =
 {
@@ -1189,7 +1202,7 @@ const ProtobufCMessageDescriptor get_attr_response__descriptor =
   "GetAttrResponse",
   "",
   sizeof(GetAttrResponse),
-  13,
+  14,
   get_attr_response__field_descriptors,
   get_attr_response__field_indices_by_name,
   1,  get_attr_response__number_ranges,
