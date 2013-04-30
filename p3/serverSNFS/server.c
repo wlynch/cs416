@@ -5,14 +5,14 @@
 #include <stdbool.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <pthread.h>
 
+#include "threading.h"
 #include "filesystem.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/fs.pb-c.h"
 
-static int starts_with (const char *str, const char *prefix) {
-  return memcmp (str, prefix, strlen (prefix)) == 0;
-}
+
 
 // this will handle all rpc calls using the reply_to_ping service
 void fs__reply_to_ping(FSService_Service * service,
@@ -33,23 +33,20 @@ void fs__create_file(FSService_Service * service,
   const Create * input,
   FileResponse_Closure closure,
   void * closure_data){
-  int create_res;
-  printf("incoming path is %s and mode is %d\n", input->path, input->mode);
-
-  FileResponse create_handle = FILE_RESPONSE__INIT;
-  char * full_path = get_full_path(input->path);
-  create_res = creat(full_path, input->mode);
-
-  if(create_res < 0){
-    create_res = -errno; 
-  }
+  pthread_t thr;
+  thread_args * thread_arg;
+  Create * temp_create;
+ 
+  thread_arg = (thread_args *) malloc(sizeof(thread_args));
+  temp_create = (Create *)malloc(sizeof(Create));
+  memcpy(temp_create, input, sizeof(Create));
   
-  printf("create_res has a value of %d\n", create_res);
-  free(full_path);
-  create_handle.fd = create_res;
-  create_handle.error_code = errno;
+  thread_arg->input = (void *)input;
+  thread_arg->closure = closure;
+  thread_arg->closure_data = closure_data;
 
-  closure(&create_handle, closure_data);
+  pthread_create(&thr, NULL, create_file, thread_arg);
+
 }
 
 static FSService_Service fs_service = FSSERVICE__INIT(fs__);
