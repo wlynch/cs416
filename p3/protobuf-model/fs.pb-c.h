@@ -10,7 +10,17 @@ PROTOBUF_C_BEGIN_DECLS
 #include "ping.pb-c.h"
 
 typedef struct _Create Create;
-typedef struct _CreateResp CreateResp;
+typedef struct _Simple Simple;
+typedef struct _Write Write;
+typedef struct _Read Read;
+typedef struct _Close Close;
+typedef struct _Open Open;
+typedef struct _Truncate Truncate;
+typedef struct _FileResponse FileResponse;
+typedef struct _ErrorResponse ErrorResponse;
+typedef struct _ReadResponse ReadResponse;
+typedef struct _GetAttrResponse GetAttrResponse;
+typedef struct _GetAttrResponse__Stat GetAttrResponse__Stat;
 
 
 /* --- enums --- */
@@ -29,16 +39,140 @@ struct  _Create
     , NULL, 0 }
 
 
-struct  _CreateResp
+struct  _Simple
 {
   ProtobufCMessage base;
-  int32_t result;
+  char *path;
+};
+#define SIMPLE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&simple__descriptor) \
+    , NULL }
+
+
+struct  _Write
+{
+  ProtobufCMessage base;
+  int32_t fd;
+  ProtobufCBinaryData data;
+};
+#define WRITE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&write__descriptor) \
+    , 0, {0,NULL} }
+
+
+struct  _Read
+{
+  ProtobufCMessage base;
+  int32_t fd;
+  int32_t num_bytes;
+  protobuf_c_boolean has_offset;
+  int32_t offset;
+};
+#define READ__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&read__descriptor) \
+    , 0, 0, 0,0 }
+
+
+struct  _Close
+{
+  ProtobufCMessage base;
+  int32_t fd;
+};
+#define CLOSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&close__descriptor) \
+    , 0 }
+
+
+struct  _Open
+{
+  ProtobufCMessage base;
+  char *path;
+  char *flags;
+};
+#define OPEN__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&open__descriptor) \
+    , NULL, NULL }
+
+
+struct  _Truncate
+{
+  ProtobufCMessage base;
+  char *path;
+  int32_t num_bytes;
+};
+#define TRUNCATE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&truncate__descriptor) \
+    , NULL, 0 }
+
+
+struct  _FileResponse
+{
+  ProtobufCMessage base;
+  int32_t fd;
+  int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
 };
-#define CREATE_RESP__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&create_resp__descriptor) \
+#define FILE_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&file_response__descriptor) \
+    , 0, 0, 0,0 }
+
+
+struct  _ErrorResponse
+{
+  ProtobufCMessage base;
+  int32_t error_code;
+  protobuf_c_boolean has_is_done;
+  protobuf_c_boolean is_done;
+};
+#define ERROR_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&error_response__descriptor) \
     , 0, 0,0 }
+
+
+struct  _ReadResponse
+{
+  ProtobufCMessage base;
+  ProtobufCBinaryData data;
+  int32_t error_code;
+  protobuf_c_boolean has_is_done;
+  protobuf_c_boolean is_done;
+};
+#define READ_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&read_response__descriptor) \
+    , {0,NULL}, 0, 0,0 }
+
+
+struct  _GetAttrResponse__Stat
+{
+  ProtobufCMessage base;
+  int32_t st_dev;
+  int32_t st_ino;
+  int32_t st_mode;
+  int32_t st_nlink;
+  int32_t st_uid;
+  int32_t st_gid;
+  int32_t st_rdev;
+  int64_t st_size;
+  int64_t st_atime;
+  int64_t st_mtime;
+  int64_t st_ctime;
+  int32_t st_blksize;
+  int32_t st_blocks;
+};
+#define GET_ATTR_RESPONSE__STAT__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__stat__descriptor) \
+    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+
+
+struct  _GetAttrResponse
+{
+  ProtobufCMessage base;
+  int32_t error_code;
+};
+#define GET_ATTR_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
+    , 0 }
 
 
 /* Create methods */
@@ -60,32 +194,236 @@ Create *
 void   create__free_unpacked
                      (Create *message,
                       ProtobufCAllocator *allocator);
-/* CreateResp methods */
-void   create_resp__init
-                     (CreateResp         *message);
-size_t create_resp__get_packed_size
-                     (const CreateResp   *message);
-size_t create_resp__pack
-                     (const CreateResp   *message,
+/* Simple methods */
+void   simple__init
+                     (Simple         *message);
+size_t simple__get_packed_size
+                     (const Simple   *message);
+size_t simple__pack
+                     (const Simple   *message,
                       uint8_t             *out);
-size_t create_resp__pack_to_buffer
-                     (const CreateResp   *message,
+size_t simple__pack_to_buffer
+                     (const Simple   *message,
                       ProtobufCBuffer     *buffer);
-CreateResp *
-       create_resp__unpack
+Simple *
+       simple__unpack
                      (ProtobufCAllocator  *allocator,
                       size_t               len,
                       const uint8_t       *data);
-void   create_resp__free_unpacked
-                     (CreateResp *message,
+void   simple__free_unpacked
+                     (Simple *message,
+                      ProtobufCAllocator *allocator);
+/* Write methods */
+void   write__init
+                     (Write         *message);
+size_t write__get_packed_size
+                     (const Write   *message);
+size_t write__pack
+                     (const Write   *message,
+                      uint8_t             *out);
+size_t write__pack_to_buffer
+                     (const Write   *message,
+                      ProtobufCBuffer     *buffer);
+Write *
+       write__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   write__free_unpacked
+                     (Write *message,
+                      ProtobufCAllocator *allocator);
+/* Read methods */
+void   read__init
+                     (Read         *message);
+size_t read__get_packed_size
+                     (const Read   *message);
+size_t read__pack
+                     (const Read   *message,
+                      uint8_t             *out);
+size_t read__pack_to_buffer
+                     (const Read   *message,
+                      ProtobufCBuffer     *buffer);
+Read *
+       read__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   read__free_unpacked
+                     (Read *message,
+                      ProtobufCAllocator *allocator);
+/* Close methods */
+void   close__init
+                     (Close         *message);
+size_t close__get_packed_size
+                     (const Close   *message);
+size_t close__pack
+                     (const Close   *message,
+                      uint8_t             *out);
+size_t close__pack_to_buffer
+                     (const Close   *message,
+                      ProtobufCBuffer     *buffer);
+Close *
+       close__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   close__free_unpacked
+                     (Close *message,
+                      ProtobufCAllocator *allocator);
+/* Open methods */
+void   open__init
+                     (Open         *message);
+size_t open__get_packed_size
+                     (const Open   *message);
+size_t open__pack
+                     (const Open   *message,
+                      uint8_t             *out);
+size_t open__pack_to_buffer
+                     (const Open   *message,
+                      ProtobufCBuffer     *buffer);
+Open *
+       open__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   open__free_unpacked
+                     (Open *message,
+                      ProtobufCAllocator *allocator);
+/* Truncate methods */
+void   truncate__init
+                     (Truncate         *message);
+size_t truncate__get_packed_size
+                     (const Truncate   *message);
+size_t truncate__pack
+                     (const Truncate   *message,
+                      uint8_t             *out);
+size_t truncate__pack_to_buffer
+                     (const Truncate   *message,
+                      ProtobufCBuffer     *buffer);
+Truncate *
+       truncate__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   truncate__free_unpacked
+                     (Truncate *message,
+                      ProtobufCAllocator *allocator);
+/* FileResponse methods */
+void   file_response__init
+                     (FileResponse         *message);
+size_t file_response__get_packed_size
+                     (const FileResponse   *message);
+size_t file_response__pack
+                     (const FileResponse   *message,
+                      uint8_t             *out);
+size_t file_response__pack_to_buffer
+                     (const FileResponse   *message,
+                      ProtobufCBuffer     *buffer);
+FileResponse *
+       file_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   file_response__free_unpacked
+                     (FileResponse *message,
+                      ProtobufCAllocator *allocator);
+/* ErrorResponse methods */
+void   error_response__init
+                     (ErrorResponse         *message);
+size_t error_response__get_packed_size
+                     (const ErrorResponse   *message);
+size_t error_response__pack
+                     (const ErrorResponse   *message,
+                      uint8_t             *out);
+size_t error_response__pack_to_buffer
+                     (const ErrorResponse   *message,
+                      ProtobufCBuffer     *buffer);
+ErrorResponse *
+       error_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   error_response__free_unpacked
+                     (ErrorResponse *message,
+                      ProtobufCAllocator *allocator);
+/* ReadResponse methods */
+void   read_response__init
+                     (ReadResponse         *message);
+size_t read_response__get_packed_size
+                     (const ReadResponse   *message);
+size_t read_response__pack
+                     (const ReadResponse   *message,
+                      uint8_t             *out);
+size_t read_response__pack_to_buffer
+                     (const ReadResponse   *message,
+                      ProtobufCBuffer     *buffer);
+ReadResponse *
+       read_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   read_response__free_unpacked
+                     (ReadResponse *message,
+                      ProtobufCAllocator *allocator);
+/* GetAttrResponse__Stat methods */
+void   get_attr_response__stat__init
+                     (GetAttrResponse__Stat         *message);
+/* GetAttrResponse methods */
+void   get_attr_response__init
+                     (GetAttrResponse         *message);
+size_t get_attr_response__get_packed_size
+                     (const GetAttrResponse   *message);
+size_t get_attr_response__pack
+                     (const GetAttrResponse   *message,
+                      uint8_t             *out);
+size_t get_attr_response__pack_to_buffer
+                     (const GetAttrResponse   *message,
+                      ProtobufCBuffer     *buffer);
+GetAttrResponse *
+       get_attr_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   get_attr_response__free_unpacked
+                     (GetAttrResponse *message,
                       ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
 typedef void (*Create_Closure)
                  (const Create *message,
                   void *closure_data);
-typedef void (*CreateResp_Closure)
-                 (const CreateResp *message,
+typedef void (*Simple_Closure)
+                 (const Simple *message,
+                  void *closure_data);
+typedef void (*Write_Closure)
+                 (const Write *message,
+                  void *closure_data);
+typedef void (*Read_Closure)
+                 (const Read *message,
+                  void *closure_data);
+typedef void (*Close_Closure)
+                 (const Close *message,
+                  void *closure_data);
+typedef void (*Open_Closure)
+                 (const Open *message,
+                  void *closure_data);
+typedef void (*Truncate_Closure)
+                 (const Truncate *message,
+                  void *closure_data);
+typedef void (*FileResponse_Closure)
+                 (const FileResponse *message,
+                  void *closure_data);
+typedef void (*ErrorResponse_Closure)
+                 (const ErrorResponse *message,
+                  void *closure_data);
+typedef void (*ReadResponse_Closure)
+                 (const ReadResponse *message,
+                  void *closure_data);
+typedef void (*GetAttrResponse__Stat_Closure)
+                 (const GetAttrResponse__Stat *message,
+                  void *closure_data);
+typedef void (*GetAttrResponse_Closure)
+                 (const GetAttrResponse *message,
                   void *closure_data);
 
 /* --- services --- */
@@ -100,7 +438,7 @@ struct _FSService_Service
                         void *closure_data);
   void (*create_file)(FSService_Service *service,
                       const Create *input,
-                      CreateResp_Closure closure,
+                      FileResponse_Closure closure,
                       void *closure_data);
 };
 typedef void (*FSService_ServiceDestroy)(FSService_Service *);
@@ -118,13 +456,23 @@ void fsservice__reply_to_ping(ProtobufCService *service,
                               void *closure_data);
 void fsservice__create_file(ProtobufCService *service,
                             const Create *input,
-                            CreateResp_Closure closure,
+                            FileResponse_Closure closure,
                             void *closure_data);
 
 /* --- descriptors --- */
 
 extern const ProtobufCMessageDescriptor create__descriptor;
-extern const ProtobufCMessageDescriptor create_resp__descriptor;
+extern const ProtobufCMessageDescriptor simple__descriptor;
+extern const ProtobufCMessageDescriptor write__descriptor;
+extern const ProtobufCMessageDescriptor read__descriptor;
+extern const ProtobufCMessageDescriptor close__descriptor;
+extern const ProtobufCMessageDescriptor open__descriptor;
+extern const ProtobufCMessageDescriptor truncate__descriptor;
+extern const ProtobufCMessageDescriptor file_response__descriptor;
+extern const ProtobufCMessageDescriptor error_response__descriptor;
+extern const ProtobufCMessageDescriptor read_response__descriptor;
+extern const ProtobufCMessageDescriptor get_attr_response__descriptor;
+extern const ProtobufCMessageDescriptor get_attr_response__stat__descriptor;
 extern const ProtobufCServiceDescriptor fsservice__descriptor;
 
 PROTOBUF_C_END_DECLS

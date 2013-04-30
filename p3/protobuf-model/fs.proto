@@ -5,12 +5,72 @@ message Create {
   required int32 mode = 2;
 }
 
-message CreateResp {
-  required int32 result = 1;
+message Simple {
+  required string path = 1;
+}
+
+message Write {
+  required int32 fd = 1;
+  required bytes data = 2;
+}
+
+message Read {
+  required int32 fd = 1;
+  required int32 num_bytes = 2;
+  optional int32 offset = 3;
+}
+
+message Close {
+  required int32 fd = 1;
+}
+
+message Open {
+  required string path = 1;
+  required string flags = 2;
+}
+
+message Truncate {
+  required string path = 1;
+  required int32 num_bytes = 2;
+}
+
+message FileResponse {
+  required int32 fd = 1;
+  required int32 error_code = 2;
+  optional bool is_done = 3;
+}
+
+message ErrorResponse {
+  required int32 error_code = 1;
   optional bool is_done = 2;
+}
+
+message ReadResponse {
+  required bytes data = 1;
+  required int32 error_code = 2;
+  optional bool is_done = 3;
+}
+
+message GetAttrResponse{
+  message stat {
+    required int32 st_dev = 1;
+    required int32 st_ino = 2;
+    required int32 st_mode = 3;
+    required int32 st_nlink = 4;
+    required int32 st_uid = 5;
+    required int32 st_gid = 6;
+    required int32 st_rdev = 7;
+    required int64 st_size = 8;
+    required int64 st_atime = 9;
+    required int64 st_mtime = 10;
+    required int64 st_ctime = 11;
+    required int32 st_blksize = 12;
+    required int32 st_blocks = 13;
+  }
+  required int32 error_code = 1;
 }
 
 service FSService {
   rpc ReplyToPing (Ping) returns (Ping);
-  rpc CreateFile (Create) returns (CreateResp);
+  rpc CreateFile (Create) returns (FileResponse);
 }

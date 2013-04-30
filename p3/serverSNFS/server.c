@@ -31,12 +31,12 @@ void fs__reply_to_ping(FSService_Service * service,
 
 void fs__create_file(FSService_Service * service,
   const Create * input,
-  const CreateResp_Closure closure,
+  const FileRespone_Closure closure,
   void * closure_data){
   int create_res;
   printf("incoming path is %s and mode is %d\n", input->path, input->mode);
 
-  CreateResp create_handle = CREATE_RESP__INIT;
+  FileResponse create_handle = FILE_RESPONSE__INIT;
   char * full_path = get_full_path(input->path);
   create_res = creat(full_path, input->mode);
 
@@ -46,7 +46,8 @@ void fs__create_file(FSService_Service * service,
   
   printf("create_res has a value of %d\n", create_res);
   free(full_path);
-  create_handle.result = create_res;
+  create_handle.fd = create_res;
+  create_handle.error_code = errno;
 
   closure(&create_handle, closure_data);
 }

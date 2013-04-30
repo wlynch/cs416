@@ -57,7 +57,7 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
   Create create = CREATE__INIT;
   create.path = strdup(path);
   create.mode = mode;
-  CreateResp is_done = CREATE_RESP__INIT; 
+  FileResponse is_done = FILE_RESPONSE__INIT; 
 
   fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);
 
