@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "received a connection!!!");
     bzero(buffer, 256);
     bytes_read = read(new_socket, buffer, 255);
-    printf("message is %s\n", buffer);
+    printf("message is %s and the number of bytes read was %d\n", buffer, bytes_read);
     close(new_socket);
   }
 

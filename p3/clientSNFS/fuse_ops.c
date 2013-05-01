@@ -22,6 +22,7 @@
 #include "log.h"
 #include "../message_def.h"
 
+static char message_buffer[256];
 
 static int getattr(const char *path, struct stat *stbuf) {
   int res = 0;
@@ -71,7 +72,8 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
   
   send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
-  byte_order = htonl(send_size);
+  // ignore the length when writing the length of the message
+  byte_order = htonl(send_size - sizeof(uint32_t));
   message_type = htonl(CREATE_MESSAGE);
   memcpy(send_buffer, &byte_order, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
@@ -79,7 +81,10 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
  
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-  write(sock, send_buffer, send_size);
+  int bytes_written = write(sock, send_buffer, send_size);
+  sprintf(message_buffer, "bytes_written is %d", bytes_written);
+  log_msg(message_buffer);
+
   close(sock);
 
   return is_done.fd > 0 ? 0 : is_done.fd;

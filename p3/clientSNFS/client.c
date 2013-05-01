@@ -78,15 +78,16 @@ int main (int argc, char ** argv) {
     fprintf(stderr, "Error, could not find a host with that name\n");
     return 1;
   }
-  /*bzero((char *) &serv_addr, sizeof(serv_addr));
+  bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
   bcopy((char *)server->h_addr,
       (char *)&serv_addr.sin_addr.s_addr,
       server->h_length);
   serv_addr.sin_port = htons(port);
+  
   connect(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)); 
   write(sock, "hello world", strlen("hello world"));
-  close(sock);*/
+  close(sock);
 
   log_file = log_open();
 
