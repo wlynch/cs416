@@ -66,7 +66,6 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   uint32_t send_size, net_data_size, message_type, receive_size;
   create.path = strdup(path);
   create.mode = mode;
-  create.type = CREATE_MESSAGE;
   
   /* Pack code */
   
@@ -122,7 +121,6 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
   uint32_t send_size, net_data_size, message_type;
   truncate.path = strdup(path);
   truncate.num_bytes = length;
-  truncate.type = TRUNCATE_MESSAGE;
 
   FileResponse is_done = FILE_RESPONSE__INIT; 
   
@@ -153,7 +151,6 @@ static int _close(int fd, struct fuse_file_info *fi){
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type;
   close_struct.fd = fd;
-  close_struct.type = CLOSE_MESSAGE;
 
   FileResponse is_done = FILE_RESPONSE__INIT; 
   
