@@ -3,62 +3,52 @@ import "ping.proto";
 message Create {
   required string path = 1;
   required int32 mode = 2;
-  required int32 type = 4;
 }
 
 message Simple {
   required string path = 1;
-  required int32 type = 4;
 }
 
 message Write {
   required int32 fd = 1;
   required bytes data = 2;
-  required int32 type = 4;
 }
 
 message Read {
   required int32 fd = 1;
   required int32 num_bytes = 2;
   optional int32 offset = 3;
-  required int32 type = 4;
 }
 
 message Close {
   required int32 fd = 1;
-  required int32 type = 4;
 }
 
 message Open {
   required string path = 1;
   required string flags = 2;
-  required int32 type = 4;
 }
 
 message Truncate {
   required string path = 1;
   required int32 num_bytes = 2;
-  required int32 type = 4;
 }
 
 message FileResponse {
   required int32 fd = 1;
   required int32 error_code = 2;
   optional bool is_done = 3;
-  required int32 type = 4;
 }
 
 message ErrorResponse {
   required int32 error_code = 1;
   optional bool is_done = 2;
-  required int32 type = 4;
 }
 
 message ReadResponse {
   required bytes data = 1;
   required int32 error_code = 2;
   optional bool is_done = 3;
-  required int32 type = 4;
 }
 
 message GetAttrResponse{
@@ -76,7 +66,6 @@ message GetAttrResponse{
   required int64 mtime = 10;
   required int64 ctime = 11;
   required int32 error_code = 14;
-  required int32 type = 15;
 }
 
 
