@@ -63,7 +63,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   Create create = CREATE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, byte_order, message_type;
+  uint32_t send_size, net_data_size, message_type;
   create.path = strdup(path);
   create.mode = mode;
   create.type = CREATE_MESSAGE;
@@ -76,9 +76,9 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
-  byte_order = htonl(send_size - sizeof(uint32_t));
+  net_data_size = htonl(send_size - sizeof(uint32_t));
   message_type = htonl(CREATE_MESSAGE);
-  memcpy(send_buffer, &byte_order, sizeof(uint32_t));
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   create__pack(&create, send_buffer + 2 * sizeof(uint32_t));
  
@@ -99,7 +99,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
   Truncate truncate = TRUNCATE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, byte_order, message_type;
+  uint32_t send_size, net_data_size, message_type;
   truncate.path = strdup(path);
   truncate.num_bytes = length;
   truncate.type = TRUNCATE_MESSAGE;
@@ -109,9 +109,9 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
   send_size = truncate__get_packed_size(&truncate) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
-  byte_order = htonl(send_size - sizeof(uint32_t));
+  net_data_size = htonl(send_size - sizeof(uint32_t));
   message_type = htonl(TRUNCATE_MESSAGE);
-  memcpy(send_buffer, &byte_order, sizeof(uint32_t));
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   truncate__pack(&truncate, send_buffer + 2 * sizeof(uint32_t));
  
@@ -131,7 +131,7 @@ static int _close(int fd, struct fuse_file_info *fi){
   Close close_struct = CLOSE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, byte_order, message_type;
+  uint32_t send_size, net_data_size, message_type;
   close_struct.fd = fd;
   close_struct.type = CLOSE_MESSAGE;
 
@@ -140,9 +140,9 @@ static int _close(int fd, struct fuse_file_info *fi){
   send_size = close__get_packed_size(&close_struct) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
-  byte_order = htonl(send_size - sizeof(uint32_t));
+  net_data_size = htonl(send_size - sizeof(uint32_t));
   message_type = htonl(CLOSE_MESSAGE);
-  memcpy(send_buffer, &byte_order, sizeof(uint32_t));
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   close__pack(&close_struct, send_buffer + 2 * sizeof(uint32_t));
  
