@@ -95,6 +95,7 @@ int main (int argc, char ** argv) {
   p->fuse_argc = fuse_argc;
   p->fuse_args = fuse_args;
   fuse_main(fuse_argc, fuse_args, &ops, NULL);
+  free(p);
 
   return 0;
 }

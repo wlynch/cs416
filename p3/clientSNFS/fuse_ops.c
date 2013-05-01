@@ -59,7 +59,7 @@ static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t o
 
 static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
-  log_msg("logging in create");
+  log_msg("Got into create");
   Create create = CREATE__INIT;
   void *send_buffer;
   void *receive_buffer;
@@ -68,11 +68,12 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   create.mode = mode;
   create.type = CREATE_MESSAGE;
   
-  send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
-  sprintf(log_buffer, "size which should be read is %lu\n", send_size - sizeof(uint32_t));
-  log_msg(log_buffer);
-
   /* Pack code */
+  
+  send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
+ 
+  sprintf(log_buffer, "size which was sent is %lu", send_size - sizeof(uint32_t));
+  log_msg(log_buffer);
 
   send_buffer = malloc(send_size);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
@@ -101,8 +102,13 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   
   sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
-
+  
+  free(create.path);
   close(sock);
+
+  if(resp->fd > 0){
+    fi->fh = fd;
+  }
 
   return resp->fd > 0 ? resp->fd : resp->error_code;
 

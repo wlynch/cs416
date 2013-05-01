@@ -85,7 +85,7 @@ void create_file(Create * input, FileResponse * resp)
   fprintf(stderr, "full path is %s\n", full_path);
   free(full_path);
   create_handle.fd = create_res;
-  create_handle.error_code = errno;
+  create_handle.error_code = -errno;
 
   memcpy(resp, &create_handle, sizeof(create_handle));
 }
