@@ -22,8 +22,7 @@
 #include "log.h"
 #include "../message_def.h"
 
-extern int sock;
-extern struct sockaddr_in serv_addr;
+
 static int getattr(const char *path, struct stat *stbuf) {
   int res = 0;
 
