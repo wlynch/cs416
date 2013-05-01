@@ -71,6 +71,9 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   FileResponse is_done = FILE_RESPONSE__INIT; 
   
   send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
+  sprintf(message_buffer, "size which should be read is %d\n", send_size - sizeof(uint32_t));
+  log_msg(message_buffer);
+
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
   byte_order = htonl(send_size - sizeof(uint32_t));

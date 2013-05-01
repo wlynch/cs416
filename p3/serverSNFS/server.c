@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
   unsigned i;
   bool set_root;
   char buffer[256];
+  uint32_t size_buffer, int_buffer;
 
   if(argc != 5){
     fprintf(stderr, "Error, please supply a -mount and -port option\n");
@@ -78,9 +79,13 @@ int main(int argc, char **argv) {
     new_socket = accept(sock, (struct sockaddr *) &client_addr, &client_len);
     fprintf(stderr, "received a connection!!!");
     bzero(buffer, 256);
-    bytes_read = read(new_socket, buffer, 255);
-    printf("message is %s and the number of bytes read was %d\n", buffer, bytes_read);
-    close(new_socket);
+    
+    thread_args * thr_args = malloc(sizeof(thread_args));
+    thr_args->socket = new_socket;
+
+    pthread_t thr;
+    pthread_create(&thr, NULL, handle_request, thr_args);
+     
   }
 
   return 0;
