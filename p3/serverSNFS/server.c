@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 
     pthread_t thr;
     pthread_create(&thr, NULL, handle_request, thr_args);
-     
+    pthread_detach(thr);
   }
 
   return 0;

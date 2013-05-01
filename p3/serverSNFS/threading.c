@@ -28,7 +28,7 @@ void *handle_request(void * args){
   // TODO: HANDLE ERRORS
 
   read(thr_arg->socket, &message_type, sizeof(message_type));
-  message_size = ntohl(message_size) - sizeof(message_type); 
+  message_size = ntohl(message_size); 
   message_type = ntohl(message_type);
   message_buffer = malloc(message_size);
   read(thr_arg->socket, message_buffer, message_size);
@@ -39,7 +39,27 @@ void *handle_request(void * args){
       {
         Create * create;
         create = create__unpack(NULL, message_size, message_buffer);
-        FileResponse *resp;
+        FileResponse *resp = malloc(sizeof(FileResponse));
+        create_file(create, resp);
+        
+        uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        // ignore the length when writing the length of the message
+        uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        message_type = htonl(FILE_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        file_response__pack(resp, send_buffer + 2 * sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+        fprintf(stderr, "successfully sent the message over back to the client\n"\
+            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
+        free(resp);
+        break;
       }
   }
 
@@ -49,7 +69,7 @@ void *handle_request(void * args){
   return NULL;
 }
 
-void create_file(Create * input)
+void create_file(Create * input, FileResponse * resp)
 {
   int create_res;
   char * full_path;
@@ -63,11 +83,10 @@ void create_file(Create * input)
   }
   
   printf("create_res has a value of %d\n", create_res);
+  fprintf(stderr, "full path is %s\n", full_path);
   free(full_path);
   create_handle.fd = create_res;
   create_handle.error_code = errno;
 
-  FileResponse * resp = malloc(sizeof(FileResponse));
-  *resp = create_handle;
-  return resp;
+  memcpy(resp, &create_handle, sizeof(create_handle));
 }
