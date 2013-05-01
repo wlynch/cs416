@@ -63,34 +63,48 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   Create create = CREATE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, net_data_size, message_type;
+  uint32_t send_size, net_data_size, message_type, receive_size;
   create.path = strdup(path);
   create.mode = mode;
   create.type = CREATE_MESSAGE;
-
-  FileResponse is_done = FILE_RESPONSE__INIT; 
   
   send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
-  sprintf(message_buffer, "size which should be read is %d\n", send_size - sizeof(uint32_t));
-  log_msg(message_buffer);
+  sprintf(log_buffer, "size which should be read is %lu\n", send_size - sizeof(uint32_t));
+  log_msg(log_buffer);
+
+  /* Pack code */
 
   send_buffer = malloc(send_size);
-  // ignore the length when writing the length of the message
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(CREATE_MESSAGE);
   memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   create__pack(&create, send_buffer + 2 * sizeof(uint32_t));
  
+  /* Send code */
+
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   int bytes_written = write(sock, send_buffer, send_size);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
 
+  /* Receive code */
+
+  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  void *payload = malloc(receive_size);
+  read(sock, payload, receive_size);
+  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
+  
+  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  log_msg(log_buffer);
+
   close(sock);
 
-  return is_done.fd > 0 ? 0 : is_done.fd;
+  return resp->fd > 0 ? resp->fd : resp->error_code;
 
 }
 

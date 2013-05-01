@@ -37,8 +37,7 @@ void *handle_request(void * args){
   {
     case CREATE_MESSAGE:
       {
-        Create * create;
-        create = create__unpack(NULL, message_size, message_buffer);
+        Create * create = create__unpack(NULL, message_size, message_buffer);
         FileResponse *resp = malloc(sizeof(FileResponse));
         create_file(create, resp);
         
