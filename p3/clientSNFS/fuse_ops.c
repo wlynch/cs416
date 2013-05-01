@@ -92,7 +92,6 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 }
 
 static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
-
   log_msg("logging in truncate");
   Truncate truncate = TRUNCATE__INIT;
   void *send_buffer;
@@ -112,6 +111,37 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
   memcpy(send_buffer, &byte_order, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   truncate__pack(&truncate, send_buffer + 2 * sizeof(uint32_t));
+ 
+  int sock = socket(AF_INET, SOCK_STREAM, 0);;
+  int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  int bytes_written = write(sock, send_buffer, send_size);
+  sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
+
+  close(sock);
+
+  return is_done.fd > 0 ? 0 : is_done.fd;
+}
+
+static int _close(int fd, struct fuse_file_info *fi){
+  log_msg("logging in truncate");
+  Close close_struct = CLOSE__INIT;
+  void *send_buffer;
+  void *receive_buffer;
+  uint32_t send_size, byte_order, message_type;
+  close_struct.fd = fd;
+  close_struct.type = CLOSE_MESSAGE;
+
+  FileResponse is_done = FILE_RESPONSE__INIT; 
+  
+  send_size = close__get_packed_size(&close_struct) + 2*sizeof(uint32_t);
+  send_buffer = malloc(send_size);
+  // ignore the length when writing the length of the message
+  byte_order = htonl(send_size - sizeof(uint32_t));
+  message_type = htonl(CLOSE_MESSAGE);
+  memcpy(send_buffer, &byte_order, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+  close__pack(&close_struct, send_buffer + 2 * sizeof(uint32_t));
  
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
