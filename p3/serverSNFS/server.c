@@ -3,61 +3,31 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
 #include <fcntl.h>
 #include <errno.h>
+#include <pthread.h>
+#include <unistd.h>
 
-#include "../protobuf-model/fs.pb-c.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
+#include "threading.h"
 #include "filesystem.h"
 #include <google/protobuf-c/protobuf-c-rpc.h>
 
-static int starts_with (const char *str, const char *prefix) {
-  return memcmp (str, prefix, strlen (prefix)) == 0;
-}
-
-// this will handle all rpc calls using the reply_to_ping service
-void fs__reply_to_ping(FSService_Service * service,
- const Ping * input,
- Ping_Closure closure,
- void * closure_data) {
-  printf("input->message: %s\n", input->message);
-
-  // init the message
-  Ping ping_response = PING__INIT;
-  ping_response.message = strdup("hi");
-
-  // respond with the ping_response buffer
-  closure(&ping_response, closure_data);
-}
-
-void fs__create_file(FSService_Service * service,
-  const Create * input,
-  const CreateResp_Closure closure,
-  void * closure_data){
-  int create_res;
-  printf("incoming path is %s and mode is %d\n", input->path, input->mode);
-
-  CreateResp create_handle = CREATE_RESP__INIT;
-  char * full_path = get_full_path(input->path);
-  create_res = creat(full_path, input->mode);
-
-  if(create_res < 0){
-    create_res = -errno; 
-  }
-  
-  printf("create_res has a value of %d\n", create_res);
-  free(full_path);
-  create_handle.result = create_res;
-
-  closure(&create_handle, closure_data);
-}
-
-static FSService_Service fs_service = FSSERVICE__INIT(fs__);
 
 int main(int argc, char **argv) {
-  ProtobufC_RPC_Server * server;
-  const char * port = NULL, * mount = NULL;
+  int sock, port, new_socket, bytes_read;
+  const char * mount = NULL;
+  struct sockaddr_in serv_addr, client_addr;
+  socklen_t client_len;
   unsigned i;
   bool set_root;
+  char buffer[256];
+  uint32_t size_buffer, int_buffer;
 
   if(argc != 5){
     fprintf(stderr, "Error, please supply a -mount and -port option\n");
@@ -66,7 +36,7 @@ int main(int argc, char **argv) {
 
   for (i = 1; i < (unsigned) argc; i += 2) {
     if (strcmp(argv[i], "-port") == 0) {
-      port = argv[i + 1];
+      port = strtol(argv[i + 1], NULL, 10);
     }
     else if(strcmp (argv[i], "-mount") == 0){
       mount = argv[i + 1];        
@@ -84,11 +54,39 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  server = protobuf_c_rpc_server_new (PROTOBUF_C_RPC_ADDRESS_TCP, port, (ProtobufCService *) &fs_service, NULL);
+  sock = socket(AF_INET, SOCK_STREAM, 0);
+  if(sock < 0)
+  {
+    fprintf(stderr, "Error, couldn't create a socket, something's eally wrong\n");
+    return 1;
+  }
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  /* intialize the socket */
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(port);
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  
+  if(bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+  {
+    fprintf(stderr, "Error while trying to bind the socket\n");
+    return 1;
+  }
 
-  for (;;)
-    protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
+  listen(sock, 5);
 
-  protobuf_c_rpc_server_destroy(server, 1);
+  while(true)
+  {
+    new_socket = accept(sock, (struct sockaddr *) &client_addr, &client_len);
+    fprintf(stderr, "received a connection!!!\n");
+    bzero(buffer, 256);
+    
+    thread_args * thr_args = malloc(sizeof(thread_args));
+    thr_args->socket = new_socket;
+
+    pthread_t thr;
+    pthread_create(&thr, NULL, handle_request, thr_args);
+    pthread_detach(thr);
+  }
+
   return 0;
 }

@@ -1,4 +1,4 @@
-export PATH=/filer/tmp2/contrib/bin:$PATH
+export PATH:=/filer/tmp2/contrib/bin:${PATH}
 
 CC= protoc-c
 
