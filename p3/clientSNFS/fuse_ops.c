@@ -19,7 +19,7 @@
 
 #include "rpc.h"
 #include "externs.h"
-#include "sockets.h"
+#include "log.h"
 #include "../message_def.h"
 
 extern int sock;
@@ -59,7 +59,7 @@ static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
 
 static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
-  perror("generic world!!");
+  log_msg("logging in create");
   Create create = CREATE__INIT;
   void *send_buffer;
   void *receive_buffer;

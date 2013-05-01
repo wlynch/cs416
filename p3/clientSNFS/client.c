@@ -19,7 +19,7 @@
 #include "../protobuf-model/fs.pb-c.h"
 #include "rpc.h"
 #include "externs.h"
-#include "sockets.h"
+#include "log.h"
 
 pthread_t fuse_thread;
 
@@ -78,7 +78,7 @@ int main (int argc, char ** argv) {
     fprintf(stderr, "Error, could not find a host with that name\n");
     return 1;
   }
-  bzero((char *) &serv_addr, sizeof(serv_addr));
+  /*bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
   bcopy((char *)server->h_addr,
       (char *)&serv_addr.sin_addr.s_addr,
@@ -86,15 +86,14 @@ int main (int argc, char ** argv) {
   serv_addr.sin_port = htons(port);
   connect(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)); 
   write(sock, "hello world", strlen("hello world"));
-  close(sock);
+  close(sock);*/
+
+  log_file = log_open();
 
   struct fuse_params * p = malloc(sizeof(struct fuse_params));
   p->fuse_argc = fuse_argc;
   p->fuse_args = fuse_args;
   fuse_main(fuse_argc, fuse_args, &ops, NULL);
-  /*pthread_create(&fuse_thread, NULL, handle_fuse, p);
-
-  pthread_join(fuse_thread, NULL);*/
 
   return 0;
 }
