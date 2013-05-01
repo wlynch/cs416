@@ -19,6 +19,7 @@
 #include "../protobuf-model/fs.pb-c.h"
 #include "rpc.h"
 #include "externs.h"
+#include "sockets.h"
 
 pthread_t fuse_thread;
 
@@ -31,7 +32,6 @@ void * handle_fuse(void * param) {
   struct fuse_params * params = (struct fuse_params *)param;
   printf("argc: %i, mount: %s\n", params->fuse_argc, params->fuse_args[1]);
   fflush(stdout);
-  fuse_main(params->fuse_argc, params->fuse_args, &ops, NULL);
   return 0;
 }
 
@@ -39,9 +39,10 @@ static int starts_with (const char *str, const char *prefix) {
   return memcmp (str, prefix, strlen (prefix)) == 0;
 }
 
+extern struct fuse_operations ops;
+
 int main (int argc, char ** argv) {
   int port, sock;
-  struct sockaddr_in serv_addr;
   struct hostent *server;
   char * fuse_args[] = {NULL, NULL};
   int fuse_argc = 2;
@@ -87,11 +88,11 @@ int main (int argc, char ** argv) {
   write(sock, "hello world", strlen("hello world"));
   close(sock);
 
-  /*struct fuse_params * p = malloc(sizeof(struct fuse_params));
+  struct fuse_params * p = malloc(sizeof(struct fuse_params));
   p->fuse_argc = fuse_argc;
   p->fuse_args = fuse_args;
-
-  pthread_create(&fuse_thread, NULL, handle_fuse, p);
+  fuse_main(fuse_argc, fuse_args, &ops, NULL);
+  /*pthread_create(&fuse_thread, NULL, handle_fuse, p);
 
   pthread_join(fuse_thread, NULL);*/
 

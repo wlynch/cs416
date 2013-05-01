@@ -76,6 +76,7 @@ int main(int argc, char **argv) {
   while(true)
   {
     new_socket = accept(sock, (struct sockaddr *) &client_addr, &client_len);
+    fprintf(stderr, "received a connection!!!");
     bzero(buffer, 256);
     bytes_read = read(new_socket, buffer, 255);
     printf("message is %s\n", buffer);
