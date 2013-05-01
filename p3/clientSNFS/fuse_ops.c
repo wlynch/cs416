@@ -22,9 +22,9 @@
 #include "log.h"
 #include "../message_def.h"
 
-static char message_buffer[256];
+static char log_buffer[256];
 
-static int getattr(const char *path, struct stat *stbuf) {
+static int _getattr(const char *path, struct stat *stbuf) {
   int res = 0;
 
   memset(stbuf, 0, sizeof(struct stat));
@@ -42,7 +42,7 @@ static int getattr(const char *path, struct stat *stbuf) {
   return res;
 }
 
-static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
+static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
   fprintf(stderr, "reading %s\n", path);
   fflush(stderr);
   filler(buf, ".", NULL, 0);
@@ -57,7 +57,7 @@ static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
   return 0;
 }
 
-static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
+static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
   log_msg("logging in create");
   Create create = CREATE__INIT;
@@ -85,8 +85,8 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   int bytes_written = write(sock, send_buffer, send_size);
-  sprintf(message_buffer, "bytes_written is %d", bytes_written);
-  log_msg(message_buffer);
+  sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
 
   close(sock);
 
@@ -94,7 +94,40 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
 }
 
-static int ex_open(const char *path, struct fuse_file_info *fi) {
+static int _truncate(const char *path, off_t length, struct fuse_file_info *fi){
+
+  log_msg("logging in truncate");
+  Truncate truncate = TRUNCATE__INIT;
+  void *send_buffer;
+  void *receive_buffer;
+  uint32_t send_size, byte_order, message_type;
+  truncate.path = strdup(path);
+  truncate.num_bytes = length;
+  truncate.type = TRUNCATE_MESSAGE;
+
+  FileResponse is_done = FILE_RESPONSE__INIT; 
+  
+  send_size = truncate__get_packed_size(&truncate) + 2*sizeof(uint32_t);
+  send_buffer = malloc(send_size);
+  // ignore the length when writing the length of the message
+  byte_order = htonl(send_size - sizeof(uint32_t));
+  message_type = htonl(TRUNCATE_MESSAGE);
+  memcpy(send_buffer, &byte_order, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+  truncate__pack(&truncate, send_buffer + 2 * sizeof(uint32_t));
+ 
+  int sock = socket(AF_INET, SOCK_STREAM, 0);;
+  int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  int bytes_written = write(sock, send_buffer, send_size);
+  sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
+
+  close(sock);
+
+  return is_done.fd > 0 ? 0 : is_done.fd;
+}
+
+static int _ex_open(const char *path, struct fuse_file_info *fi) {
   if (strcmp(path, "/") != 0)
     return -ENOENT;
 
@@ -105,8 +138,8 @@ static int ex_open(const char *path, struct fuse_file_info *fi) {
 }
 
 struct fuse_operations ops = {
-  .readdir = readdir,
-  .getattr = getattr,
-  .open = ex_open,
-  .create = create
+  .readdir = _readdir,
+  .getattr = _getattr,
+  .open = _ex_open,
+  .create = _create
 };
