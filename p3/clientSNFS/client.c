@@ -6,13 +6,17 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include <pthread.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
 
+#include <pthread.h>
 #include <fuse.h>
 
 #include <google/protobuf-c/protobuf-c-rpc.h>
 #include "../protobuf-model/fs.pb-c.h"
-
 #include "rpc.h"
 #include "externs.h"
 
@@ -36,9 +40,12 @@ static int starts_with (const char *str, const char *prefix) {
 }
 
 int main (int argc, char ** argv) {
+  int port, sock;
+  struct sockaddr_in serv_addr;
+  struct hostent *server;
   char * fuse_args[] = {NULL, NULL};
   int fuse_argc = 2;
-  char * name = NULL, * host = NULL, * port = NULL;
+  char * host = NULL;
   unsigned i;
 
   if(argc != 7){
@@ -48,17 +55,14 @@ int main (int argc, char ** argv) {
 
   fuse_args[0] = argv[0];
 
-    // the ping message we will be sending
-  Ping ping = PING__INIT;
-
-  for (i = 1; i < (unsigned) argc; i += 2) {
+ for (i = 1; i < (unsigned) argc; i += 2) {
     if (strcmp (argv[i], "-address") == 0) {
       host = argv[i + 1];
     } else if (strcmp (argv[i], "-mount") == 0) {
       fuse_args[1] = argv[i + 1]; /* mount path */
     }
     else if(strcmp (argv[i], "-port") == 0){
-      port = argv[i + 1];
+      port = strtol(argv[i + 1], NULL, 10); 
     }
     else{
       fprintf(stderr, "Error, invalid argument %s\n", argv[i]);
@@ -66,37 +70,30 @@ int main (int argc, char ** argv) {
     }
   }
 
-  name = (char *)malloc((strlen(host) + strlen(port) + 2));
-  sprintf(name, "%s:%s", host, port);
+  sock = socket(AF_INET, SOCK_STREAM, 0);
+  server = gethostbyname(host);
+  if(server == NULL)
+  {
+    fprintf(stderr, "Error, could not find a host with that name\n");
+    return 1;
+  }
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+  bcopy((char *)server->h_addr,
+      (char *)&serv_addr.sin_addr.s_addr,
+      server->h_length);
+  serv_addr.sin_port = htons(port);
+  connect(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)); 
+  write(sock, "hello world", strlen("hello world"));
+  close(sock);
 
-  // service creates an rpc client, and client is a special cast
-  rpc_service = protobuf_c_rpc_client_new (PROTOBUF_C_RPC_ADDRESS_TCP, name, &fsservice__descriptor, NULL);
-  rpc_client = (ProtobufC_RPC_Client *) rpc_service;
-
-  fprintf (stderr, "Connecting... ");
-  while (!protobuf_c_rpc_client_is_connected (rpc_client))
-    protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-  fprintf (stderr, "done.\n");
-
-  struct fuse_params * p = malloc(sizeof(struct fuse_params));
+  /*struct fuse_params * p = malloc(sizeof(struct fuse_params));
   p->fuse_argc = fuse_argc;
   p->fuse_args = fuse_args;
 
   pthread_create(&fuse_thread, NULL, handle_fuse, p);
 
-  // create the message
-  ping.message = strdup("HELLO WORLD");
-
-  // send it on it's way
-  protobuf_c_boolean is_done = 0;
-  printf("sending ping... ");
-  // handle_ping_response will be called with the resulting PingResponse
-  fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
-
-  while (!is_done)
-    protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
-
-  pthread_join(fuse_thread, NULL);
+  pthread_join(fuse_thread, NULL);*/
 
   return 0;
 }

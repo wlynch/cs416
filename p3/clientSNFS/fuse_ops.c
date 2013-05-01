@@ -43,7 +43,7 @@ static int readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
   Ping ping = PING__INIT;
   ping.message = strdup("reddir result...");
   protobuf_c_boolean is_done = 0;
-  fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);
+  /*fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);*/
 
   while (!is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
@@ -58,7 +58,7 @@ static int create(const char *path, mode_t mode, struct fuse_file_info *fi){
   create.mode = mode;
   FileResponse is_done = FILE_RESPONSE__INIT; 
 
-  fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);
+  /*fsservice__create_file(rpc_service, &create, handle_create_response, &is_done);*/
 
   while (!is_done.is_done)
     protobuf_c_dispatch_run (protobuf_c_dispatch_default ());
