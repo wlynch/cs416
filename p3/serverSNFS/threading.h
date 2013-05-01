@@ -1,11 +1,12 @@
 #pragma once
+
+#include "../protobuf-model/fs.pb-c.h"
+
 struct _thread_args {
-  void * closure_data;
-  void * closure;
-  void * input;
+  int socket;
 };
 
 typedef struct _thread_args thread_args;
 
-void *create_file(void *);
-
+void create_file(Create * input);
+void *handle_request(void * args);
