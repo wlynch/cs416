@@ -32,22 +32,20 @@ struct  _Create
   ProtobufCMessage base;
   char *path;
   int32_t mode;
-  int32_t type;
 };
 #define CREATE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&create__descriptor) \
-    , NULL, 0, 0 }
+    , NULL, 0 }
 
 
 struct  _Simple
 {
   ProtobufCMessage base;
   char *path;
-  int32_t type;
 };
 #define SIMPLE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&simple__descriptor) \
-    , NULL, 0 }
+    , NULL }
 
 
 struct  _Write
@@ -55,11 +53,10 @@ struct  _Write
   ProtobufCMessage base;
   int32_t fd;
   ProtobufCBinaryData data;
-  int32_t type;
 };
 #define WRITE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&write__descriptor) \
-    , 0, {0,NULL}, 0 }
+    , 0, {0,NULL} }
 
 
 struct  _Read
@@ -69,22 +66,20 @@ struct  _Read
   int32_t num_bytes;
   protobuf_c_boolean has_offset;
   int32_t offset;
-  int32_t type;
 };
 #define READ__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read__descriptor) \
-    , 0, 0, 0,0, 0 }
+    , 0, 0, 0,0 }
 
 
 struct  _Close
 {
   ProtobufCMessage base;
   int32_t fd;
-  int32_t type;
 };
 #define CLOSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&close__descriptor) \
-    , 0, 0 }
+    , 0 }
 
 
 struct  _Open
@@ -92,11 +87,10 @@ struct  _Open
   ProtobufCMessage base;
   char *path;
   char *flags;
-  int32_t type;
 };
 #define OPEN__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&open__descriptor) \
-    , NULL, NULL, 0 }
+    , NULL, NULL }
 
 
 struct  _Truncate
@@ -104,11 +98,10 @@ struct  _Truncate
   ProtobufCMessage base;
   char *path;
   int32_t num_bytes;
-  int32_t type;
 };
 #define TRUNCATE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&truncate__descriptor) \
-    , NULL, 0, 0 }
+    , NULL, 0 }
 
 
 struct  _FileResponse
@@ -118,11 +111,10 @@ struct  _FileResponse
   int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
-  int32_t type;
 };
 #define FILE_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&file_response__descriptor) \
-    , 0, 0, 0,0, 0 }
+    , 0, 0, 0,0 }
 
 
 struct  _ErrorResponse
@@ -131,11 +123,10 @@ struct  _ErrorResponse
   int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
-  int32_t type;
 };
 #define ERROR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&error_response__descriptor) \
-    , 0, 0,0, 0 }
+    , 0, 0,0 }
 
 
 struct  _ReadResponse
@@ -145,11 +136,10 @@ struct  _ReadResponse
   int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
-  int32_t type;
 };
 #define READ_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read_response__descriptor) \
-    , {0,NULL}, 0, 0,0, 0 }
+    , {0,NULL}, 0, 0,0 }
 
 
 struct  _GetAttrResponse
@@ -169,11 +159,10 @@ struct  _GetAttrResponse
   int64_t mtime;
   int64_t ctime;
   int32_t error_code;
-  int32_t type;
 };
 #define GET_ATTR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
-    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
 /* Create methods */
