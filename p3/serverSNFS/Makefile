@@ -10,7 +10,7 @@ LDFLAGS +=  ../lib/libprotobuf.a ../lib/libprotobuf-c.a
 
 SERVER_EXEC = serverSNFS
 
-SRCS = filesystem.c server.c threading.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
+SRCS = filesystem.c server.c threading.c thread_helpers.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${SERVER_EXEC}
