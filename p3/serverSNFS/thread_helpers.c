@@ -58,7 +58,7 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
 
-void open_file(Close * input, FileResponse * resp) {
+void close_file(Close * input, FileResponse * resp) {
   int close_res;
 
   close_res = close(input->fd);
