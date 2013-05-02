@@ -1007,9 +1007,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_dev",
     1,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_dev),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_dev),
     NULL,
     NULL,
@@ -1019,9 +1019,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_ino",
     2,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_ino),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_ino),
     NULL,
     NULL,
@@ -1031,9 +1031,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_mode",
     3,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_mode),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_mode),
     NULL,
     NULL,
@@ -1043,9 +1043,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_nlink",
     4,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_nlink),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_nlink),
     NULL,
     NULL,
@@ -1055,9 +1055,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_uid",
     5,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_uid),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_uid),
     NULL,
     NULL,
@@ -1067,9 +1067,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_gid",
     6,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_gid),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_gid),
     NULL,
     NULL,
@@ -1079,9 +1079,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_rdev",
     7,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_rdev),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_rdev),
     NULL,
     NULL,
@@ -1091,9 +1091,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_size",
     8,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_size),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_size),
     NULL,
     NULL,
@@ -1103,9 +1103,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "atime",
     9,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_atime),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, atime),
     NULL,
     NULL,
@@ -1115,9 +1115,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "mtime",
     10,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_mtime),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, mtime),
     NULL,
     NULL,
@@ -1127,9 +1127,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "ctime",
     11,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_ctime),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, ctime),
     NULL,
     NULL,
@@ -1139,9 +1139,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_blksize",
     12,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_blksize),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_blksize),
     NULL,
     NULL,
@@ -1151,9 +1151,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "st_blocks",
     13,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_st_blocks),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, st_blocks),
     NULL,
     NULL,
@@ -1163,9 +1163,9 @@ static const ProtobufCFieldDescriptor get_attr_response__field_descriptors[14] =
   {
     "error_code",
     14,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_INT32,
-    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(GetAttrResponse, has_error_code),
     PROTOBUF_C_OFFSETOF(GetAttrResponse, error_code),
     NULL,
     NULL,

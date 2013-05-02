@@ -41,6 +41,7 @@ void *handle_request(void * args){
         Create * create = create__unpack(NULL, message_size, message_buffer);
         FileResponse *resp = malloc(sizeof(FileResponse));
         create_file(create, resp);
+<<<<<<< HEAD
 
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
@@ -67,6 +68,10 @@ void *handle_request(void * args){
         FileResponse *resp = malloc(sizeof(FileResponse));
         truncate_file(truncate, resp);
 
+=======
+        
+        /*  Send to client code */
+>>>>>>> got getattr at least basically working
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
         // ignore the length when writing the length of the message
@@ -96,14 +101,24 @@ void *handle_request(void * args){
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void* send_buffer = malloc(send_size);
         
+    case GETATTR_MESSAGE:
+      {
+        Simple * getattr = simple__unpack(NULL, message_size, message_buffer);
+        GetAttrResponse resp = GET_ATTR_RESPONSE__INIT;
+        get_attr(getattr, &resp);
+        
+        /*  Send to client code */
+        uint32_t send_size = get_attr_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        fprintf(stderr, "do we successfully get packed size??\n");
+        void * send_buffer = malloc(send_size);
+        // ignore the length when writing the length of the message
         uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
         message_type = htonl(FILE_RESPONSE_MESSAGE);
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
-        file_response__pack(resp, send_buffer + 2 * sizeof(uint32_t));
+        get_attr_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
 
         int num_written = write(thr_arg->socket, send_buffer, send_size);
-
         while(num_written < send_size)
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
@@ -112,6 +127,7 @@ void *handle_request(void * args){
         fprintf(stderr, "successfully sent the message over back to the client\n"\
             "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
         free(resp);
+        fprintf(stderr, "Error code result is %d\n", resp.error_code);
 
         break;
       }

@@ -36,9 +36,9 @@ static int _getattr(const char *path, struct stat *stbuf) {
   /* Pack code */
   
   send_size = simple__get_packed_size(&attr_req) + 2*sizeof(uint32_t);
- 
-  sprintf(log_buffer, "size which was sent is %lu", send_size - sizeof(uint32_t));
-  log_msg(log_buffer);
+
+  log_msg("sending path");
+  log_msg(path);
 
   send_buffer = malloc(send_size);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
@@ -52,8 +52,6 @@ static int _getattr(const char *path, struct stat *stbuf) {
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
   int bytes_written = write(sock, send_buffer, send_size);
-  sprintf(log_buffer, "bytes_written is %d", bytes_written);
-  log_msg(log_buffer);
 
   /* Receive code */
 
@@ -65,8 +63,13 @@ static int _getattr(const char *path, struct stat *stbuf) {
   read(sock, payload, receive_size);
   GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, payload);
   parse_get_attr(resp, stbuf);
+  log_msg("Got through parsing the attr.");
+  sprintf(log_buffer, "Error code is %d\n", resp->error_code);
+  log_msg(log_buffer);
 
   close(sock);
+  free(send_buffer);
+  free(payload);
 
   return resp->error_code;
 }
@@ -135,6 +138,8 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   log_msg(log_buffer);
 
   free(create.path);
+  free(payload);
+  free(send_buffer);
   close(sock);
 
   if(resp->fd > 0){

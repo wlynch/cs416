@@ -52,20 +52,20 @@ message ReadResponse {
 }
 
 message GetAttrResponse{
-  required int32 st_dev = 1;
-  required int32 st_ino = 2;
-  required int32 st_mode = 3;
-  required int32 st_nlink = 4;
-  required int32 st_uid = 5;
-  required int32 st_gid = 6;
-  required int32 st_rdev = 7;
-  required int32 st_blksize = 12;
-  required int32 st_blocks = 13;
-  required int32 st_size = 8;
-  required int64 atime = 9;
-  required int64 mtime = 10;
-  required int64 ctime = 11;
-  required int32 error_code = 14;
+  optional int32 st_dev = 1;
+  optional int32 st_ino = 2;
+  optional int32 st_mode = 3;
+  optional int32 st_nlink = 4;
+  optional int32 st_uid = 5;
+  optional int32 st_gid = 6;
+  optional int32 st_rdev = 7;
+  optional int32 st_blksize = 12;
+  optional int32 st_blocks = 13;
+  optional int32 st_size = 8;
+  optional int64 atime = 9;
+  optional int64 mtime = 10;
+  optional int64 ctime = 11;
+  optional int32 error_code = 14;
 }
 
 

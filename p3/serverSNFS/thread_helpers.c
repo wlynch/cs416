@@ -6,6 +6,7 @@
 #include <errno.h>
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -39,6 +40,7 @@ void create_file(Create * input, FileResponse * resp) {
   memcpy(resp, &create_handle, sizeof(create_handle));
 }
 
+<<<<<<< HEAD
 void truncate_file(Truncate * input, FileResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
@@ -99,4 +101,33 @@ void open_file(Open* input, FileResponse* resp) {
   memcpy(resp, &open_handle, sizeof(open_handle));
 
   free(full_path);
+}
+
+int get_attr(Simple * input, GetAttrResponse * response){
+  char * full_path;
+  struct stat stat_buf;
+  int res;
+  
+  full_path = get_full_path(input->path);
+  res = lstat(full_path, &stat_buf);
+  fprintf(stderr, "full_path is %d\n", res);
+  fprintf(stderr, "error is %d\n", errno);
+  
+  response->st_dev = stat_buf.st_dev;
+  response->st_ino = stat_buf.st_ino;
+  response->st_mode = stat_buf.st_mode;
+  response->st_nlink = stat_buf.st_nlink;
+  response->st_uid = stat_buf.st_uid;
+  response->st_gid = stat_buf.st_gid;
+  response->st_rdev = stat_buf.st_rdev;
+  response->atime = stat_buf.st_atime;
+  response->mtime = stat_buf.st_mtime;
+  response->ctime = stat_buf.st_ctime;
+  response->st_blksize = stat_buf.st_blksize;
+  response->st_blocks = stat_buf.st_blocks;
+  response->st_size = stat_buf.st_size;
+  response->error_code = res == 0 ? res : errno;
+
+  free(full_path);
+  return res == 0 ? res : errno;
 }
