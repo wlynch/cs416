@@ -93,8 +93,3 @@ void *handle_request(void * args){
   free(args);
   return NULL;
 }
-
-
-void truncate_file(Truncate * input, FileResponse * resp){
-
-}

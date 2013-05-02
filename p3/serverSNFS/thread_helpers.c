@@ -17,8 +17,7 @@
 #include "filesystem.h"
 #include "../protobuf-model/fs.pb-c.h"
 
-void create_file(Create * input, FileResponse * resp)
-{
+void create_file(Create * input, FileResponse * resp) {
   int create_res;
   char * full_path;
 
@@ -37,4 +36,8 @@ void create_file(Create * input, FileResponse * resp)
   create_handle.error_code = -errno;
 
   memcpy(resp, &create_handle, sizeof(create_handle));
+}
+
+void truncate_file(Truncate * input, FileResponse * resp) {
+  
 }
