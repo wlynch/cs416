@@ -40,7 +40,6 @@ void create_file(Create * input, FileResponse * resp) {
   memcpy(resp, &create_handle, sizeof(create_handle));
 }
 
-<<<<<<< HEAD
 void truncate_file(Truncate * input, FileResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
@@ -110,11 +109,8 @@ int get_attr(Simple * input, GetAttrResponse * response){
   
   full_path = get_full_path(input->path);
   res = lstat(full_path, &stat_buf);
-  fprintf(stderr, "we are stating path %s\n", full_path);
-  fprintf(stderr, "error from stating is is %d\n", errno);
   
   response->st_dev = stat_buf.st_dev;
-  fprintf(stderr, "stdev has a value of %d\n", stat_buf.st_dev);
   response->st_ino = stat_buf.st_ino;
   response->st_mode = stat_buf.st_mode;
   response->st_nlink = stat_buf.st_nlink;

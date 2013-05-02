@@ -82,8 +82,6 @@ void *handle_request(void * args){
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
-        fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
         free(resp);
         break;
       }
@@ -107,7 +105,6 @@ void *handle_request(void * args){
         uint32_t send_size = get_attr_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
         uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
-        fprintf(stderr, "amount to send is %d and file type is %d\n", send_size, FILE_RESPONSE_MESSAGE);
         message_type = htonl(FILE_RESPONSE_MESSAGE);
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
@@ -119,11 +116,8 @@ void *handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
 
-        fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
         free(resp);
-        fprintf(stderr, "Error code result is %d\n", resp.error_code);
-
+        free(send_buffer);
         break;
       }
   }
