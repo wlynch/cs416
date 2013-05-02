@@ -195,7 +195,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   open_struct.flags = fi->flags;
 
   send_size = open__get_packed_size(&open_struct) + 2*sizeof(uint32_t);
-  send_buf = malloc(sizeof(sendsize - 2*sizeof(uint32_t));
+  send_buf = malloc(sizeof(send_size - 2*sizeof(uint32_t)));
   message_type = htonl(OPEN_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
@@ -229,7 +229,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   close(socket_fd);
 
   if(resp->fd > 0){
-    fi->fh = fd;
+    fi->fh = resp->fd;
   }
 
   return resp->fd > 0 ? resp->fd : resp->error_code;
