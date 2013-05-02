@@ -41,7 +41,6 @@ void *handle_request(void * args){
         Create * create = create__unpack(NULL, message_size, message_buffer);
         FileResponse *resp = malloc(sizeof(FileResponse));
         create_file(create, resp);
-<<<<<<< HEAD
 
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
@@ -67,11 +66,8 @@ void *handle_request(void * args){
         Truncate * truncate = truncate__unpack(NULL, message_size, message_buffer);
         FileResponse *resp = malloc(sizeof(FileResponse));
         truncate_file(truncate, resp);
-
-=======
         
         /*  Send to client code */
->>>>>>> got getattr at least basically working
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
         // ignore the length when writing the length of the message
@@ -109,10 +105,9 @@ void *handle_request(void * args){
         
         /*  Send to client code */
         uint32_t send_size = get_attr_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
-        fprintf(stderr, "do we successfully get packed size??\n");
         void * send_buffer = malloc(send_size);
-        // ignore the length when writing the length of the message
         uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        fprintf(stderr, "amount to send is %d and file type is %d\n", send_size, FILE_RESPONSE_MESSAGE);
         message_type = htonl(FILE_RESPONSE_MESSAGE);
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));

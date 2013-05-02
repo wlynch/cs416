@@ -47,6 +47,8 @@ static int _getattr(const char *path, struct stat *stbuf) {
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   simple__pack(&attr_req, send_buffer + 2 * sizeof(uint32_t));
  
+  log_msg("successfully sent get attr message");
+  
   /* Send code */
 
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
@@ -55,16 +57,18 @@ static int _getattr(const char *path, struct stat *stbuf) {
 
   /* Receive code */
 
-  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &receive_size, sizeof(receive_size));
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
+  sprintf(log_buffer, "GetAttr: The amount to receive is %lu and the message type is %lu", receive_size, message_type);
+  log_msg(log_buffer);
   void *payload = malloc(receive_size);
   read(sock, payload, receive_size);
   GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, payload);
   parse_get_attr(resp, stbuf);
   log_msg("Got through parsing the attr.");
-  sprintf(log_buffer, "Error code is %d\n", resp->error_code);
+  sprintf(log_buffer, "GetAttr: Error code is %d and st_dev is %d\n", resp->error_code, stbuf->st_dev);
   log_msg(log_buffer);
 
   close(sock);
@@ -98,10 +102,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   /* Pack code */
 
   send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
-
-  sprintf(log_buffer, "size which was sent is %lu", send_size - sizeof(uint32_t));
-  log_msg(log_buffer);
-
+  
   send_buffer = malloc(send_size);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(CREATE_MESSAGE);
@@ -130,11 +131,10 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  receive_buffer = malloc(receive_size);
-  read(sock, receive_buffer, receive_size);
-  FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
-
-  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  read(sock, payload, receive_size);
+  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
+  
+  sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
   free(create.path);

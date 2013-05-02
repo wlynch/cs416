@@ -110,10 +110,11 @@ int get_attr(Simple * input, GetAttrResponse * response){
   
   full_path = get_full_path(input->path);
   res = lstat(full_path, &stat_buf);
-  fprintf(stderr, "full_path is %d\n", res);
-  fprintf(stderr, "error is %d\n", errno);
+  fprintf(stderr, "we are stating path %s\n", full_path);
+  fprintf(stderr, "error from stating is is %d\n", errno);
   
   response->st_dev = stat_buf.st_dev;
+  fprintf(stderr, "stdev has a value of %d\n", stat_buf.st_dev);
   response->st_ino = stat_buf.st_ino;
   response->st_mode = stat_buf.st_mode;
   response->st_nlink = stat_buf.st_nlink;
@@ -129,5 +130,6 @@ int get_attr(Simple * input, GetAttrResponse * response){
   response->error_code = res == 0 ? res : errno;
 
   free(full_path);
+  
   return res == 0 ? res : errno;
 }

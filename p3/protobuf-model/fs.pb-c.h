@@ -145,38 +145,24 @@ struct  _ReadResponse
 struct  _GetAttrResponse
 {
   ProtobufCMessage base;
-  protobuf_c_boolean has_st_dev;
   int32_t st_dev;
-  protobuf_c_boolean has_st_ino;
   int32_t st_ino;
-  protobuf_c_boolean has_st_mode;
   int32_t st_mode;
-  protobuf_c_boolean has_st_nlink;
   int32_t st_nlink;
-  protobuf_c_boolean has_st_uid;
   int32_t st_uid;
-  protobuf_c_boolean has_st_gid;
   int32_t st_gid;
-  protobuf_c_boolean has_st_rdev;
   int32_t st_rdev;
-  protobuf_c_boolean has_st_blksize;
   int32_t st_blksize;
-  protobuf_c_boolean has_st_blocks;
   int32_t st_blocks;
-  protobuf_c_boolean has_st_size;
   int32_t st_size;
-  protobuf_c_boolean has_atime;
   int64_t atime;
-  protobuf_c_boolean has_mtime;
   int64_t mtime;
-  protobuf_c_boolean has_ctime;
   int64_t ctime;
-  protobuf_c_boolean has_error_code;
   int32_t error_code;
 };
 #define GET_ATTR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
-    , 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 }
+    , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
 /* Create methods */

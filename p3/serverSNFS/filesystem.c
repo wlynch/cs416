@@ -42,7 +42,6 @@ bool set_root_path(const char * new_root){
   root_path = strdup(new_root);
   
   realpath(new_root, path);
-  
   root_path = strdup(path);
   
   /*Remove the trailing slash from the path, if applicable*/
