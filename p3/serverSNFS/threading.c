@@ -29,7 +29,7 @@ void *handle_request(void * args){
   // TODO: HANDLE ERRORS
 
   read(thr_arg->socket, &message_type, sizeof(message_type));
-  message_size = ntohl(message_size); 
+  message_size = ntohl(message_size);
   message_type = ntohl(message_type);
   message_buffer = malloc(message_size);
   read(thr_arg->socket, message_buffer, message_size);
@@ -66,7 +66,7 @@ void *handle_request(void * args){
         Truncate * truncate = truncate__unpack(NULL, message_size, message_buffer);
         FileResponse *resp = malloc(sizeof(FileResponse));
         truncate_file(truncate, resp);
-        
+
         /*  Send to client code */
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
@@ -91,10 +91,10 @@ void *handle_request(void * args){
 
         FileResponse* resp = malloc(sizeof(FileResponse));
         open_file(open, resp);
-        
+
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void* send_buffer = malloc(send_size);
-        
+
         uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
         message_type = htonl(FILE_RESPONSE_MESSAGE);
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
@@ -119,7 +119,7 @@ void *handle_request(void * args){
         Simple * getattr = simple__unpack(NULL, message_size, message_buffer);
         GetAttrResponse resp = GET_ATTR_RESPONSE__INIT;
         get_attr(getattr, &resp);
-        
+
         /*  Send to client code */
         uint32_t send_size = get_attr_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
@@ -135,7 +135,6 @@ void *handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
 
-        free(resp);
         free(send_buffer);
         break;
       }
