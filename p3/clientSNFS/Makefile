@@ -13,9 +13,12 @@ LDFLAGS +=  ../lib/libprotobuf.a ../lib/libprotobuf-c.a
 #LDFLAGS += -lpthread
 
 CLIENT_EXEC = clientSNFS
+CREATE_EXEC = test_create
 
 SRCS= rpc.c log.c fuse_ops_helpers.c fuse_ops.c client.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
-OBJS = ${SRCS:.c=.o}
+TEST_SRCS= test_create.c
+OBJS= ${SRCS:.c=.o}
+TEST_OBJS= ${TEST_SRCS:.c=.o}
 
 all: ${CLIENT_EXEC}
 
@@ -29,9 +32,19 @@ test: ${CLIENT_EXEC} kill
 	# a very opinionated test scenario
 	./${CLIENT_EXEC} -mount ./temp -address localhost -port 8080
 
+test_create: ${CREATE_EXEC}
+	./${CREATE_EXEC}
+
+${CREATE_EXEC}:${TEST_OBJS}
+	${CC} -o ${CREATE_EXEC} ${TEST_OBJS}
+
 kill: ${CLIENT_EXEC}
 	$(shell pkill clientSNFS)
 
 clean:
 	rm -rf ${CLIENT_EXEC}
 	rm -rf ${OBJS}
+
+clean_tests:
+	rm -rf ${CREATE_EXEC}
+	rm -rf ${TEST_OBJS}
