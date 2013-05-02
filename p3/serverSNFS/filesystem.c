@@ -7,7 +7,7 @@
 
 #include "filesystem.h"
 
-static char * root_path = NULL; 
+static char * root_path = NULL;
 
 char * get_full_path(char * relative_path){
   char * new_path = (char *)malloc(strlen(relative_path) + strlen(root_path) + 1);
@@ -27,7 +27,7 @@ bool set_root_path(const char * new_root){
   struct stat dir;
 
   stat(new_root, &dir);
- 
+
   if(!S_ISDIR(dir.st_mode)){
     return false;
   }
@@ -35,9 +35,9 @@ bool set_root_path(const char * new_root){
   if(root_path != NULL){
     free(root_path);
   }
-  
+
   root_path = strdup(new_root);
-  
+
   /*Remove the trailing slash from the path, if applicable*/
   if(root_path[strlen(root_path) - 1] == '/'){
     root_path[strlen(root_path) - 1] = '\0';

@@ -16,6 +16,7 @@
 
 #include "threading.h"
 #include "filesystem.h"
+
 #include <google/protobuf-c/protobuf-c-rpc.h>
 
 
@@ -39,7 +40,7 @@ int main(int argc, char **argv) {
       port = strtol(argv[i + 1], NULL, 10);
     }
     else if(strcmp (argv[i], "-mount") == 0){
-      mount = argv[i + 1];        
+      mount = argv[i + 1];
     }
     else{
       fprintf(stderr, "Error, %s is an invalid argument\n", argv[i]);
@@ -65,7 +66,7 @@ int main(int argc, char **argv) {
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(port);
   serv_addr.sin_addr.s_addr = INADDR_ANY;
-  
+
   if(bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
   {
     fprintf(stderr, "Error while trying to bind the socket\n");
@@ -79,7 +80,7 @@ int main(int argc, char **argv) {
     new_socket = accept(sock, (struct sockaddr *) &client_addr, &client_len);
     fprintf(stderr, "received a connection!!!\n");
     bzero(buffer, 256);
-    
+
     thread_args * thr_args = malloc(sizeof(thread_args));
     thr_args->socket = new_socket;
 
