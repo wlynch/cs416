@@ -13,8 +13,9 @@
 
 #include "threading.h"
 #include "thread_helpers.h"
-#include "../message_def.h"
 #include "filesystem.h"
+
+#include "../message_def.h"
 #include "../protobuf-model/fs.pb-c.h"
 
 void create_file(Create * input, FileResponse * resp) {
@@ -26,9 +27,9 @@ void create_file(Create * input, FileResponse * resp) {
   create_res = creat(full_path, input->mode);
 
   if(create_res < 0){
-    create_res = -errno; 
+    create_res = -errno;
   }
-  
+
   printf("create_res has a value of %d\n", create_res);
   fprintf(stderr, "full path is %s\n", full_path);
   free(full_path);
@@ -47,7 +48,7 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   num_bytes = input->num_bytes;
   truncate_res = truncate(full_path, num_bytes);
 
- 
+
   if (truncate_res < 0) {
     truncate_res = -errno;
   }
