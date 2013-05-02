@@ -79,7 +79,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
   /* Send code */
 
-  int sock = socket(AF_INET, SOCK_STREAM, 0);;
+  int sock = socket(AF_INET, SOCK_STREAM, 0);
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
   if(connected < 0) {
@@ -208,13 +208,61 @@ static int _release(char * path, struct fuse_file_info * fi) {
 }
 
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
+  log_msg("loggin in open");
+  uint32_t send_size, net_data_size, message_type, receive_size;
+  void* recieve_buf;
+  void* send_buf;
+  
   if (strcmp(path, "/") != 0)
     return -ENOENT;
 
   if ((fi->flags & 3) != O_RDONLY)
     return -EACCES;
 
-  return 0;
+  Open open_struct = OPEN__INIT;
+
+  open_struct.path = strdup(path);
+  open_struct.flags = fi->flags;
+
+  send_size = open__get_packed_size(&open_struct) + 2*sizeof(uint32_t);
+  send_buf = malloc(sizeof(send_size - 2*sizeof(uint32_t)));
+  message_type = htonl(OPEN_MESSAGE);
+  net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+
+  memcpy(send_buf, &net_data_size, sizeof(uint32_t));
+  memcpy(send_buf + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+
+  open__pack(&open_struct, send_buf + 2*sizeof(uint32_t));
+
+  /* All the sockets */
+  int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+  int connected = connect(socket_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  int bytes_written = write(socket_fd, send_buf, send_size);
+  
+  sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
+
+  /* Reading things back */
+  read(socket_fd, &receive_size, sizeof(send_size));
+  read(socket_fd, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  void *payload = malloc(receive_size);
+  read(socket_fd, payload, receive_size);
+
+  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
+  
+  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  log_msg(log_buffer);
+  
+  free(open_struct.path);
+  close(socket_fd);
+
+  if(resp->fd > 0){
+    fi->fh = resp->fd;
+  }
+
+  return resp->fd > 0 ? resp->fd : resp->error_code;
 }
 
 struct fuse_operations ops = {

@@ -75,3 +75,28 @@ void close_file(Close * input, FileResponse * resp) {
 
   memcpy(resp, &close_handle, sizeof(close_handle));
 }
+
+void open_file(Open* input, FileResponse* resp) {
+  
+  int open_fd, open_errors;
+  char* full_path;
+
+  full_path = get_full_path(input->path);  
+  open_fd = open(full_path, input->flags);
+
+  if (open_fd < 0) {
+    open_errors = -errno;
+  }
+  
+  printf("open_fd has a value of %d", open_fd);
+  fprintf(stderr, "full path is %s\n", full_path);
+
+  FileResponse open_handle = FILE_RESPONSE__INIT;
+  open_handle.fd = open_fd;
+  open_handle.error_code = open_errors;
+  open_handle.is_done = 1;
+
+  memcpy(resp, &open_handle, sizeof(open_handle));
+
+  free(full_path);
+}
