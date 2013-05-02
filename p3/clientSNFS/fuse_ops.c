@@ -49,11 +49,6 @@ static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t o
   filler(buf, "..", NULL, 0);
   filler(buf, "FAKE", NULL, 0);
 
-  Ping ping = PING__INIT;
-  ping.message = strdup("reddir result...");
-  protobuf_c_boolean is_done = 0;
-  /*fsservice__reply_to_ping(rpc_service, &ping, handle_ping_response, &is_done);*/
-
   return 0;
 }
 
@@ -86,6 +81,13 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
 
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+  if(connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
   int bytes_written = write(sock, send_buffer, send_size);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
@@ -96,9 +98,9 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  void *payload = malloc(receive_size);
-  read(sock, payload, receive_size);
-  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
+  receive_buffer = malloc(receive_size);
+  read(sock, receive_buffer, receive_size);
+  FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
 
   sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
@@ -136,7 +138,15 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
 
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+  if(connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
   int bytes_written = write(sock, send_buffer, send_size);
+  free(send_buffer);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
 
@@ -145,20 +155,19 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   return is_done.fd > 0 ? 0 : is_done.fd;
 }
 
-static int _close(int fd, struct fuse_file_info *fi) {
+static int _release(char * path, struct fuse_file_info * fi) {
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type;
 
   Close close_struct = CLOSE__INIT;
-  FileResponse is_done = FILE_RESPONSE__INIT;
-  close_struct.fd = fd;
+  FileResponse * resp;
+  close_struct.fd = fi->fh;
 
   log_msg("logging in close");
 
   send_size = close__get_packed_size(&close_struct) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
-
   // ignore the length when writing the length of the message
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(CLOSE_MESSAGE);
@@ -166,15 +175,36 @@ static int _close(int fd, struct fuse_file_info *fi) {
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   close__pack(&close_struct, send_buffer + 2 * sizeof(uint32_t));
 
+  /* send the message */
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+  if (connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
   int bytes_written = write(sock, send_buffer, send_size);
+  free(send_buffer);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
+
+  /* get that response */
+  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  receive_buffer = malloc(receive_size);
+  read(sock, receive_buffer, receive_size);
+  resp = file_response__unpack(NULL, receive_size, receive_buffer);
+
+  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
   close(sock);
 
-  return is_done.fd > 0 ? 0 : is_done.fd;
+  return resp->error_code;
 }
 
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
@@ -191,5 +221,7 @@ struct fuse_operations ops = {
   .readdir = _readdir,
   .getattr = _getattr,
   .open = _ex_open,
-  .create = _create
+  .create = _create,
+  .release = _release,
+  .truncate = _truncate
 };

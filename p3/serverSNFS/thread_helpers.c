@@ -59,9 +59,7 @@ void truncate_file(Truncate * input, FileResponse * resp) {
 }
 
 void close_file(Close * input, FileResponse * resp) {
-  int close_res;
-
-  close_res = close(input->fd);
+  int close_res = close(input->fd);
 
   if (close_res < 0) {
     close_res = -errno;
