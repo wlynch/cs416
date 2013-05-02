@@ -39,5 +39,20 @@ void create_file(Create * input, FileResponse * resp) {
 }
 
 void truncate_file(Truncate * input, FileResponse * resp) {
-  
+  int truncate_res, num_bytes;
+  char * full_path;
+
+  FileResponse truncate_handle = ERROR_RESPONSE__INIT;
+  full_path = get_full_path(input->path);
+  num_bytes = input->num_bytes;
+  truncate_res = truncate(full_path, num_bytes);
+
+ 
+  if (truncate_res < 0) {
+    truncate_res = -errno;
+  }
+  printf("truncate_res has a value of %d\n", truncate_res);
+  fprintf(stderr,"full path is %s\n", full_path);
+  truncate_handle.error_code = truncate_res;
+  memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
