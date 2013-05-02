@@ -106,7 +106,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   close(sock);
 
   if(resp->fd > 0){
-    fi->fh = fd;
+    fi->fh = resp->fd;
   }
 
   return resp->fd > 0 ? resp->fd : resp->error_code;
