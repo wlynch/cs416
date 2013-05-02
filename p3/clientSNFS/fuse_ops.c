@@ -20,26 +20,55 @@
 #include "rpc.h"
 #include "externs.h"
 #include "log.h"
+#include "fuse_ops_helpers.h"
 #include "../message_def.h"
 
 static char log_buffer[256];
 
 static int _getattr(const char *path, struct stat *stbuf) {
-  int res = 0;
+ 
+  Simple attr_req = SIMPLE__INIT;
+  void *send_buffer;
+  void *receive_buffer;
+  uint32_t send_size, net_data_size, message_type, receive_size;
+  attr_req.path = strdup(path);
+  
+  /* Pack code */
+  
+  send_size = simple__get_packed_size(&attr_req) + 2*sizeof(uint32_t);
+ 
+  sprintf(log_buffer, "size which was sent is %lu", send_size - sizeof(uint32_t));
+  log_msg(log_buffer);
 
-  memset(stbuf, 0, sizeof(struct stat));
-  if (strcmp(path, "/") == 0) {
-    stbuf->st_mode = S_IFDIR | 0755;
-    stbuf->st_nlink = 2;
-  } else if (strcmp(path, "/hello") == 0) {
-    stbuf->st_mode = S_IFREG | 0444;
-    stbuf->st_nlink = 1;
-    stbuf->st_size = strlen("Hello world");
-  } else {
-    res = -ENOENT;
-  }
+  send_buffer = malloc(send_size);
+  net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+  message_type = htonl(GETATTR_MESSAGE);
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+  simple__pack(&attr_req, send_buffer + 2 * sizeof(uint32_t));
+ 
+  /* Send code */
 
-  return res;
+  int sock = socket(AF_INET, SOCK_STREAM, 0);;
+  int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  int bytes_written = write(sock, send_buffer, send_size);
+  sprintf(log_buffer, "bytes_written is %d", bytes_written);
+  log_msg(log_buffer);
+
+  /* Receive code */
+
+  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  void *payload = malloc(receive_size);
+  read(sock, payload, receive_size);
+  GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, payload);
+  parse_get_attr(resp, stbuf);
+
+  close(sock);
+
+  return resp->error_code;
 }
 
 static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -106,7 +135,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   close(sock);
 
   if(resp->fd > 0){
-    fi->fh = fd;
+    fi->fh = resp->fd;
   }
 
   return resp->fd > 0 ? resp->fd : resp->error_code;
