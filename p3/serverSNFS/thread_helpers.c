@@ -29,7 +29,7 @@ void create_file(Create * input, FileResponse * resp) {
   create_res = creat(full_path, input->mode);
 
   if(create_res < 0){
-    create_res = -errno;
+    create_res = errno;
   }
 
   printf("create_res has a value of %d\n", create_res);
@@ -53,7 +53,7 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   truncate_res = truncate(full_path, num_bytes);
 
   if (truncate_res < 0) {
-    truncate_res = -errno;
+    truncate_res = errno;
   }
 
   printf("truncate_res has a value of %d\n", truncate_res);
@@ -68,7 +68,7 @@ void close_file(Close * input, FileResponse * resp) {
   printf("\tclose_file\n");
 
   if (close_res < 0) {
-    close_res = -errno;
+    close_res = errno;
   }
 
   printf("close_res hash a value of %d\n", close_res);
@@ -90,7 +90,7 @@ void open_file(Open* input, FileResponse* resp) {
   open_fd = open(full_path, input->flags);
 
   if (open_fd < 0) {
-    open_errors = -errno;
+    open_errors = errno;
   }
 
   FileResponse open_handle = FILE_RESPONSE__INIT;
