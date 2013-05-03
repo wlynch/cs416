@@ -62,7 +62,7 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
 
-void close_file(Close * input, FileResponse * resp) {
+void close_file(Close * input, ErrorResponse * resp) {
   int close_res = close(input->fd);
 
   printf("\tclose_file\n");
@@ -74,10 +74,8 @@ void close_file(Close * input, FileResponse * resp) {
   printf("close_res hash a value of %d\n", close_res);
   fprintf(stderr, "fd: %i\n", input->fd);
 
-  FileResponse close_handle = FILE_RESPONSE__INIT;
-  close_handle.fd = input->fd;
+  ErrorResponse close_handle = ERROR_RESPONSE__INIT;
   close_handle.error_code = close_res;
-  close_handle.is_done = 1;
 
   memcpy(resp, &close_handle, sizeof(close_handle));
 }

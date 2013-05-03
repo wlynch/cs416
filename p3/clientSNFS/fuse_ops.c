@@ -220,7 +220,7 @@ static int _release(char * path, struct fuse_file_info * fi) {
   uint32_t send_size, receive_size, net_data_size, message_type;
 
   Close close_struct = CLOSE__INIT;
-  FileResponse * resp;
+  ErrorResponse * resp;
   close_struct.fd = fi->fh;
 
   log_msg("logging in close");
@@ -235,7 +235,7 @@ static int _release(char * path, struct fuse_file_info * fi) {
   close__pack(&close_struct, send_buffer + 2 * sizeof(uint32_t));
 
   /* send the message */
-  int sock = socket(AF_INET, SOCK_STREAM, 0);;
+  int sock = socket(AF_INET, SOCK_STREAM, 0);
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
   if (connected < 0) {
@@ -245,7 +245,6 @@ static int _release(char * path, struct fuse_file_info * fi) {
   }
 
   int bytes_written = write(sock, send_buffer, send_size);
-  free(send_buffer);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
 
@@ -256,14 +255,15 @@ static int _release(char * path, struct fuse_file_info * fi) {
   message_type = ntohl(message_type);
   receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
-  resp = file_response__unpack(NULL, receive_size, receive_buffer);
+  resp = error_response__unpack(NULL, receive_size, receive_buffer);
 
-  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  sprintf(log_buffer, "Error code is %d\n", resp->error_code);
   log_msg(log_buffer);
 
   close(sock);
   free(receive_buffer);
-  file_response__free_unpacked(resp, NULL);
+  free(send_buffer);
+  error_response__free_unpacked(resp, NULL);
 
   return -1 * resp->error_code;
 }
