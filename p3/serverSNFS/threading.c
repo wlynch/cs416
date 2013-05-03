@@ -141,6 +141,8 @@ void * handle_request(void * args){
         Read * read = read__unpack(NULL, message_size, message_buffer);
         ReadResponse resp = READ_RESPONSE__INIT;
         void * read_buffer = read_help(read, &resp); 
+        fprintf(stderr, "successfully completed read_help\n");
+        fprintf(stderr, "read buffer has %s\n", (char *)read_buffer);
 
         /*  Send to client code */
         uint32_t send_size = read_response__get_packed_size(&resp) + 2*sizeof(uint32_t);

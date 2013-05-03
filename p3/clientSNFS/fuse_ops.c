@@ -302,10 +302,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
     return -1;
   }
 
-  int bytes_written = write(socket_fd, send_buffer, send_size);
-
-  sprintf(log_buffer, "bytes_written is %d", bytes_written);
-  log_msg(log_buffer);
+  write(socket_fd, send_buffer, send_size);
 
   /* Reading things back */
   read(socket_fd, &receive_size, sizeof(send_size));
@@ -367,6 +364,8 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
     return -1;
   }
   
+  write(socket_fd, send_buffer, send_size);
+  
   /* Reading things back */
   read(socket_fd, &receive_size, sizeof(send_size));
   read(socket_fd, &message_type, sizeof(message_type));
@@ -374,6 +373,7 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
   message_type = ntohl(message_type);
   receive_buffer = malloc(receive_size);
   read(socket_fd, receive_buffer, receive_size);
+  log_msg("successfully read a message into the receive buffer");
 
   ReadResponse *resp = read_response__unpack(NULL, receive_size, receive_buffer);
   if(resp->error_code == 0){
