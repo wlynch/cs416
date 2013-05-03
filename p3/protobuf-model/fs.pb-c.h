@@ -133,12 +133,13 @@ struct  _ReadResponse
   ProtobufCMessage base;
   ProtobufCBinaryData data;
   int32_t error_code;
+  int32_t bytes_read;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
 };
 #define READ_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read_response__descriptor) \
-    , {0,NULL}, 0, 0,0 }
+    , {0,NULL}, 0, 0, 0,0 }
 
 
 struct  _GetAttrResponse

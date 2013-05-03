@@ -48,7 +48,8 @@ message ErrorResponse {
 message ReadResponse {
   required bytes data = 1;
   required int32 error_code = 2;
-  optional bool is_done = 3;
+  required int32 bytes_read = 3;
+  optional bool is_done = 4;
 }
 
 message GetAttrResponse{

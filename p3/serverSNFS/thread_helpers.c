@@ -136,3 +136,14 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
   return res == 0 ? res : errno;
 }
+
+void *read_help(Read * input, ReadResponse *response) {
+  int res, errors;
+  void * buffer = malloc(input->num_bytes);
+  
+  res = pread(input->fd, buffer, input->num_bytes, input->offset);
+  response->error_code = res >= 0 ? 0 : errno;
+  response->bytes_read = res >= 0 ? res : 0;
+  response->data.data = buffer;
+
+}
