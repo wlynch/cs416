@@ -88,7 +88,6 @@ void * handle_request(void * args){
       }
     case OPEN_MESSAGE:
       {
-        fprintf(stderr, "GOT TO THE OPEN MESSAGE");
         Open* open = open__unpack(NULL, message_size, message_buffer);
 
         FileResponse* resp = malloc(sizeof(FileResponse));
@@ -109,9 +108,6 @@ void * handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
 
-        fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
-        
         free(send_buffer);
         free(resp);
         break;
@@ -130,7 +126,6 @@ void * handle_request(void * args){
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
         get_attr_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
-        fprintf(stdout, "GETATTR: For path %s, the error code is %d\n", getattr->path, resp.error_code);
 
         int num_written = write(thr_arg->socket, send_buffer, send_size);
         while(num_written < send_size)

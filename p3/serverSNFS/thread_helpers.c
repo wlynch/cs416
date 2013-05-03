@@ -86,17 +86,12 @@ void open_file(Open* input, FileResponse* resp) {
   int open_fd, open_errors = 0;
   char * full_path;
 
-  printf("\topen_file\n");
-
   full_path = get_full_path(input->path);
   open_fd = open(full_path, input->flags);
 
   if (open_fd < 0) {
     open_errors = -errno;
   }
-
-  printf("open_fd has a value of %d", open_fd);
-  fprintf(stderr, "full path is %s\n", full_path);
 
   FileResponse open_handle = FILE_RESPONSE__INIT;
   open_handle.fd = open_fd;
