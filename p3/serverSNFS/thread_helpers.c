@@ -25,10 +25,11 @@ void create_file(Create * input, FileResponse * resp) {
 
   FileResponse create_handle = FILE_RESPONSE__INIT;
   full_path = get_full_path(input->path);
+  printf("\tcreate_file %s\n", full_path);
   create_res = creat(full_path, input->mode);
 
   if(create_res < 0){
-    create_res = -errno;
+    create_res = errno;
   }
 
   printf("create_res has a value of %d\n", create_res);
@@ -44,15 +45,17 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
 
+  printf("\ttruncate_file\n");
+
   FileResponse truncate_handle = FILE_RESPONSE__INIT;
   full_path = get_full_path(input->path);
   num_bytes = input->num_bytes;
   truncate_res = truncate(full_path, num_bytes);
 
-
   if (truncate_res < 0) {
-    truncate_res = -errno;
+    truncate_res = errno;
   }
+
   printf("truncate_res has a value of %d\n", truncate_res);
   fprintf(stderr,"full path is %s\n", full_path);
   truncate_handle.error_code = truncate_res;
@@ -62,8 +65,10 @@ void truncate_file(Truncate * input, FileResponse * resp) {
 void close_file(Close * input, FileResponse * resp) {
   int close_res = close(input->fd);
 
+  printf("\tclose_file\n");
+
   if (close_res < 0) {
-    close_res = -errno;
+    close_res = errno;
   }
 
   printf("close_res hash a value of %d\n", close_res);
@@ -78,19 +83,15 @@ void close_file(Close * input, FileResponse * resp) {
 }
 
 void open_file(Open* input, FileResponse* resp) {
-  
-  int open_fd, open_errors;
-  char* full_path;
+  int open_fd, open_errors = 0;
+  char * full_path;
 
-  full_path = get_full_path(input->path);  
+  full_path = get_full_path(input->path);
   open_fd = open(full_path, input->flags);
 
   if (open_fd < 0) {
-    open_errors = -errno;
+    open_errors = errno;
   }
-  
-  printf("open_fd has a value of %d", open_fd);
-  fprintf(stderr, "full path is %s\n", full_path);
 
   FileResponse open_handle = FILE_RESPONSE__INIT;
   open_handle.fd = open_fd;
@@ -106,10 +107,16 @@ int get_attr(Simple * input, GetAttrResponse * response){
   char * full_path;
   struct stat stat_buf;
   int res;
-  
+
   full_path = get_full_path(input->path);
-  res = lstat(full_path, &stat_buf);
-  
+  res = stat(full_path, &stat_buf);
+
+  if (res < 0) {
+    printf("errno: %i, path: %s\n", errno, full_path);
+    fflush(stdout);
+    perror("stat");
+  }
+
   response->st_dev = stat_buf.st_dev;
   response->st_ino = stat_buf.st_ino;
   response->st_mode = stat_buf.st_mode;
@@ -123,10 +130,10 @@ int get_attr(Simple * input, GetAttrResponse * response){
   response->st_blksize = stat_buf.st_blksize;
   response->st_blocks = stat_buf.st_blocks;
   response->st_size = stat_buf.st_size;
-  response->error_code = res == 0 ? res : errno;
 
+  response->error_code = res == 0 ? res : errno;
   free(full_path);
-  
+
   return res == 0 ? res : errno;
 }
 
@@ -141,4 +148,16 @@ void write_file(Write * input, size_t count, ErrorResponse * response) {
   }
 
   response->error_code = res;
+}
+void *read_help(Read * input, ReadResponse *response) {
+  int res, errors;
+  void * buffer = malloc(input->num_bytes);
+
+  res = pread(input->fd, buffer, input->num_bytes, input->offset);
+  response->error_code = res >= 0 ? 0 : errno;
+  response->bytes_read = res >= 0 ? res : 0;
+  response->data.data = buffer;
+  response->data.len = input->num_bytes;
+
+  return buffer;
 }

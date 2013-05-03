@@ -64,12 +64,11 @@ struct  _Read
   ProtobufCMessage base;
   int32_t fd;
   int32_t num_bytes;
-  protobuf_c_boolean has_offset;
   int32_t offset;
 };
 #define READ__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read__descriptor) \
-    , 0, 0, 0,0 }
+    , 0, 0, 0 }
 
 
 struct  _Close
@@ -86,11 +85,11 @@ struct  _Open
 {
   ProtobufCMessage base;
   char *path;
-  char *flags;
+  int32_t flags;
 };
 #define OPEN__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&open__descriptor) \
-    , NULL, NULL }
+    , NULL, 0 }
 
 
 struct  _Truncate
@@ -134,12 +133,13 @@ struct  _ReadResponse
   ProtobufCMessage base;
   ProtobufCBinaryData data;
   int32_t error_code;
+  int32_t bytes_read;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
 };
 #define READ_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read_response__descriptor) \
-    , {0,NULL}, 0, 0,0 }
+    , {0,NULL}, 0, 0, 0,0 }
 
 
 struct  _GetAttrResponse

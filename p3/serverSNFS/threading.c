@@ -17,13 +17,14 @@
 #include "filesystem.h"
 #include "../protobuf-model/fs.pb-c.h"
 
-void *handle_request(void * args){
+void * handle_request(void * args){
 
   int bytes_read;
   thread_args * thr_arg = (thread_args *)args;
   uint32_t message_type, message_size;
-  void *message_buffer;
+  void * message_buffer;
 
+  /* never used */
   bytes_read = read(thr_arg->socket, &message_size, sizeof(message_size));
 
   // TODO: HANDLE ERRORS
@@ -34,8 +35,7 @@ void *handle_request(void * args){
   message_buffer = malloc(message_size);
   read(thr_arg->socket, message_buffer, message_size);
 
-  switch (message_type)
-  {
+  switch (message_type) {
     case CREATE_MESSAGE:
       {
         Create * create = create__unpack(NULL, message_size, message_buffer);
@@ -56,9 +56,9 @@ void *handle_request(void * args){
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
-        fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
+
         free(resp);
+        free(send_buffer);
         break;
       }
     case TRUNCATE_MESSAGE:
@@ -83,6 +83,7 @@ void *handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
         free(resp);
+        free(send_buffer);
         break;
       }
     case OPEN_MESSAGE:
@@ -91,7 +92,6 @@ void *handle_request(void * args){
 
         FileResponse* resp = malloc(sizeof(FileResponse));
         open_file(open, resp);
-
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void* send_buffer = malloc(send_size);
 
@@ -108,10 +108,8 @@ void *handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
 
-        fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n and fd is %d\n", resp->error_code, resp->fd);
+        free(send_buffer);
         free(resp);
-
         break;
       }
     case GETATTR_MESSAGE:
@@ -159,11 +157,34 @@ void *handle_request(void * args){
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
-
         fprintf(stderr, "successfully sent the message over back to the client\n"\
             "error code is %d\n", resp.error_code);
         free(&resp);
         free(send_buffer);
+        break;
+      }
+    case READ_MESSAGE:
+      {
+        Read * read = read__unpack(NULL, message_size, message_buffer);
+        ReadResponse resp = READ_RESPONSE__INIT;
+        void * read_buffer = read_help(read, &resp); 
+
+        /*  Send to client code */
+        uint32_t send_size = read_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        message_type = htonl(READ_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        read_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+        free(send_buffer);
+        free(read_buffer);
         break;
       }
   }

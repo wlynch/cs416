@@ -35,10 +35,6 @@ void * handle_fuse(void * param) {
   return 0;
 }
 
-static int starts_with (const char *str, const char *prefix) {
-  return memcmp (str, prefix, strlen (prefix)) == 0;
-}
-
 extern struct fuse_operations ops;
 
 int main (int argc, char ** argv) {

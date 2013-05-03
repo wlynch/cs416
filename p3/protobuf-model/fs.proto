@@ -17,7 +17,7 @@ message Write {
 message Read {
   required int32 fd = 1;
   required int32 num_bytes = 2;
-  optional int32 offset = 3;
+  required int32 offset = 3;
 }
 
 message Close {
@@ -26,7 +26,7 @@ message Close {
 
 message Open {
   required string path = 1;
-  required int flags = 2;
+  required int32 flags = 2;
 }
 
 message Truncate {
@@ -48,7 +48,8 @@ message ErrorResponse {
 message ReadResponse {
   required bytes data = 1;
   required int32 error_code = 2;
-  optional bool is_done = 3;
+  required int32 bytes_read = 3;
+  optional bool is_done = 4;
 }
 
 message GetAttrResponse{

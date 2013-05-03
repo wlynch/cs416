@@ -648,9 +648,9 @@ static const ProtobufCFieldDescriptor read__field_descriptors[3] =
   {
     "offset",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
-    PROTOBUF_C_OFFSETOF(Read, has_offset),
+    0,   /* quantifier_offset */
     PROTOBUF_C_OFFSETOF(Read, offset),
     NULL,
     NULL,
@@ -739,7 +739,7 @@ static const ProtobufCFieldDescriptor open__field_descriptors[2] =
     "flags",
     2,
     PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_STRING,
+    PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
     PROTOBUF_C_OFFSETOF(Open, flags),
     NULL,
@@ -938,7 +938,7 @@ const ProtobufCMessageDescriptor error_response__descriptor =
   (ProtobufCMessageInit) error_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor read_response__field_descriptors[3] =
+static const ProtobufCFieldDescriptor read_response__field_descriptors[4] =
 {
   {
     "data",
@@ -965,8 +965,20 @@ static const ProtobufCFieldDescriptor read_response__field_descriptors[3] =
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
   {
-    "is_done",
+    "bytes_read",
     3,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(ReadResponse, bytes_read),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "is_done",
+    4,
     PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_BOOL,
     PROTOBUF_C_OFFSETOF(ReadResponse, has_is_done),
@@ -978,14 +990,15 @@ static const ProtobufCFieldDescriptor read_response__field_descriptors[3] =
   },
 };
 static const unsigned read_response__field_indices_by_name[] = {
+  2,   /* field[2] = bytes_read */
   0,   /* field[0] = data */
   1,   /* field[1] = error_code */
-  2,   /* field[2] = is_done */
+  3,   /* field[3] = is_done */
 };
 static const ProtobufCIntRange read_response__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 3 }
+  { 0, 4 }
 };
 const ProtobufCMessageDescriptor read_response__descriptor =
 {
@@ -995,7 +1008,7 @@ const ProtobufCMessageDescriptor read_response__descriptor =
   "ReadResponse",
   "",
   sizeof(ReadResponse),
-  3,
+  4,
   read_response__field_descriptors,
   read_response__field_indices_by_name,
   1,  read_response__number_ranges,

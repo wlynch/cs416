@@ -78,7 +78,6 @@ int main(int argc, char **argv) {
   while(true)
   {
     new_socket = accept(sock, (struct sockaddr *) &client_addr, &client_len);
-    fprintf(stderr, "received a connection!!!\n");
     bzero(buffer, 256);
 
     thread_args * thr_args = malloc(sizeof(thread_args));
