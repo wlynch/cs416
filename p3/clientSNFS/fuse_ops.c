@@ -247,12 +247,6 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   void* recieve_buf;
   void* send_buf;
   
-  if (strcmp(path, "/") != 0)
-    return -ENOENT;
-
-  if ((fi->flags & 3) != O_RDONLY)
-    return -EACCES;
-
   Open open_struct = OPEN__INIT;
 
   open_struct.path = strdup(path);
@@ -267,6 +261,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   memcpy(send_buf + sizeof(uint32_t), &message_type, sizeof(uint32_t));
 
   open__pack(&open_struct, send_buf + 2*sizeof(uint32_t));
+
 
   /* All the sockets */
   int socket_fd = socket(AF_INET, SOCK_STREAM, 0);

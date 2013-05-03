@@ -739,7 +739,7 @@ static const ProtobufCFieldDescriptor open__field_descriptors[2] =
     "flags",
     2,
     PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_STRING,
+    PROTOBUF_C_TYPE_INT32,
     0,   /* quantifier_offset */
     PROTOBUF_C_OFFSETOF(Open, flags),
     NULL,

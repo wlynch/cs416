@@ -86,11 +86,11 @@ struct  _Open
 {
   ProtobufCMessage base;
   char *path;
-  char *flags;
+  int32_t flags;
 };
 #define OPEN__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&open__descriptor) \
-    , NULL, NULL }
+    , NULL, 0 }
 
 
 struct  _Truncate
