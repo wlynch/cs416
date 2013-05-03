@@ -115,10 +115,6 @@ void * handle_request(void * args){
         
         free(send_buffer);
         free(resp);
-<<<<<<< HEAD
-=======
-        free(send_buffer);
->>>>>>> db5f917ce098bd4c445c1ae5530e701215adf079
         break;
       }
     case GETATTR_MESSAGE:
