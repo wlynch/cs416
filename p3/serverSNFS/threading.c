@@ -17,13 +17,14 @@
 #include "filesystem.h"
 #include "../protobuf-model/fs.pb-c.h"
 
-void *handle_request(void * args){
+void * handle_request(void * args){
 
   int bytes_read;
   thread_args * thr_arg = (thread_args *)args;
   uint32_t message_type, message_size;
-  void *message_buffer;
+  void * message_buffer;
 
+  /* never used */
   bytes_read = read(thr_arg->socket, &message_size, sizeof(message_size));
 
   // TODO: HANDLE ERRORS
@@ -34,8 +35,7 @@ void *handle_request(void * args){
   message_buffer = malloc(message_size);
   read(thr_arg->socket, message_buffer, message_size);
 
-  switch (message_type)
-  {
+  switch (message_type) {
     case CREATE_MESSAGE:
       {
         Create * create = create__unpack(NULL, message_size, message_buffer);
@@ -58,6 +58,7 @@ void *handle_request(void * args){
         }
 
         free(resp);
+        free(send_buffer);
         break;
       }
     case TRUNCATE_MESSAGE:
@@ -82,6 +83,7 @@ void *handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
         free(resp);
+        free(send_buffer);
         break;
       }
     case OPEN_MESSAGE:
@@ -92,7 +94,6 @@ void *handle_request(void * args){
 
         FileResponse* resp = malloc(sizeof(FileResponse));
         open_file(open, resp);
-
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void* send_buffer = malloc(send_size);
 
@@ -114,6 +115,10 @@ void *handle_request(void * args){
         
         free(send_buffer);
         free(resp);
+<<<<<<< HEAD
+=======
+        free(send_buffer);
+>>>>>>> db5f917ce098bd4c445c1ae5530e701215adf079
         break;
       }
     case GETATTR_MESSAGE:

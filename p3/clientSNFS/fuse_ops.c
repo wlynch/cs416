@@ -26,15 +26,16 @@
 static char log_buffer[256];
 
 static int _getattr(const char *path, struct stat *stbuf) {
- 
-  Simple attr_req = SIMPLE__INIT;
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
+  GetAttrResponse * resp;
+
+  Simple attr_req = SIMPLE__INIT;
   attr_req.path = strdup(path);
-  
+
   /* Pack code */
-  
+
   send_size = simple__get_packed_size(&attr_req) + 2*sizeof(uint32_t);
 
   log_msg("sending path");
@@ -46,14 +47,21 @@ static int _getattr(const char *path, struct stat *stbuf) {
   memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
   simple__pack(&attr_req, send_buffer + 2 * sizeof(uint32_t));
- 
+
   log_msg("successfully sent get attr message");
-  
+
   /* Send code */
 
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-  int bytes_written = write(sock, send_buffer, send_size);
+
+  if(connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
+  write(sock, send_buffer, send_size);
 
   /* Receive code */
 
@@ -61,18 +69,20 @@ static int _getattr(const char *path, struct stat *stbuf) {
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  void *payload = malloc(receive_size);
-  read(sock, payload, receive_size);
+  sprintf(log_buffer, "GetAttr: The amount to receive is %lu and the message type is %lu", receive_size, message_type);
+  log_msg(log_buffer);
 
-  GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, payload);
+  receive_buffer = malloc(receive_size);
+  read(sock, receive_buffer, receive_size);
+  resp = get_attr_response__unpack(NULL, receive_size, receive_buffer);
   parse_get_attr(resp, stbuf);
-  
+
   sprintf(log_buffer, "GetAttr: Error code is %d and uid is %u our uid is %d\n", resp->error_code, stbuf->st_uid, getuid());
   log_msg(log_buffer);
 
   close(sock);
   free(send_buffer);
-  free(payload);
+  free(receive_buffer);
 
   return -1 * resp->error_code;
 }
@@ -93,6 +103,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
+  FileResponse * resp;
 
   Create create = CREATE__INIT;
   create.path = strdup(path);
@@ -101,7 +112,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   /* Pack code */
 
   send_size = create__get_packed_size(&create) + 2*sizeof(uint32_t);
-  
+
   send_buffer = malloc(send_size);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(CREATE_MESSAGE);
@@ -132,14 +143,14 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   message_type = ntohl(message_type);
   receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
-  FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
-  
+  resp = file_response__unpack(NULL, receive_size, receive_buffer);
   sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
   free(create.path);
   free(receive_buffer);
   free(send_buffer);
+  file_response__free_unpacked(resp, NULL);
   close(sock);
 
   if(resp->fd > 0){
@@ -155,11 +166,12 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   Truncate truncate = TRUNCATE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, net_data_size, message_type;
+  uint32_t send_size, receive_size, net_data_size, message_type;
+
+  FileResponse * resp;
+
   truncate.path = strdup(path);
   truncate.num_bytes = length;
-
-  FileResponse is_done = FILE_RESPONSE__INIT;
 
   send_size = truncate__get_packed_size(&truncate) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
@@ -179,20 +191,34 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
     return -1;
   }
 
+  /* send the truncate message */
   int bytes_written = write(sock, send_buffer, send_size);
   free(send_buffer);
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
 
-  close(sock);
+  /* wait for the response */
+  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  read(sock, receive_buffer, receive_size);
+  resp = file_response__unpack(NULL, receive_size, receive_buffer);
 
-  return is_done.fd > 0 ? 0 : is_done.fd;
+  sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  log_msg(log_buffer);
+
+  close(sock);
+  free(receive_buffer);
+  file_response__free_unpacked(resp, NULL);
+
+  return resp->fd > 0 ? 0 : resp->fd;
 }
 
 static int _release(char * path, struct fuse_file_info * fi) {
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, net_data_size, message_type, receive_size;
+  uint32_t send_size, receive_size, net_data_size, message_type;
 
   Close close_struct = CLOSE__INIT;
   FileResponse * resp;
@@ -237,6 +263,8 @@ static int _release(char * path, struct fuse_file_info * fi) {
   log_msg(log_buffer);
 
   close(sock);
+  free(receive_buffer);
+  file_response__free_unpacked(resp, NULL);
 
   return -1 * resp->error_code;
 }
@@ -244,30 +272,37 @@ static int _release(char * path, struct fuse_file_info * fi) {
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
   log_msg("loggin in open");
   uint32_t send_size, net_data_size, message_type, receive_size;
-  void* recieve_buf;
-  void* send_buf;
-  
-  Open open_struct = OPEN__INIT;
+  void* receive_buffer;
+  void* send_buffer;
+
+    Open open_struct = OPEN__INIT;
 
   open_struct.path = strdup(path);
   open_struct.flags = fi->flags;
 
   send_size = open__get_packed_size(&open_struct) + 2*sizeof(uint32_t);
-  send_buf = malloc(sizeof(send_size - 2*sizeof(uint32_t)));
+  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
   message_type = htonl(OPEN_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
-  memcpy(send_buf, &net_data_size, sizeof(uint32_t));
-  memcpy(send_buf + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
 
-  open__pack(&open_struct, send_buf + 2*sizeof(uint32_t));
+  open__pack(&open_struct, send_buffer + 2*sizeof(uint32_t));
 
 
   /* All the sockets */
   int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
   int connected = connect(socket_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-  int bytes_written = write(socket_fd, send_buf, send_size);
-  
+
+  if (connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
+  int bytes_written = write(socket_fd, send_buffer, send_size);
+
   sprintf(log_buffer, "bytes_written is %d", bytes_written);
   log_msg(log_buffer);
 
@@ -276,16 +311,18 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   read(socket_fd, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  void *payload = malloc(receive_size);
-  read(socket_fd, payload, receive_size);
+  receive_buffer = malloc(receive_size);
+  read(socket_fd, receive_buffer, receive_size);
 
-  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
-  
+  FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
+
   sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
-  
-  free(open_struct.path);
+
   close(socket_fd);
+  free(open_struct.path);
+  free(receive_buffer);
+  free(send_buffer);
 
   if(resp->fd > 0){
     fi->fh = resp->fd;
