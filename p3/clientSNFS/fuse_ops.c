@@ -146,7 +146,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : resp->error_code;
+  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
 
 }
 
@@ -238,7 +238,7 @@ static int _release(char * path, struct fuse_file_info * fi) {
 
   close(sock);
 
-  return resp->error_code;
+  return -1 * resp->error_code;
 }
 
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
@@ -296,7 +296,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : resp->error_code;
+  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
 }
 
 struct fuse_operations ops = {
