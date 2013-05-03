@@ -61,21 +61,20 @@ static int _getattr(const char *path, struct stat *stbuf) {
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  sprintf(log_buffer, "GetAttr: The amount to receive is %lu and the message type is %lu", receive_size, message_type);
-  log_msg(log_buffer);
   void *payload = malloc(receive_size);
   read(sock, payload, receive_size);
+
   GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, payload);
   parse_get_attr(resp, stbuf);
-  log_msg("Got through parsing the attr.");
-  sprintf(log_buffer, "GetAttr: Error code is %d and st_dev is %d\n", resp->error_code, stbuf->st_dev);
+  
+  sprintf(log_buffer, "GetAttr: Error code is %d and uid is %u our uid is %d\n", resp->error_code, stbuf->st_uid, getuid());
   log_msg(log_buffer);
 
   close(sock);
   free(send_buffer);
   free(payload);
 
-  return resp->error_code;
+  return -1 * resp->error_code;
 }
 
 static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
