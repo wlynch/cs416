@@ -131,14 +131,15 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
-  read(sock, payload, receive_size);
-  FileResponse * resp = file_response__unpack(NULL, receive_size, payload);
+  receive_buffer = malloc(receive_size);
+  read(sock, receive_buffer, receive_size);
+  FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
   
   sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
   free(create.path);
-  free(payload);
+  free(receive_buffer);
   free(send_buffer);
   close(sock);
 
@@ -192,7 +193,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
 static int _release(char * path, struct fuse_file_info * fi) {
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, net_data_size, message_type;
+  uint32_t send_size, net_data_size, message_type, receive_size;
 
   Close close_struct = CLOSE__INIT;
   FileResponse * resp;
