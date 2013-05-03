@@ -122,10 +122,12 @@ struct  _ErrorResponse
   int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
+  protobuf_c_boolean has_return_code;
+  int32_t return_code;
 };
 #define ERROR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&error_response__descriptor) \
-    , 0, 0,0 }
+    , 0, 0,0, 0,0 }
 
 
 struct  _ReadResponse

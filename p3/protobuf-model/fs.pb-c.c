@@ -887,7 +887,7 @@ const ProtobufCMessageDescriptor file_response__descriptor =
   (ProtobufCMessageInit) file_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor error_response__field_descriptors[2] =
+static const ProtobufCFieldDescriptor error_response__field_descriptors[3] =
 {
   {
     "error_code",
@@ -913,15 +913,28 @@ static const ProtobufCFieldDescriptor error_response__field_descriptors[2] =
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
+  {
+    "return_code",
+    3,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_INT32,
+    PROTOBUF_C_OFFSETOF(ErrorResponse, has_return_code),
+    PROTOBUF_C_OFFSETOF(ErrorResponse, return_code),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
 };
 static const unsigned error_response__field_indices_by_name[] = {
   0,   /* field[0] = error_code */
   1,   /* field[1] = is_done */
+  2,   /* field[2] = return_code */
 };
 static const ProtobufCIntRange error_response__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 2 }
+  { 0, 3 }
 };
 const ProtobufCMessageDescriptor error_response__descriptor =
 {
@@ -931,7 +944,7 @@ const ProtobufCMessageDescriptor error_response__descriptor =
   "ErrorResponse",
   "",
   sizeof(ErrorResponse),
-  2,
+  3,
   error_response__field_descriptors,
   error_response__field_indices_by_name,
   1,  error_response__number_ranges,

@@ -139,16 +139,20 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
 void write_file(Write * input, size_t count, ErrorResponse * response) {
   int res, fd = input->fd;
-  const void *buf;
-  /* Not sure how to extract protobuf data */
+  void *buf;
+  memcpy(buf, input->data.data, sizeof(input->data.len));
 
   res = write(fd, buf, count);
   if (res < 0) {
-    res = -errno;
+    res = errno;
+    response->error_code = res;
+  } else {
+    response->error_code = 0;
+    response->return_code = res;
   }
-
-  response->error_code = res;
+  
 }
+
 void *read_help(Read * input, ReadResponse *response) {
   int res, errors;
   void * buffer = malloc(input->num_bytes);
