@@ -156,7 +156,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
+  return resp->fd > 0 ? 0 : -1 * resp->error_code;
 
 }
 
@@ -329,7 +329,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
+  return resp->fd > 0 ? 0 : -1 * resp->error_code;
 }
 
 static int _read(const char * path, const char * buffer, size_t size, off_t off,
@@ -377,16 +377,16 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
 
   ReadResponse *resp = read_response__unpack(NULL, receive_size, receive_buffer);
   if(resp->error_code == 0){
-    memcpy(buffer, resp->data.data, size); 
+    memcpy(buffer, (char *)resp->data.data, resp->data.len); 
   }
 
-  return -1 * resp->error_code;
-  
+  return resp->error_code >= 0 ? resp->bytes_read : -1 * resp->error_code;
 }
 
 struct fuse_operations ops = {
   .readdir = _readdir,
   .getattr = _getattr,
+  .read = _read,
   .open = _ex_open,
   .create = _create,
   .release = _release,

@@ -145,5 +145,7 @@ void *read_help(Read * input, ReadResponse *response) {
   response->error_code = res >= 0 ? 0 : errno;
   response->bytes_read = res >= 0 ? res : 0;
   response->data.data = buffer;
+  response->data.len = input->num_bytes;
 
+  return buffer;
 }
