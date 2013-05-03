@@ -15,5 +15,3 @@ ${CLIENT_EXEC}:
 
 clean:
 	rm -f *.o
-	rm ${SERVER_EXEC}
-	rm ${CLIENT_EXEC}

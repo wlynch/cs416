@@ -20,6 +20,8 @@ typedef struct _FileResponse FileResponse;
 typedef struct _ErrorResponse ErrorResponse;
 typedef struct _ReadResponse ReadResponse;
 typedef struct _GetAttrResponse GetAttrResponse;
+typedef struct _Dir Dir;
+typedef struct _ReadDirResponse ReadDirResponse;
 
 
 /* --- enums --- */
@@ -132,14 +134,14 @@ struct  _ErrorResponse
 struct  _ReadResponse
 {
   ProtobufCMessage base;
-  ProtobufCBinaryData data;
+  char *data;
   int32_t error_code;
   protobuf_c_boolean has_is_done;
   protobuf_c_boolean is_done;
 };
 #define READ_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read_response__descriptor) \
-    , {0,NULL}, 0, 0,0 }
+    , NULL, 0, 0,0 }
 
 
 struct  _GetAttrResponse
@@ -163,6 +165,34 @@ struct  _GetAttrResponse
 #define GET_ATTR_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&get_attr_response__descriptor) \
     , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+
+
+struct  _Dir
+{
+  ProtobufCMessage base;
+  int32_t __dd_fd;
+  int64_t __dd_loc;
+  int64_t __dd_size;
+  char *__dd_buf;
+  int32_t __dd_len;
+  int64_t __dd_seek;
+  int64_t __dd_rewind;
+  int32_t __dd_flags;
+};
+#define DIR__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&dir__descriptor) \
+    , 0, 0, 0, NULL, 0, 0, 0, 0 }
+
+
+struct  _ReadDirResponse
+{
+  ProtobufCMessage base;
+  char *contents;
+  Dir *dir_struct;
+};
+#define READ_DIR_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&read_dir_response__descriptor) \
+    , NULL, NULL }
 
 
 /* Create methods */
@@ -374,6 +404,44 @@ GetAttrResponse *
 void   get_attr_response__free_unpacked
                      (GetAttrResponse *message,
                       ProtobufCAllocator *allocator);
+/* Dir methods */
+void   dir__init
+                     (Dir         *message);
+size_t dir__get_packed_size
+                     (const Dir   *message);
+size_t dir__pack
+                     (const Dir   *message,
+                      uint8_t             *out);
+size_t dir__pack_to_buffer
+                     (const Dir   *message,
+                      ProtobufCBuffer     *buffer);
+Dir *
+       dir__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   dir__free_unpacked
+                     (Dir *message,
+                      ProtobufCAllocator *allocator);
+/* ReadDirResponse methods */
+void   read_dir_response__init
+                     (ReadDirResponse         *message);
+size_t read_dir_response__get_packed_size
+                     (const ReadDirResponse   *message);
+size_t read_dir_response__pack
+                     (const ReadDirResponse   *message,
+                      uint8_t             *out);
+size_t read_dir_response__pack_to_buffer
+                     (const ReadDirResponse   *message,
+                      ProtobufCBuffer     *buffer);
+ReadDirResponse *
+       read_dir_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   read_dir_response__free_unpacked
+                     (ReadDirResponse *message,
+                      ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
 typedef void (*Create_Closure)
@@ -409,6 +477,12 @@ typedef void (*ReadResponse_Closure)
 typedef void (*GetAttrResponse_Closure)
                  (const GetAttrResponse *message,
                   void *closure_data);
+typedef void (*Dir_Closure)
+                 (const Dir *message,
+                  void *closure_data);
+typedef void (*ReadDirResponse_Closure)
+                 (const ReadDirResponse *message,
+                  void *closure_data);
 
 /* --- services --- */
 
@@ -426,6 +500,8 @@ extern const ProtobufCMessageDescriptor file_response__descriptor;
 extern const ProtobufCMessageDescriptor error_response__descriptor;
 extern const ProtobufCMessageDescriptor read_response__descriptor;
 extern const ProtobufCMessageDescriptor get_attr_response__descriptor;
+extern const ProtobufCMessageDescriptor dir__descriptor;
+extern const ProtobufCMessageDescriptor read_dir_response__descriptor;
 
 PROTOBUF_C_END_DECLS
 

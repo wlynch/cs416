@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <dirent.h>
 
 #include "threading.h"
 #include "thread_helpers.h"
@@ -136,3 +137,48 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
   return res == 0 ? res : errno;
 }
+
+int read_dir(Simple * input, ReadResponse * response) {
+  char * full_path;
+  char * contents = calloc(1, 256);
+  int contents_length = 256;
+  DIR * dir;
+  struct dirent * ent;
+
+  full_path = get_full_path(input->path);
+  if ((dir = opendir(full_path)) != NULL) {
+    while ((ent = readdir(dir)) != NULL) {
+      if (strlen(ent->d_name) + contents_length + 1 > contents_length) {
+        contents = realloc(contents, contents_length * 2);
+
+        if (contents == NULL) {
+          fprintf(stderr, "could not reallocate more memory.\n");
+          response->data = '\0';
+          response->error_code = errno;
+          free(contents);
+          return errno;
+        } else {
+          contents_length *= 2;
+          contents[contents_length - 1] = 0;
+        }
+      }
+
+      printf("adding %s\n", ent->d_name);
+      strcat(contents, ent->d_name);
+      strcat(contents, "\n");
+      contents_length += strlen(ent->d_name) + 1;
+    }
+    printf("closing the dir\n");
+    closedir(dir);
+
+    printf("setting the response\n");
+    response->data = contents;
+    response->error_code = 0;
+  }
+
+  response->error_code = (errno != 0 ? errno : 0);
+  free(contents);
+
+  return errno != 0 ? errno : 0;
+}
+

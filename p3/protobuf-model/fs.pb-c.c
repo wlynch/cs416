@@ -479,6 +479,92 @@ void   get_attr_response__free_unpacked
   PROTOBUF_C_ASSERT (message->base.descriptor == &get_attr_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
+void   dir__init
+                     (Dir         *message)
+{
+  static Dir init_value = DIR__INIT;
+  *message = init_value;
+}
+size_t dir__get_packed_size
+                     (const Dir *message)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &dir__descriptor);
+  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+}
+size_t dir__pack
+                     (const Dir *message,
+                      uint8_t       *out)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &dir__descriptor);
+  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+}
+size_t dir__pack_to_buffer
+                     (const Dir *message,
+                      ProtobufCBuffer *buffer)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &dir__descriptor);
+  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+}
+Dir *
+       dir__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data)
+{
+  return (Dir *)
+     protobuf_c_message_unpack (&dir__descriptor,
+                                allocator, len, data);
+}
+void   dir__free_unpacked
+                     (Dir *message,
+                      ProtobufCAllocator *allocator)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &dir__descriptor);
+  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+}
+void   read_dir_response__init
+                     (ReadDirResponse         *message)
+{
+  static ReadDirResponse init_value = READ_DIR_RESPONSE__INIT;
+  *message = init_value;
+}
+size_t read_dir_response__get_packed_size
+                     (const ReadDirResponse *message)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &read_dir_response__descriptor);
+  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+}
+size_t read_dir_response__pack
+                     (const ReadDirResponse *message,
+                      uint8_t       *out)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &read_dir_response__descriptor);
+  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+}
+size_t read_dir_response__pack_to_buffer
+                     (const ReadDirResponse *message,
+                      ProtobufCBuffer *buffer)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &read_dir_response__descriptor);
+  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+}
+ReadDirResponse *
+       read_dir_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data)
+{
+  return (ReadDirResponse *)
+     protobuf_c_message_unpack (&read_dir_response__descriptor,
+                                allocator, len, data);
+}
+void   read_dir_response__free_unpacked
+                     (ReadDirResponse *message,
+                      ProtobufCAllocator *allocator)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &read_dir_response__descriptor);
+  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+}
 static const ProtobufCFieldDescriptor create__field_descriptors[2] =
 {
   {
@@ -944,7 +1030,7 @@ static const ProtobufCFieldDescriptor read_response__field_descriptors[3] =
     "data",
     1,
     PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_BYTES,
+    PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     PROTOBUF_C_OFFSETOF(ReadResponse, data),
     NULL,
@@ -1207,5 +1293,185 @@ const ProtobufCMessageDescriptor get_attr_response__descriptor =
   get_attr_response__field_indices_by_name,
   1,  get_attr_response__number_ranges,
   (ProtobufCMessageInit) get_attr_response__init,
+  NULL,NULL,NULL    /* reserved[123] */
+};
+static const ProtobufCFieldDescriptor dir__field_descriptors[8] =
+{
+  {
+    "__dd_fd",
+    1,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_fd),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_loc",
+    2,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT64,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_loc),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_size",
+    3,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT64,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_size),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_buf",
+    4,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_STRING,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_buf),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_len",
+    5,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_len),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_seek",
+    6,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT64,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_seek),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_rewind",
+    7,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT64,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_rewind),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "__dd_flags",
+    8,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Dir, __dd_flags),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+};
+static const unsigned dir__field_indices_by_name[] = {
+  3,   /* field[3] = __dd_buf */
+  0,   /* field[0] = __dd_fd */
+  7,   /* field[7] = __dd_flags */
+  4,   /* field[4] = __dd_len */
+  1,   /* field[1] = __dd_loc */
+  6,   /* field[6] = __dd_rewind */
+  5,   /* field[5] = __dd_seek */
+  2,   /* field[2] = __dd_size */
+};
+static const ProtobufCIntRange dir__number_ranges[1 + 1] =
+{
+  { 1, 0 },
+  { 0, 8 }
+};
+const ProtobufCMessageDescriptor dir__descriptor =
+{
+  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+  "Dir",
+  "Dir",
+  "Dir",
+  "",
+  sizeof(Dir),
+  8,
+  dir__field_descriptors,
+  dir__field_indices_by_name,
+  1,  dir__number_ranges,
+  (ProtobufCMessageInit) dir__init,
+  NULL,NULL,NULL    /* reserved[123] */
+};
+static const ProtobufCFieldDescriptor read_dir_response__field_descriptors[2] =
+{
+  {
+    "contents",
+    1,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_STRING,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(ReadDirResponse, contents),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "dir_struct",
+    2,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_MESSAGE,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(ReadDirResponse, dir_struct),
+    &dir__descriptor,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+};
+static const unsigned read_dir_response__field_indices_by_name[] = {
+  0,   /* field[0] = contents */
+  1,   /* field[1] = dir_struct */
+};
+static const ProtobufCIntRange read_dir_response__number_ranges[1 + 1] =
+{
+  { 1, 0 },
+  { 0, 2 }
+};
+const ProtobufCMessageDescriptor read_dir_response__descriptor =
+{
+  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+  "ReadDirResponse",
+  "ReadDirResponse",
+  "ReadDirResponse",
+  "",
+  sizeof(ReadDirResponse),
+  2,
+  read_dir_response__field_descriptors,
+  read_dir_response__field_indices_by_name,
+  1,  read_dir_response__number_ranges,
+  (ProtobufCMessageInit) read_dir_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };

@@ -46,12 +46,12 @@ message ErrorResponse {
 }
 
 message ReadResponse {
-  required bytes data = 1;
+  required string data = 1;
   required int32 error_code = 2;
   optional bool is_done = 3;
 }
 
-message GetAttrResponse{
+message GetAttrResponse {
   required int32 st_dev = 1;
   required int32 st_ino = 2;
   required int32 st_mode = 3;
@@ -66,6 +66,22 @@ message GetAttrResponse{
   required int64 mtime = 10;
   required int64 ctime = 11;
   required int32 error_code = 14;
+}
+
+message Dir {
+  required int32 __dd_fd = 1;
+  required int64 __dd_loc = 2;
+  required int64 __dd_size = 3;
+  required string __dd_buf = 4;
+  required int32 __dd_len = 5;
+  required int64 __dd_seek = 6;
+  required int64 __dd_rewind = 7;
+  required int32 __dd_flags = 8;
+}
+
+message ReadDirResponse {
+  required string contents = 1;
+  required Dir dir_struct = 2;
 }
 
 

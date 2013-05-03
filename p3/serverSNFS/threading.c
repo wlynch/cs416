@@ -17,6 +17,21 @@
 #include "filesystem.h"
 #include "../protobuf-model/fs.pb-c.h"
 
+#define SEND_TO_CLIENT(resp) \
+  uint32_t send_size = get_attr_response__get_packed_size(&resp) + 2*sizeof(uint32_t); \
+  void * send_buffer = malloc(send_size); \
+  uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t)); \
+  message_type = htonl(FILE_RESPONSE_MESSAGE); \
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t)); \
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t)); \
+  get_attr_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t)); \
+  int num_written = write(thr_arg->socket, send_buffer, send_size); \
+  while(num_written < send_size) { \
+    write(thr_arg->socket, send_buffer + num_written, send_size - num_written); \
+  } \
+  free(send_buffer); \
+  break;
+
 void * handle_request(void * args){
 
   int bytes_read;
@@ -126,6 +141,30 @@ void * handle_request(void * args){
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
         get_attr_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+
+        free(send_buffer);
+        break;
+      }
+    case READDIR_MESSAGE:
+      {
+        Simple * readdir_message = simple__unpack(NULL, message_size, message_buffer);
+        ReadResponse resp = READ_RESPONSE__INIT;
+        read_dir(readdir_message, &resp);
+
+        /*  Send to client code */
+        uint32_t send_size = read_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        message_type = htonl(READ_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        read_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
 
         int num_written = write(thr_arg->socket, send_buffer, send_size);
         while(num_written < send_size)
