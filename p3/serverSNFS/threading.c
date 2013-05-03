@@ -138,6 +138,34 @@ void *handle_request(void * args){
         free(send_buffer);
         break;
       }
+    case WRITE_MESSAGE:
+      {
+        Write *write =  write__unpack(NULL, message_size, message_buffer);
+        ErrorResponse resp = ERROR_RESPONSE__INIT;
+        write_file(write, message_size, &resp);
+
+        /* Send to client */
+        uint32_t send_size = error_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        uint32_t net_data_size = htonl(send_size - 2*sizeof(uint32_t));
+        message_type = htonl(ERROR_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        error_response__pack(&resp, send_buffer + 2*sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+
+        fprintf(stderr, "successfully sent the message over back to the client\n"\
+            "error code is %d\n", resp->error_code);
+        free(resp);
+        free(send_buffer);
+        break;
+      }
   }
 
   close(thr_arg->socket);

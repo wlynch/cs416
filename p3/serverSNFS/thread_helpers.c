@@ -129,3 +129,16 @@ int get_attr(Simple * input, GetAttrResponse * response){
   
   return res == 0 ? res : errno;
 }
+
+void write_file(Write * input, size_t count, ErrorResponse * response) {
+  int res, fd = input->fd;
+  const void *buf;
+  /* Not sure how to extract protobuf data */
+
+  res = write(fd, buf, count);
+  if (res < 0) {
+    res = -errno;
+  }
+
+  response->error = res;
+}
