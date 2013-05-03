@@ -115,7 +115,13 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
   full_path = get_full_path(input->path);
   printf("\tget_attr %s\n", full_path);
-  res = lstat(full_path, &stat_buf);
+  res = stat(full_path, &stat_buf);
+
+  if (res < 0) {
+    printf("errno: %i, path: %s\n", errno, full_path);
+    fflush(stdout);
+    perror("stat");
+  }
 
   response->st_dev = stat_buf.st_dev;
   response->st_ino = stat_buf.st_ino;

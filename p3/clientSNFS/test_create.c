@@ -8,7 +8,7 @@
 #include <errno.h>
 
 int main(int argc, char ** argv) {
-  int close_res, fd = creat("temp/test.txt", 0755);
+  int close_res, fd = creat("temp/test.txt", 777);
 
   if (fd < 0) {
     perror("could not create temp/test.txt. ");
