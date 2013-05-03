@@ -140,5 +140,5 @@ void write_file(Write * input, size_t count, ErrorResponse * response) {
     res = -errno;
   }
 
-  response->error = res;
+  response->error_code = res;
 }

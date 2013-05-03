@@ -140,9 +140,9 @@ void *handle_request(void * args){
       }
     case WRITE_MESSAGE:
       {
-        Write *write =  write__unpack(NULL, message_size, message_buffer);
+        Write *write_msg =  write__unpack(NULL, message_size, message_buffer);
         ErrorResponse resp = ERROR_RESPONSE__INIT;
-        write_file(write, message_size, &resp);
+        write_file(write_msg, message_size, &resp);
 
         /* Send to client */
         uint32_t send_size = error_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
@@ -161,8 +161,8 @@ void *handle_request(void * args){
         }
 
         fprintf(stderr, "successfully sent the message over back to the client\n"\
-            "error code is %d\n", resp->error_code);
-        free(resp);
+            "error code is %d\n", resp.error_code);
+        free(&resp);
         free(send_buffer);
         break;
       }

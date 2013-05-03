@@ -301,24 +301,24 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
 
 static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi) {
   log_msg("logging in write");
-  Write write = WRITE__INIT;
+  Write write_msg = WRITE__INIT;
   void *send_buffer;
   void *receive_buffer;
-  uint32_t send_size, net_data_size, message_type;
-  write.fd = fd;
+  uint32_t send_size, net_data_size, message_type, receive_size;
+  write_msg.fd = fd;
   /* NOT SURE HOW TO HANDLE DATA WITHIN PROTOBUF */
-  memcpy(&write.buf,buf,count);
+  memcpy(&write_msg.data,buf,count);
 
   FileResponse is_done = FILE_RESPONSE__INIT;
 
-  send_size = write__get_packed_size(&truncate) + 2*sizeof(uint32_t);
+  send_size = write__get_packed_size(&write_msg) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(WRITE_MESSAGE);
   memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
-  write__pack(&write, send_buffer + 2 * sizeof(uint32_t));
+  write__pack(&write_msg, send_buffer + 2 * sizeof(uint32_t));
 
   /* Send the data */  
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
@@ -339,15 +339,13 @@ static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi)
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
   void *payload = malloc(receive_size);
-  read(socket_fd, payload, receive_size);
+  read(socket, payload, receive_size);
 
   ErrorResponse * resp = error_response__unpack(NULL, receive_size, payload);
   
-  sprintf(log_buffer, "return code is %d\n", resp->fd, resp->error_code);
+  sprintf(log_buffer, "return code is %d\n",resp->error_code);
   log_msg(log_buffer);
   
-  free(open_struct.path);
-
   close(sock);
 
   return is_done.fd > 0 ? 0 : is_done.fd;
