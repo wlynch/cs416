@@ -17,7 +17,7 @@ message Write {
 message Read {
   required int32 fd = 1;
   required int32 num_bytes = 2;
-  optional int32 offset = 3;
+  required int32 offset = 3;
 }
 
 message Close {

@@ -64,12 +64,11 @@ struct  _Read
   ProtobufCMessage base;
   int32_t fd;
   int32_t num_bytes;
-  protobuf_c_boolean has_offset;
   int32_t offset;
 };
 #define READ__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&read__descriptor) \
-    , 0, 0, 0,0 }
+    , 0, 0, 0 }
 
 
 struct  _Close

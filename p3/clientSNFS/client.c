@@ -44,8 +44,8 @@ extern struct fuse_operations ops;
 int main (int argc, char ** argv) {
   int port, sock;
   struct hostent *server;
-  char * fuse_args[] = {NULL, NULL};
-  int fuse_argc = 2;
+  char * fuse_args[] = {NULL, NULL, NULL};
+  int fuse_argc = 3;
   char * host = NULL;
   unsigned i;
 
@@ -55,12 +55,13 @@ int main (int argc, char ** argv) {
   }
 
   fuse_args[0] = argv[0];
+  fuse_args[1] = "-s";
 
  for (i = 1; i < (unsigned) argc; i += 2) {
     if (strcmp (argv[i], "-address") == 0) {
       host = argv[i + 1];
     } else if (strcmp (argv[i], "-mount") == 0) {
-      fuse_args[1] = argv[i + 1]; /* mount path */
+      fuse_args[2] = argv[i + 1]; /* mount path */
     }
     else if(strcmp (argv[i], "-port") == 0){
       port = strtol(argv[i + 1], NULL, 10); 

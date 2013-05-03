@@ -648,9 +648,9 @@ static const ProtobufCFieldDescriptor read__field_descriptors[3] =
   {
     "offset",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_INT32,
-    PROTOBUF_C_OFFSETOF(Read, has_offset),
+    0,   /* quantifier_offset */
     PROTOBUF_C_OFFSETOF(Read, offset),
     NULL,
     NULL,

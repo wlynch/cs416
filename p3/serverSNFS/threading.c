@@ -136,6 +136,10 @@ void * handle_request(void * args){
         free(send_buffer);
         break;
       }
+    case READ_MESSAGE:
+      {
+      
+      }
   }
 
   close(thr_arg->socket);
