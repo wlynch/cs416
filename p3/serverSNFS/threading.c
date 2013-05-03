@@ -91,7 +91,6 @@ void * handle_request(void * args){
         fprintf(stderr, "GOT TO THE OPEN MESSAGE");
         Open* open = open__unpack(NULL, message_size, message_buffer);
 
-
         FileResponse* resp = malloc(sizeof(FileResponse));
         open_file(open, resp);
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
@@ -115,10 +114,6 @@ void * handle_request(void * args){
         
         free(send_buffer);
         free(resp);
-<<<<<<< HEAD
-=======
-        free(send_buffer);
->>>>>>> db5f917ce098bd4c445c1ae5530e701215adf079
         break;
       }
     case GETATTR_MESSAGE:
