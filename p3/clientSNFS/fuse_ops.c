@@ -26,11 +26,12 @@
 static char log_buffer[256];
 
 static int _getattr(const char *path, struct stat *stbuf) {
-
-  Simple attr_req = SIMPLE__INIT;
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
+  GetAttrResponse * resp;
+
+  Simple attr_req = SIMPLE__INIT;
   attr_req.path = strdup(path);
 
   /* Pack code */
@@ -73,17 +74,17 @@ static int _getattr(const char *path, struct stat *stbuf) {
 
   receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
-  GetAttrResponse * resp = get_attr_response__unpack(NULL, receive_size, receive_buffer);
+  resp = get_attr_response__unpack(NULL, receive_size, receive_buffer);
   parse_get_attr(resp, stbuf);
-  log_msg("Got through parsing the attr.");
-  sprintf(log_buffer, "GetAttr: Error code is %d and st_dev is %d\n", resp->error_code, stbuf->st_dev);
+
+  sprintf(log_buffer, "GetAttr: Error code is %d and uid is %u our uid is %d\n", resp->error_code, stbuf->st_uid, getuid());
   log_msg(log_buffer);
 
   close(sock);
   free(send_buffer);
   free(receive_buffer);
 
-  return resp->error_code;
+  return -1 * resp->error_code;
 }
 
 static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -140,9 +141,9 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
+  receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
   resp = file_response__unpack(NULL, receive_size, receive_buffer);
-
   sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
@@ -156,7 +157,7 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : resp->error_code;
+  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
 
 }
 
@@ -265,7 +266,7 @@ static int _release(char * path, struct fuse_file_info * fi) {
   free(receive_buffer);
   file_response__free_unpacked(resp, NULL);
 
-  return resp->error_code;
+  return -1 * resp->error_code;
 }
 
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
@@ -332,7 +333,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? resp->fd : resp->error_code;
+  return resp->fd > 0 ? resp->fd : -1 * resp->error_code;
 }
 
 struct fuse_operations ops = {

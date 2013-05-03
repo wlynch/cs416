@@ -114,7 +114,6 @@ int get_attr(Simple * input, GetAttrResponse * response){
   int res;
 
   full_path = get_full_path(input->path);
-  printf("\tget_attr %s\n", full_path);
   res = stat(full_path, &stat_buf);
 
   if (res < 0) {
@@ -136,8 +135,8 @@ int get_attr(Simple * input, GetAttrResponse * response){
   response->st_blksize = stat_buf.st_blksize;
   response->st_blocks = stat_buf.st_blocks;
   response->st_size = stat_buf.st_size;
-  response->error_code = res == 0 ? res : errno;
 
+  response->error_code = res == 0 ? res : errno;
   free(full_path);
 
   return res == 0 ? res : errno;
