@@ -377,10 +377,63 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
 
   ReadResponse *resp = read_response__unpack(NULL, receive_size, receive_buffer);
   if(resp->error_code == 0){
-    memcpy(buffer, (char *)resp->data.data, resp->data.len); 
+    memcpy(buffer, resp->data.data, resp->data.len); 
   }
 
-  return resp->error_code >= 0 ? resp->bytes_read : -1 * resp->error_code;
+ 
+  free(send_buffer);
+  free(receive_buffer);
+  return resp->bytes_read >= 0 ? resp->bytes_read : -1 * resp->error_code;
+}
+
+static int _mkdir(char * path, mode_t mode){
+  log_msg("logging mkdir");
+  sprintf(log_buffer, "log path is %s", path);
+  log_msg(log_buffer);
+  uint32_t send_size, net_data_size, message_type, receive_size;
+  void* receive_buffer;
+  void* send_buffer;
+
+  Create create_struct = CREATE__INIT;
+  create_struct.path = path;
+  create_struct.mode = mode;
+
+  send_size = create__get_packed_size(&create_struct) + 2*sizeof(uint32_t);
+  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  message_type = htonl(CREATE_MESSAGE);
+  net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+
+  create__pack(&create_struct, send_buffer + 2*sizeof(uint32_t));
+
+  /* All the sockets */
+  int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+  int connected = connect(socket_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+  if (connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
+  write(socket_fd, send_buffer, send_size);
+  
+  /* Reading things back */
+  read(socket_fd, &receive_size, sizeof(send_size));
+  read(socket_fd, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  receive_buffer = malloc(receive_size);
+  read(socket_fd, receive_buffer, receive_size);
+  log_msg("successfully read a message into the receive buffer");
+
+  ErrorResponse *resp = error_response__unpack(NULL, receive_size, receive_buffer);
+
+  free(send_buffer);
+  free(receive_buffer);
+  return -1 * resp->error_code ;
 }
 
 struct fuse_operations ops = {
@@ -390,5 +443,6 @@ struct fuse_operations ops = {
   .open = _ex_open,
   .create = _create,
   .release = _release,
-  .truncate = _truncate
+  .truncate = _truncate,
+  .mkdir = _mkdir
 };

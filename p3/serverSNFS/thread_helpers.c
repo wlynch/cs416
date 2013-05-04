@@ -25,15 +25,12 @@ void create_file(Create * input, FileResponse * resp) {
 
   FileResponse create_handle = FILE_RESPONSE__INIT;
   full_path = get_full_path(input->path);
-  printf("\tcreate_file %s\n", full_path);
   create_res = creat(full_path, input->mode);
 
   if(create_res < 0){
     create_res = errno;
   }
 
-  printf("create_res has a value of %d\n", create_res);
-  fprintf(stderr, "full path is %s\n", full_path);
   free(full_path);
   create_handle.fd = create_res;
   create_handle.error_code = -errno;
@@ -135,4 +132,18 @@ void *read_help(Read * input, ReadResponse *response) {
   response->data.len = input->num_bytes;
 
   return buffer;
+}
+
+void make_dir(Create * input, ErrorResponse * resp){
+ int error, res;
+ char * full_path = input->path;
+ res = mkdir(full_path, input->mode);
+ free(full_path);
+
+ if(res < 0){
+   error = errno;
+ }
+
+ resp->error_code = res < 0 ? error : res;
+
 }
