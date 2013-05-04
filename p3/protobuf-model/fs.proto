@@ -12,6 +12,7 @@ message Simple {
 message Write {
   required int32 fd = 1;
   required bytes data = 2;
+  required int32 offset = 3;
 }
 
 message Read {

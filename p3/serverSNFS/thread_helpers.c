@@ -123,10 +123,11 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
 void write_file(Write * input, size_t count, StatusResponse * response) {
   int res, fd = input->fd;
+  off_t offset = input->offset;
   void *buf;
   memcpy(buf, input->data.data, sizeof(input->data.len));
 
-  res = write(fd, buf, count);
+  res = pwrite(fd, buf, count, offset);
   response->retval = res;
   if (res < 0) {
     response->has_err = 1;

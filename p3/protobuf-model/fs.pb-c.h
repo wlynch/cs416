@@ -54,10 +54,11 @@ struct  _Write
   ProtobufCMessage base;
   int32_t fd;
   ProtobufCBinaryData data;
+  int32_t offset;
 };
 #define WRITE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&write__descriptor) \
-    , 0, {0,NULL} }
+    , 0, {0,NULL}, 0 }
 
 
 struct  _Read

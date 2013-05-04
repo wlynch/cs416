@@ -445,21 +445,23 @@ static int _write(const char* path, const void *buf, size_t count, size_t offset
   int retval;
 
   write_msg.fd = fi->fh;
-  /* NOT SURE HOW TO HANDLE DATA WITHIN PROTOBUF */
-  memcpy(&write_msg.data,buf,count);
+  write_msg.offset = offset;
+  memcpy(&write_msg.data, buf, count);
   write_msg.data.len = count;
-
   sprintf(log_buffer, "file descriptor is %d and bytes to write is %d\n", write_msg.fd, count);
   log_msg(log_buffer);
+
   send_size = write__get_packed_size(&write_msg) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
-  // ignore the length when writing the length of the message
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
   message_type = htonl(WRITE_MESSAGE);
+  log_msg("got data size");
   memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
   memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
-  write__pack(&write_msg, send_buffer + 2 * sizeof(uint32_t));
-
+  log_msg("copied size and type");
+  write__pack(&write_msg, send_buffer + 2*sizeof(uint32_t));
+  log_msg("data packed");
+  
   /* Send the data */  
   int sock = socket(AF_INET, SOCK_STREAM, 0);;
   int connected = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));

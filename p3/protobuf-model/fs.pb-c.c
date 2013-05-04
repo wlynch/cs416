@@ -611,7 +611,7 @@ const ProtobufCMessageDescriptor simple__descriptor =
   (ProtobufCMessageInit) simple__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor write__field_descriptors[2] =
+static const ProtobufCFieldDescriptor write__field_descriptors[3] =
 {
   {
     "fd",
@@ -637,15 +637,28 @@ static const ProtobufCFieldDescriptor write__field_descriptors[2] =
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
+  {
+    "offset",
+    3,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(Write, offset),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
 };
 static const unsigned write__field_indices_by_name[] = {
   1,   /* field[1] = data */
   0,   /* field[0] = fd */
+  2,   /* field[2] = offset */
 };
 static const ProtobufCIntRange write__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 2 }
+  { 0, 3 }
 };
 const ProtobufCMessageDescriptor write__descriptor =
 {
@@ -655,7 +668,7 @@ const ProtobufCMessageDescriptor write__descriptor =
   "Write",
   "",
   sizeof(Write),
-  2,
+  3,
   write__field_descriptors,
   write__field_indices_by_name,
   1,  write__number_ranges,
