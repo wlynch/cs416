@@ -126,8 +126,8 @@ void write_file(Write * input, size_t count, StatusResponse * response) {
   off_t offset = input->offset;
   void *buf;
   memcpy(buf, input->data.data, sizeof(input->data.len));
-
-  res = pwrite(fd, buf, count, offset);
+  fprintf(stderr,"writing %d bytes\n",input->data.len);
+  res = pwrite(fd, buf, input->data.len, offset);
   response->retval = res;
   if (res < 0) {
     response->has_err = 1;

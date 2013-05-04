@@ -145,7 +145,6 @@ void * handle_request(void * args){
       {
         Write *write_msg =  write__unpack(NULL, message_size, message_buffer);
         StatusResponse resp = STATUS_RESPONSE__INIT;
-        fprintf(stderr,"Writing %d bytes\n",message_size);
         write_file(write_msg, message_size, &resp);
 
         /* Send to client */
