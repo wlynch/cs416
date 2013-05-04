@@ -76,11 +76,12 @@ static int _getattr(const char *path, struct stat *stbuf) {
   sprintf(log_buffer, "GetAttr: Error code is %d and uid is %u our uid is %d\n", resp->error_code, stbuf->st_uid, getuid());
   log_msg(log_buffer);
 
+  int error_code = resp->error_code;
   close(sock);
   free(send_buffer);
   free(receive_buffer);
 
-  return -1 * resp->error_code;
+  return -1 * error_code;
 }
 
 static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -187,10 +188,8 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
     return -1;
   }
 
-  int bytes_written = write(sock, send_buffer, send_size);
-  sprintf(log_buffer, "bytes_written is %d", bytes_written);
-  log_msg(log_buffer);
-
+  write(sock, send_buffer, send_size);
+  
   /* Receive code */
 
   read(sock, &receive_size, sizeof(send_size));
@@ -203,17 +202,20 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
 
+  int fd = resp->fd;
+  int error_code = resp->error_code;
+  if(resp->fd > 0){
+    fi->fh = resp->fd;
+  }
+
   free(create.path);
   free(receive_buffer);
   free(send_buffer);
   file_response__free_unpacked(resp, NULL);
   close(sock);
 
-  if(resp->fd > 0){
-    fi->fh = resp->fd;
-  }
 
-  return resp->fd > 0 ? 0 : -1 * resp->error_code;
+  return fd > 0 ? 0 : -1 * error_code;
 
 }
 
@@ -263,6 +265,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
 
   sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
   log_msg(log_buffer);
+
 
   close(sock);
   free(receive_buffer);
@@ -317,12 +320,13 @@ static int _release(char * path, struct fuse_file_info * fi) {
   sprintf(log_buffer, "Error code is %d\n", resp->error_code);
   log_msg(log_buffer);
 
+  int error_code = resp->error_code;
   close(sock);
   free(receive_buffer);
   free(send_buffer);
   error_response__free_unpacked(resp, NULL);
 
-  return -1 * resp->error_code;
+  return -1 * error_code;
 }
 
 static int _ex_open(const char *path, struct fuse_file_info *fi) {
@@ -348,7 +352,6 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
 
   open__pack(&open_struct, send_buffer + 2*sizeof(uint32_t));
 
-
   /* All the sockets */
   int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
   int connected = connect(socket_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
@@ -371,19 +374,21 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
 
   FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
 
-  sprintf(log_buffer, "file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  sprintf(log_buffer, "file descriptor is %d and error code is %d", resp->fd, resp->error_code);
   log_msg(log_buffer);
-
-  close(socket_fd);
-  free(open_struct.path);
-  free(receive_buffer);
-  free(send_buffer);
 
   if(resp->fd > 0){
     fi->fh = resp->fd;
   }
 
-  return resp->fd > 0 ? 0 : -1 * resp->error_code;
+  int fd = resp->fd;
+  int error_code = resp->error_code;
+  close(socket_fd);
+  free(open_struct.path);
+  free(receive_buffer);
+  free(send_buffer);
+
+  return fd > 0 ? 0 : -1 * error_code;
 }
 
 static int _read(const char * path, const char * buffer, size_t size, off_t off,
@@ -437,10 +442,13 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
     memcpy(buffer, resp->data.data, resp->data.len); 
   }
 
+  int bytes_read = resp->bytes_read;
+  int error_code = resp->error_code;
  
   free(send_buffer);
+  read_response__free_unpacked(resp, NULL);
   free(receive_buffer);
-  return resp->bytes_read >= 0 ? resp->bytes_read : -1 * resp->error_code;
+  return bytes_read >= 0 ? bytes_read : -1 * error_code;
 }
 
 static int _mkdir(char * path, mode_t mode){
@@ -488,9 +496,10 @@ static int _mkdir(char * path, mode_t mode){
 
   ErrorResponse *resp = error_response__unpack(NULL, receive_size, receive_buffer);
 
+  int error_code = resp->error_code;
   free(send_buffer);
   free(receive_buffer);
-  return -1 * resp->error_code;
+  return -1 * error_code;
 }
 
 static int _opendir(char *path, struct fuse_file_info *fi){
@@ -536,13 +545,14 @@ static int _opendir(char *path, struct fuse_file_info *fi){
   log_msg("successfully read a message into the receive buffer");
 
   ErrorResponse *resp = error_response__unpack(NULL, receive_size, receive_buffer);
+  int error_code = resp->error_code;
   free(send_buffer);
   free(receive_buffer);
 
   sprintf(log_buffer, "error code is %d\n", resp->error_code);
   log_msg(log_buffer);
 
-  return -1 * resp->error_code;
+  return -1 * error_code;
 }
 
 static int _releasedir(char *path, struct fuse_file_info * fi){
