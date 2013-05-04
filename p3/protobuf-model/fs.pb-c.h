@@ -16,6 +16,8 @@ typedef struct _Read Read;
 typedef struct _Close Close;
 typedef struct _Open Open;
 typedef struct _Truncate Truncate;
+typedef struct _DirRecord DirRecord;
+typedef struct _ReadDirResponse ReadDirResponse;
 typedef struct _FileResponse FileResponse;
 typedef struct _ErrorResponse ErrorResponse;
 typedef struct _ReadResponse ReadResponse;
@@ -101,6 +103,28 @@ struct  _Truncate
 #define TRUNCATE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&truncate__descriptor) \
     , NULL, 0 }
+
+
+struct  _DirRecord
+{
+  ProtobufCMessage base;
+  char *name;
+};
+#define DIR_RECORD__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&dir_record__descriptor) \
+    , NULL }
+
+
+struct  _ReadDirResponse
+{
+  ProtobufCMessage base;
+  size_t n_records;
+  DirRecord **records;
+  int32_t error_code;
+};
+#define READ_DIR_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&read_dir_response__descriptor) \
+    , 0,NULL, 0 }
 
 
 struct  _FileResponse
@@ -298,6 +322,44 @@ Truncate *
 void   truncate__free_unpacked
                      (Truncate *message,
                       ProtobufCAllocator *allocator);
+/* DirRecord methods */
+void   dir_record__init
+                     (DirRecord         *message);
+size_t dir_record__get_packed_size
+                     (const DirRecord   *message);
+size_t dir_record__pack
+                     (const DirRecord   *message,
+                      uint8_t             *out);
+size_t dir_record__pack_to_buffer
+                     (const DirRecord   *message,
+                      ProtobufCBuffer     *buffer);
+DirRecord *
+       dir_record__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   dir_record__free_unpacked
+                     (DirRecord *message,
+                      ProtobufCAllocator *allocator);
+/* ReadDirResponse methods */
+void   read_dir_response__init
+                     (ReadDirResponse         *message);
+size_t read_dir_response__get_packed_size
+                     (const ReadDirResponse   *message);
+size_t read_dir_response__pack
+                     (const ReadDirResponse   *message,
+                      uint8_t             *out);
+size_t read_dir_response__pack_to_buffer
+                     (const ReadDirResponse   *message,
+                      ProtobufCBuffer     *buffer);
+ReadDirResponse *
+       read_dir_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   read_dir_response__free_unpacked
+                     (ReadDirResponse *message,
+                      ProtobufCAllocator *allocator);
 /* FileResponse methods */
 void   file_response__init
                      (FileResponse         *message);
@@ -397,6 +459,12 @@ typedef void (*Open_Closure)
 typedef void (*Truncate_Closure)
                  (const Truncate *message,
                   void *closure_data);
+typedef void (*DirRecord_Closure)
+                 (const DirRecord *message,
+                  void *closure_data);
+typedef void (*ReadDirResponse_Closure)
+                 (const ReadDirResponse *message,
+                  void *closure_data);
 typedef void (*FileResponse_Closure)
                  (const FileResponse *message,
                   void *closure_data);
@@ -422,6 +490,8 @@ extern const ProtobufCMessageDescriptor read__descriptor;
 extern const ProtobufCMessageDescriptor close__descriptor;
 extern const ProtobufCMessageDescriptor open__descriptor;
 extern const ProtobufCMessageDescriptor truncate__descriptor;
+extern const ProtobufCMessageDescriptor dir_record__descriptor;
+extern const ProtobufCMessageDescriptor read_dir_response__descriptor;
 extern const ProtobufCMessageDescriptor file_response__descriptor;
 extern const ProtobufCMessageDescriptor error_response__descriptor;
 extern const ProtobufCMessageDescriptor read_response__descriptor;

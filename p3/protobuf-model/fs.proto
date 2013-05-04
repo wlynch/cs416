@@ -34,6 +34,15 @@ message Truncate {
   required int32 num_bytes = 2;
 }
 
+message DirRecord {
+  required string name = 1;
+}
+
+message ReadDirResponse {
+  repeated DirRecord records = 1; 
+  required int32 error_code = 2;
+}
+
 message FileResponse {
   required int32 fd = 1;
   required int32 error_code = 2;

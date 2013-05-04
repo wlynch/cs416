@@ -10,3 +10,5 @@ int get_attr(Simple *, GetAttrResponse *);
 void *read_help(Read *, ReadResponse *);
 void make_dir(Create *, ErrorResponse *);
 void open_dir(Simple *, ErrorResponse *);
+void read_directory(Simple *, ReadDirResponse *);
+void clean_readdir(ReadDirResponse *);
