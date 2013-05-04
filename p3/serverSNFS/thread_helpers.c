@@ -136,14 +136,16 @@ void *read_help(Read * input, ReadResponse *response) {
 
 void make_dir(Create * input, ErrorResponse * resp){
  int error, res;
- char * full_path = input->path;
+ char * full_path = get_full_path(input->path);
  res = mkdir(full_path, input->mode);
+ printf("mdkir: res is %d\n", res);
  free(full_path);
 
  if(res < 0){
+   perror("make directory");
    error = errno;
  }
 
- resp->error_code = res < 0 ? error : res;
+ resp->error_code = res == 0 ? res : error;
 
 }

@@ -400,7 +400,7 @@ static int _mkdir(char * path, mode_t mode){
 
   send_size = create__get_packed_size(&create_struct) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size - 2*sizeof(uint32_t));
-  message_type = htonl(CREATE_MESSAGE);
+  message_type = htonl(MKDIR_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
   memcpy(send_buffer, &net_data_size, sizeof(uint32_t));

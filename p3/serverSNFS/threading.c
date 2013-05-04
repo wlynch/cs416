@@ -195,7 +195,7 @@ void * handle_request(void * args){
       {
         Create * create = create__unpack(NULL, message_size, message_buffer);
         ErrorResponse resp = ERROR_RESPONSE__INIT;
-        make_dir(close, &resp);
+        make_dir(create, &resp);
 
         /*  Send to client code */
         uint32_t send_size = error_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
