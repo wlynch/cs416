@@ -143,7 +143,7 @@ static int _readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t o
     }
   }
 
-
+  log_msg("got to the freeing of the stuff in readdir");
   close(sock);
   read_dir_response__free_unpacked(resp, NULL);
   free(send_buffer);
@@ -343,7 +343,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   open_struct.flags = fi->flags;
 
   send_size = open__get_packed_size(&open_struct) + 2*sizeof(uint32_t);
-  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  send_buffer = malloc(send_size);
   message_type = htonl(OPEN_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
@@ -362,6 +362,7 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
     return -1;
   }
 
+  log_msg("successfully connected");
   write(socket_fd, send_buffer, send_size);
 
   /* Reading things back */
@@ -370,7 +371,11 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
   receive_buffer = malloc(receive_size);
-  read(socket_fd, receive_buffer, receive_size);
+  int bytes_read = read(socket_fd, receive_buffer, receive_size);
+
+  log_msg("successfully read from the file");
+  sprintf(log_buffer, "receive_size is %u and message_type is %u, bytes_read is %d", receive_size, message_type, bytes_read);
+  log_msg(log_buffer);
 
   FileResponse * resp = file_response__unpack(NULL, receive_size, receive_buffer);
 
@@ -383,10 +388,15 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
 
   int fd = resp->fd;
   int error_code = resp->error_code;
+
   close(socket_fd);
   free(open_struct.path);
+  log_msg("got through freeing the path");
+  log_msg("got through freeing the file response");
   free(receive_buffer);
+  log_msg("got through freeing receive buffer");
   free(send_buffer);
+  log_msg("about to return");
 
   return fd > 0 ? 0 : -1 * error_code;
 }
@@ -407,7 +417,7 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
   read_struct.offset = off;
 
   send_size = read__get_packed_size(&read_struct) + 2*sizeof(uint32_t);
-  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  send_buffer = malloc(send_size);
   message_type = htonl(READ_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
@@ -464,7 +474,7 @@ static int _mkdir(char * path, mode_t mode){
   create_struct.mode = mode;
 
   send_size = create__get_packed_size(&create_struct) + 2*sizeof(uint32_t);
-  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  send_buffer = malloc(send_size);
   message_type = htonl(MKDIR_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 
@@ -514,7 +524,7 @@ static int _opendir(char *path, struct fuse_file_info *fi){
   simple_struct.path = path; 
 
   send_size = simple__get_packed_size(&simple_struct) + 2*sizeof(uint32_t);
-  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  send_buffer = malloc(send_size);
   message_type = htonl(OPENDIR_MESSAGE);
   net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
 

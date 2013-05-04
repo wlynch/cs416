@@ -40,7 +40,6 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
 
-  printf("\ttruncate_file\n");
 
   FileResponse truncate_handle = FILE_RESPONSE__INIT;
   full_path = get_full_path(input->path);
@@ -51,8 +50,6 @@ void truncate_file(Truncate * input, FileResponse * resp) {
     truncate_res = errno;
   }
 
-  printf("truncate_res has a value of %d\n", truncate_res);
-  fprintf(stderr,"full path is %s\n", full_path);
   truncate_handle.error_code = truncate_res;
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
@@ -136,7 +133,6 @@ void make_dir(Create * input, ErrorResponse * resp){
  int error, res;
  char * full_path = get_full_path(input->path);
  res = mkdir(full_path, input->mode);
- printf("mdkir: res is %d\n", res);
  free(full_path);
 
  if(res < 0){
@@ -174,7 +170,6 @@ void read_directory(Simple * input, ReadDirResponse * resp){
 
   // if the directory couldn't be opened, return an error
   if(dp == NULL || dir_front == NULL){
-    fprintf(stderr, "ReadDir: first if statement");
     resp->n_records = 0;
     resp->error_code = errno;
     return;
@@ -183,7 +178,6 @@ void read_directory(Simple * input, ReadDirResponse * resp){
   dirent = readdir(dp);
   // if dirent was null after we opened the directory, there is an erro
   if(dirent == NULL){
-    fprintf(stderr, "Readdir: second if statement");
     resp->n_records = 0;
     resp->error_code = errno;
     return;
@@ -208,6 +202,9 @@ void read_directory(Simple * input, ReadDirResponse * resp){
     i++;
   }
   resp->error_code = 0;
+
+  closedir(dp);
+  closedir(dir_front);
 
   //any cleanup needs to happen after packing
 }

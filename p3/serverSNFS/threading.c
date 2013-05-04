@@ -92,7 +92,6 @@ void * handle_request(void * args){
     case OPEN_MESSAGE:
       {
         Open* open = open__unpack(NULL, message_size, message_buffer);
-
         FileResponse* resp = malloc(sizeof(FileResponse));
         open_file(open, resp);
         uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);

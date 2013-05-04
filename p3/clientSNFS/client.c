@@ -40,8 +40,8 @@ extern struct fuse_operations ops;
 int main (int argc, char ** argv) {
   int port, sock;
   struct hostent *server;
-  char * fuse_args[] = {NULL, NULL};
-  int fuse_argc = 2;
+  char * fuse_args[] = {NULL, NULL, NULL, NULL};
+  int fuse_argc = 3;
   char * host = NULL;
   unsigned i;
 
@@ -51,6 +51,8 @@ int main (int argc, char ** argv) {
   }
 
   fuse_args[0] = argv[0];
+  fuse_args[2] = "-s";
+  fuse_args[3] = "-f";
 
  for (i = 1; i < (unsigned) argc; i += 2) {
     if (strcmp (argv[i], "-address") == 0) {
