@@ -138,6 +138,7 @@ void * handle_request(void * args){
       }
     case WRITE_MESSAGE:
       {
+        fprintf(stderr,"GOT A WRITE\n");
         Write *write_msg =  write__unpack(NULL, message_size, message_buffer);
         StatusResponse resp = STATUS_RESPONSE__INIT;
         write_file(write_msg, message_size, &resp);

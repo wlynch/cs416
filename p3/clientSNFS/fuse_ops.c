@@ -383,7 +383,7 @@ static int _read(const char * path, const char * buffer, size_t size, off_t off,
   return resp->error_code >= 0 ? resp->bytes_read : -1 * resp->error_code;
 }
 
-static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi) {
+static int _write(const char* path, const void *buf, size_t count, size_t offset, struct fuse_file_info *fi) {
   log_msg("logging in write");
   Write write_msg = WRITE__INIT;
   void *send_buffer;
@@ -391,11 +391,13 @@ static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi)
   uint32_t send_size, net_data_size, message_type, receive_size;
   int retval;
 
-  write_msg.fd = fd;
+  write_msg.fd = fi->fh;
   /* NOT SURE HOW TO HANDLE DATA WITHIN PROTOBUF */
   memcpy(&write_msg.data,buf,count);
   write_msg.data.len = count;
 
+  sprintf(log_buffer, "file descriptor is %d and bytes to write is %d\n", write_msg.fd, count);
+  log_msg(log_buffer);
   send_size = write__get_packed_size(&write_msg) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
   // ignore the length when writing the length of the message
