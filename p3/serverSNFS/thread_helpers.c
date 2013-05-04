@@ -65,14 +65,9 @@ void truncate_file(Truncate * input, FileResponse * resp) {
 void close_file(Close * input, ErrorResponse * resp) {
   int close_res = close(input->fd);
 
-  printf("\tclose_file\n");
-
   if (close_res < 0) {
     close_res = errno;
   }
-
-  printf("close_res hash a value of %d\n", close_res);
-  fprintf(stderr, "fd: %i\n", input->fd);
 
   ErrorResponse close_handle = ERROR_RESPONSE__INIT;
   close_handle.error_code = close_res;
@@ -108,12 +103,6 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
   full_path = get_full_path(input->path);
   res = stat(full_path, &stat_buf);
-
-  if (res < 0) {
-    printf("errno: %i, path: %s\n", errno, full_path);
-    fflush(stdout);
-    perror("stat");
-  }
 
   response->st_dev = stat_buf.st_dev;
   response->st_ino = stat_buf.st_ino;
