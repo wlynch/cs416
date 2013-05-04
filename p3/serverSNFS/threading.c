@@ -59,6 +59,7 @@ void * handle_request(void * args){
 
         free(resp);
         free(send_buffer);
+        create__free_unpacked(create, NULL);
         break;
       }
     case TRUNCATE_MESSAGE:
@@ -82,8 +83,10 @@ void * handle_request(void * args){
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
+
         free(resp);
         free(send_buffer);
+        truncate__free_unpacked(truncate, NULL);
         break;
       }
     case OPEN_MESSAGE:
@@ -110,6 +113,7 @@ void * handle_request(void * args){
 
         free(send_buffer);
         free(resp);
+        open__free_unpacked(open, NULL);
         break;
       }
     case GETATTR_MESSAGE:
@@ -134,6 +138,7 @@ void * handle_request(void * args){
         }
 
         free(send_buffer);
+        simple__free_unpacked(getattr, NULL);
         break;
       }
     case WRITE_MESSAGE:
@@ -185,8 +190,57 @@ void * handle_request(void * args){
         }
         free(send_buffer);
         free(read_buffer);
+        read__free_unpacked(read, NULL);
         break;
       }
+    case CLOSE_MESSAGE:
+      {
+        Close * close = close__unpack(NULL, message_size, message_buffer);
+        ErrorResponse resp = ERROR_RESPONSE__INIT;
+        close_file(close, &resp);
+
+        /*  Send to client code */
+        uint32_t send_size = error_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        message_type = htonl(READ_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        error_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+
+        close__free_unpacked(close, NULL);
+        break;
+      }
+    case MKDIR_MESSAGE:
+      {
+        Create * create = create__unpack(NULL, message_size, message_buffer);
+        ErrorResponse resp = ERROR_RESPONSE__INIT;
+        make_dir(create, &resp);
+
+        /*  Send to client code */
+        uint32_t send_size = error_response__get_packed_size(&resp) + 2*sizeof(uint32_t);
+        void * send_buffer = malloc(send_size);
+        uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+        message_type = htonl(READ_RESPONSE_MESSAGE);
+        memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+        memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+        error_response__pack(&resp, send_buffer + 2 * sizeof(uint32_t));
+
+        int num_written = write(thr_arg->socket, send_buffer, send_size);
+        while(num_written < send_size)
+        {
+          write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
+        }
+
+        create__free_unpacked(create, NULL);
+      }
+
   }
 
   close(thr_arg->socket);

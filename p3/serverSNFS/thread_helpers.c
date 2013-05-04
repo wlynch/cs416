@@ -25,15 +25,12 @@ void create_file(Create * input, FileResponse * resp) {
 
   FileResponse create_handle = FILE_RESPONSE__INIT;
   full_path = get_full_path(input->path);
-  printf("\tcreate_file %s\n", full_path);
   create_res = creat(full_path, input->mode);
 
   if(create_res < 0){
     create_res = errno;
   }
 
-  printf("create_res has a value of %d\n", create_res);
-  fprintf(stderr, "full path is %s\n", full_path);
   free(full_path);
   create_handle.fd = create_res;
   create_handle.error_code = -errno;
@@ -62,22 +59,15 @@ void truncate_file(Truncate * input, FileResponse * resp) {
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
 
-void close_file(Close * input, FileResponse * resp) {
+void close_file(Close * input, ErrorResponse * resp) {
   int close_res = close(input->fd);
-
-  printf("\tclose_file\n");
 
   if (close_res < 0) {
     close_res = errno;
   }
 
-  printf("close_res hash a value of %d\n", close_res);
-  fprintf(stderr, "fd: %i\n", input->fd);
-
-  FileResponse close_handle = FILE_RESPONSE__INIT;
-  close_handle.fd = input->fd;
+  ErrorResponse close_handle = ERROR_RESPONSE__INIT;
   close_handle.error_code = close_res;
-  close_handle.is_done = 1;
 
   memcpy(resp, &close_handle, sizeof(close_handle));
 }
@@ -110,12 +100,6 @@ int get_attr(Simple * input, GetAttrResponse * response){
 
   full_path = get_full_path(input->path);
   res = stat(full_path, &stat_buf);
-
-  if (res < 0) {
-    printf("errno: %i, path: %s\n", errno, full_path);
-    fflush(stdout);
-    perror("stat");
-  }
 
   response->st_dev = stat_buf.st_dev;
   response->st_ino = stat_buf.st_ino;
@@ -162,4 +146,20 @@ void *read_help(Read * input, ReadResponse *response) {
   response->data.len = input->num_bytes;
 
   return buffer;
+}
+
+void make_dir(Create * input, ErrorResponse * resp){
+ int error, res;
+ char * full_path = get_full_path(input->path);
+ res = mkdir(full_path, input->mode);
+ printf("mdkir: res is %d\n", res);
+ free(full_path);
+
+ if(res < 0){
+   perror("make directory");
+   error = errno;
+ }
+
+ resp->error_code = res == 0 ? res : error;
+
 }
