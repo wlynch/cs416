@@ -19,6 +19,7 @@ typedef struct _Truncate Truncate;
 typedef struct _DirRecord DirRecord;
 typedef struct _ReadDirResponse ReadDirResponse;
 typedef struct _FileResponse FileResponse;
+typedef struct _StatusResponse StatusResponse;
 typedef struct _ErrorResponse ErrorResponse;
 typedef struct _ReadResponse ReadResponse;
 typedef struct _GetAttrResponse GetAttrResponse;
@@ -55,10 +56,11 @@ struct  _Write
   ProtobufCMessage base;
   int32_t fd;
   ProtobufCBinaryData data;
+  int32_t offset;
 };
 #define WRITE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&write__descriptor) \
-    , 0, {0,NULL} }
+    , 0, {0,NULL}, 0 }
 
 
 struct  _Read
@@ -138,6 +140,20 @@ struct  _FileResponse
 #define FILE_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&file_response__descriptor) \
     , 0, 0, 0,0 }
+
+
+struct  _StatusResponse
+{
+  ProtobufCMessage base;
+  int32_t retval;
+  protobuf_c_boolean has_err;
+  int32_t err;
+  protobuf_c_boolean has_is_done;
+  protobuf_c_boolean is_done;
+};
+#define STATUS_RESPONSE__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&status_response__descriptor) \
+    , 0, 0,0, 0,0 }
 
 
 struct  _ErrorResponse
@@ -379,6 +395,25 @@ FileResponse *
 void   file_response__free_unpacked
                      (FileResponse *message,
                       ProtobufCAllocator *allocator);
+/* StatusResponse methods */
+void   status_response__init
+                     (StatusResponse         *message);
+size_t status_response__get_packed_size
+                     (const StatusResponse   *message);
+size_t status_response__pack
+                     (const StatusResponse   *message,
+                      uint8_t             *out);
+size_t status_response__pack_to_buffer
+                     (const StatusResponse   *message,
+                      ProtobufCBuffer     *buffer);
+StatusResponse *
+       status_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
+void   status_response__free_unpacked
+                     (StatusResponse *message,
+                      ProtobufCAllocator *allocator);
 /* ErrorResponse methods */
 void   error_response__init
                      (ErrorResponse         *message);
@@ -468,6 +503,9 @@ typedef void (*ReadDirResponse_Closure)
 typedef void (*FileResponse_Closure)
                  (const FileResponse *message,
                   void *closure_data);
+typedef void (*StatusResponse_Closure)
+                 (const StatusResponse *message,
+                  void *closure_data);
 typedef void (*ErrorResponse_Closure)
                  (const ErrorResponse *message,
                   void *closure_data);
@@ -493,6 +531,7 @@ extern const ProtobufCMessageDescriptor truncate__descriptor;
 extern const ProtobufCMessageDescriptor dir_record__descriptor;
 extern const ProtobufCMessageDescriptor read_dir_response__descriptor;
 extern const ProtobufCMessageDescriptor file_response__descriptor;
+extern const ProtobufCMessageDescriptor status_response__descriptor;
 extern const ProtobufCMessageDescriptor error_response__descriptor;
 extern const ProtobufCMessageDescriptor read_response__descriptor;
 extern const ProtobufCMessageDescriptor get_attr_response__descriptor;

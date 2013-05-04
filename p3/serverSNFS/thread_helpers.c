@@ -36,21 +36,20 @@ void create_file(Create * input, FileResponse * resp) {
   memcpy(resp, &create_handle, sizeof(create_handle));
 }
 
-void truncate_file(Truncate * input, FileResponse * resp) {
+void truncate_file(Truncate * input, StatusResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
 
-
-  FileResponse truncate_handle = FILE_RESPONSE__INIT;
+  StatusResponse truncate_handle = STATUS_RESPONSE__INIT;
   full_path = get_full_path(input->path);
   num_bytes = input->num_bytes;
-  truncate_res = truncate(full_path, num_bytes);
+  truncate_handle.retval = truncate(full_path, num_bytes);
 
-  if (truncate_res < 0) {
-    truncate_res = errno;
+  if (truncate_handle.retval < 0) {
+    truncate_handle.has_err = 1;
+    truncate_handle.err = errno;
   }
 
-  truncate_handle.error_code = truncate_res;
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
 
@@ -116,10 +115,25 @@ int get_attr(Simple * input, GetAttrResponse * resp){
   return res == 0 ? res : errno;
 }
 
+void write_file(Write * input, size_t count, StatusResponse * response) {
+  int res, fd = input->fd;
+  off_t offset = input->offset;
+  void *buf;
+  memcpy(buf, input->data.data, sizeof(input->data.len));
+  fprintf(stderr,"writing %d bytes\n",input->data.len);
+  res = pwrite(fd, buf, input->data.len, offset);
+  response->retval = res;
+  if (res < 0) {
+    response->has_err = 1;
+    response->err = errno;
+  }
+  
+}
+
 void *read_help(Read * input, ReadResponse *resp) {
   int res, errors;
   void * buffer = malloc(input->num_bytes);
-  
+
   res = pread(input->fd, buffer, input->num_bytes, input->offset);
   resp->error_code = res >= 0 ? 0 : errno;
   resp->bytes_read = res >= 0 ? res : 0;
