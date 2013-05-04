@@ -167,7 +167,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   void *receive_buffer;
   uint32_t send_size, receive_size, net_data_size, message_type;
 
-  FileResponse * resp;
+  StatusResponse * resp;
 
   truncate.path = strdup(path);
   truncate.num_bytes = length;
@@ -202,16 +202,16 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
   read(sock, receive_buffer, receive_size);
-  resp = file_response__unpack(NULL, receive_size, receive_buffer);
+  resp = status_response__unpack(NULL, receive_size, receive_buffer);
 
-  sprintf(log_buffer, "Create: file descriptor is %d and error code is %d\n", resp->fd, resp->error_code);
+  sprintf(log_buffer, "Got return code", resp->retval);
   log_msg(log_buffer);
 
   close(sock);
   free(receive_buffer);
-  file_response__free_unpacked(resp, NULL);
+  status_response__free_unpacked(resp, NULL);
 
-  return resp->fd > 0 ? 0 : resp->fd;
+  return resp->retval;
 }
 
 static int _release(char * path, struct fuse_file_info * fi) {
