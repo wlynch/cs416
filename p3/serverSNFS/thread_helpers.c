@@ -42,8 +42,6 @@ void truncate_file(Truncate * input, StatusResponse * resp) {
   int truncate_res, num_bytes;
   char * full_path;
 
-  printf("\ttruncate_file\n");
-
   StatusResponse truncate_handle = STATUS_RESPONSE__INIT;
   full_path = get_full_path(input->path);
   num_bytes = input->num_bytes;
@@ -53,9 +51,6 @@ void truncate_file(Truncate * input, StatusResponse * resp) {
     truncate_handle.has_err = 1;
     truncate_handle.err = errno;
   }
-
-  printf("truncate_res has a value of %d\n", truncate_res);
-  fprintf(stderr,"full path is %s\n", full_path);
   memcpy(resp, &truncate_handle, sizeof(truncate_handle));
 }
 

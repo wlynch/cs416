@@ -192,8 +192,6 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
 
   /* send the truncate message */
   int bytes_written = write(sock, send_buffer, send_size);
-  sprintf(log_buffer, "bytes_written is %d", bytes_written);
-  log_msg(log_buffer);
 
   /* wait for the response */
   read(sock, &receive_size, sizeof(send_size));
@@ -202,11 +200,8 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   message_type = ntohl(message_type);
   receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
-  log_msg("received response");
   resp = status_response__unpack(NULL, receive_size, receive_buffer);
-  log_msg("unpacked response");
   retval = resp->retval;
-  log_msg("got retval");
   sprintf(log_buffer, "Got return code %d", retval);
   log_msg(log_buffer);
 
