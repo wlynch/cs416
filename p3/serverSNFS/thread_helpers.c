@@ -6,10 +6,8 @@
 #include <errno.h>
 
 #include <sys/types.h>
+#include <dirent.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <unistd.h>
 
 #include "threading.h"
@@ -147,5 +145,17 @@ void make_dir(Create * input, ErrorResponse * resp){
  }
 
  resp->error_code = res == 0 ? res : error;
+}
 
+void open_dir(Simple * input, ErrorResponse * resp){
+  char * full_path = get_full_path(input->path);
+  DIR * dp = opendir(full_path);
+  
+  if(dp != NULL){
+    closedir(dp);    
+  }
+
+  free(full_path);
+  
+  resp->error_code = dp == NULL ? errno : 0;
 }

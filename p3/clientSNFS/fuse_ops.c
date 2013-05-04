@@ -433,7 +433,61 @@ static int _mkdir(char * path, mode_t mode){
 
   free(send_buffer);
   free(receive_buffer);
-  return -1 * resp->error_code ;
+  return -1 * resp->error_code;
+}
+
+static int _opendir(char *path, struct fuse_file_info *fi){
+  log_msg("logging opendir");
+  sprintf(log_buffer, "log path is %s", path);
+  log_msg(log_buffer);
+  uint32_t send_size, net_data_size, message_type, receive_size;
+  void* receive_buffer;
+  void* send_buffer;
+
+  Simple simple_struct = SIMPLE__INIT;
+  simple_struct.path = path; 
+
+  send_size = simple__get_packed_size(&simple_struct) + 2*sizeof(uint32_t);
+  send_buffer = malloc(send_size - 2*sizeof(uint32_t));
+  message_type = htonl(OPENDIR_MESSAGE);
+  net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
+
+  memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
+  memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
+
+  simple__pack(&simple_struct, send_buffer + 2*sizeof(uint32_t));
+
+  /* All the sockets */
+  int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+  int connected = connect(socket_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+
+  if (connected < 0) {
+    perror("cannot connect: ");
+    free(send_buffer);
+    return -1;
+  }
+
+  write(socket_fd, send_buffer, send_size);
+  
+  /* Reading things back */
+  read(socket_fd, &receive_size, sizeof(send_size));
+  read(socket_fd, &message_type, sizeof(message_type));
+  receive_size = ntohl(receive_size);
+  message_type = ntohl(message_type);
+  receive_buffer = malloc(receive_size);
+  read(socket_fd, receive_buffer, receive_size);
+  log_msg("successfully read a message into the receive buffer");
+
+  ErrorResponse *resp = error_response__unpack(NULL, receive_size, receive_buffer);
+
+  free(send_buffer);
+  free(receive_buffer);
+  return -1 * resp->error_code;
+}
+
+static int _releasedir(char *path, struct fuse_file_info * fi){
+  // because we never REALLY open up directories, this always returns zero
+  return 0;
 }
 
 struct fuse_operations ops = {
@@ -444,5 +498,7 @@ struct fuse_operations ops = {
   .create = _create,
   .release = _release,
   .truncate = _truncate,
-  .mkdir = _mkdir
+  .mkdir = _mkdir,
+  .opendir = _opendir,
+  .releasedir = _releasedir
 };
