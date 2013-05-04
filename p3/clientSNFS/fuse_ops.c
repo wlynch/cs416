@@ -206,11 +206,10 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   log_msg("unpacked response");
   retval = resp->retval;
   log_msg("got retval");
-  sprintf(log_buffer, "Got return code %d\n", retval);
+  sprintf(log_buffer, "Got return code %d", retval);
   log_msg(log_buffer);
 
   close(sock);
-  free(receive_buffer);
   status_response__free_unpacked(resp, NULL);
 
   return retval;

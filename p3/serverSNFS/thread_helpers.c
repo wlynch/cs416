@@ -50,6 +50,7 @@ void truncate_file(Truncate * input, StatusResponse * resp) {
   truncate_handle.retval = truncate(full_path, num_bytes);
 
   if (truncate_handle.retval < 0) {
+    truncate_handle.has_err = 1;
     truncate_handle.err = errno;
   }
 
