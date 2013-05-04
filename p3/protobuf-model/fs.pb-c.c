@@ -350,6 +350,49 @@ void   file_response__free_unpacked
   PROTOBUF_C_ASSERT (message->base.descriptor == &file_response__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
+void   status_response__init
+                     (StatusResponse         *message)
+{
+  static StatusResponse init_value = STATUS_RESPONSE__INIT;
+  *message = init_value;
+}
+size_t status_response__get_packed_size
+                     (const StatusResponse *message)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &status_response__descriptor);
+  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+}
+size_t status_response__pack
+                     (const StatusResponse *message,
+                      uint8_t       *out)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &status_response__descriptor);
+  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+}
+size_t status_response__pack_to_buffer
+                     (const StatusResponse *message,
+                      ProtobufCBuffer *buffer)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &status_response__descriptor);
+  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+}
+StatusResponse *
+       status_response__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data)
+{
+  return (StatusResponse *)
+     protobuf_c_message_unpack (&status_response__descriptor,
+                                allocator, len, data);
+}
+void   status_response__free_unpacked
+                     (StatusResponse *message,
+                      ProtobufCAllocator *allocator)
+{
+  PROTOBUF_C_ASSERT (message->base.descriptor == &status_response__descriptor);
+  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+}
 void   error_response__init
                      (ErrorResponse         *message)
 {
@@ -887,7 +930,71 @@ const ProtobufCMessageDescriptor file_response__descriptor =
   (ProtobufCMessageInit) file_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor error_response__field_descriptors[3] =
+static const ProtobufCFieldDescriptor status_response__field_descriptors[3] =
+{
+  {
+    "retval",
+    1,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_INT32,
+    0,   /* quantifier_offset */
+    PROTOBUF_C_OFFSETOF(StatusResponse, retval),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "err",
+    2,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_INT32,
+    PROTOBUF_C_OFFSETOF(StatusResponse, has_err),
+    PROTOBUF_C_OFFSETOF(StatusResponse, err),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "is_done",
+    3,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_BOOL,
+    PROTOBUF_C_OFFSETOF(StatusResponse, has_is_done),
+    PROTOBUF_C_OFFSETOF(StatusResponse, is_done),
+    NULL,
+    NULL,
+    0,            /* packed */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+};
+static const unsigned status_response__field_indices_by_name[] = {
+  1,   /* field[1] = err */
+  2,   /* field[2] = is_done */
+  0,   /* field[0] = retval */
+};
+static const ProtobufCIntRange status_response__number_ranges[1 + 1] =
+{
+  { 1, 0 },
+  { 0, 3 }
+};
+const ProtobufCMessageDescriptor status_response__descriptor =
+{
+  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+  "StatusResponse",
+  "StatusResponse",
+  "StatusResponse",
+  "",
+  sizeof(StatusResponse),
+  3,
+  status_response__field_descriptors,
+  status_response__field_indices_by_name,
+  1,  status_response__number_ranges,
+  (ProtobufCMessageInit) status_response__init,
+  NULL,NULL,NULL    /* reserved[123] */
+};
+static const ProtobufCFieldDescriptor error_response__field_descriptors[2] =
 {
   {
     "error_code",
@@ -913,28 +1020,15 @@ static const ProtobufCFieldDescriptor error_response__field_descriptors[3] =
     0,            /* packed */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
-  {
-    "return_code",
-    3,
-    PROTOBUF_C_LABEL_OPTIONAL,
-    PROTOBUF_C_TYPE_INT32,
-    PROTOBUF_C_OFFSETOF(ErrorResponse, has_return_code),
-    PROTOBUF_C_OFFSETOF(ErrorResponse, return_code),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
 };
 static const unsigned error_response__field_indices_by_name[] = {
   0,   /* field[0] = error_code */
   1,   /* field[1] = is_done */
-  2,   /* field[2] = return_code */
 };
 static const ProtobufCIntRange error_response__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 3 }
+  { 0, 2 }
 };
 const ProtobufCMessageDescriptor error_response__descriptor =
 {
@@ -944,7 +1038,7 @@ const ProtobufCMessageDescriptor error_response__descriptor =
   "ErrorResponse",
   "",
   sizeof(ErrorResponse),
-  3,
+  2,
   error_response__field_descriptors,
   error_response__field_indices_by_name,
   1,  error_response__number_ranges,

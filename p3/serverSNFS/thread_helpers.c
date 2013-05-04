@@ -137,18 +137,16 @@ int get_attr(Simple * input, GetAttrResponse * response){
   return res == 0 ? res : errno;
 }
 
-void write_file(Write * input, size_t count, ErrorResponse * response) {
+void write_file(Write * input, size_t count, StatusResponse * response) {
   int res, fd = input->fd;
   void *buf;
   memcpy(buf, input->data.data, sizeof(input->data.len));
 
   res = write(fd, buf, count);
+  response->retval = res;
   if (res < 0) {
-    res = errno;
-    response->error_code = res;
-  } else {
-    response->error_code = 0;
-    response->return_code = res;
+    response->has_err = 1;
+    response->err = errno;
   }
   
 }

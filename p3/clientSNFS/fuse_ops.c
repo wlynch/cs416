@@ -389,11 +389,12 @@ static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi)
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
+  int retval;
+
   write_msg.fd = fd;
   /* NOT SURE HOW TO HANDLE DATA WITHIN PROTOBUF */
   memcpy(&write_msg.data,buf,count);
-
-  FileResponse is_done = FILE_RESPONSE__INIT;
+  write_msg.data.len = count;
 
   send_size = write__get_packed_size(&write_msg) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
@@ -418,21 +419,23 @@ static int _write(int fd, const void *buf, int count, struct fuse_file_info *fi)
   log_msg(log_buffer);
 
   /* Get response back */
-  read(socket, &receive_size, sizeof(send_size));
-  read(socket, &message_type, sizeof(message_type));
+  read(sock, &receive_size, sizeof(send_size));
+  read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
   void *payload = malloc(receive_size);
-  read(socket, payload, receive_size);
+  read(sock, payload, receive_size);
 
-  ErrorResponse * resp = error_response__unpack(NULL, receive_size, payload);
-  
-  sprintf(log_buffer, "return code is %d\n",resp->error_code);
+  StatusResponse * resp = status_response__unpack(NULL, receive_size, payload);
+  retval = resp->retval;
+  if (retval == -1) {
+    retval = -resp->err;
+  }
+  sprintf(log_buffer, "return code is %d\n",resp->retval);
   log_msg(log_buffer);
   
   close(sock);
-
-  return is_done.fd > 0 ? 0 : is_done.fd;
+  return retval;
 }
 
 struct fuse_operations ops = {
@@ -442,5 +445,6 @@ struct fuse_operations ops = {
   .open = _ex_open,
   .create = _create,
   .release = _release,
-  .truncate = _truncate
+  .truncate = _truncate,
+  .write = _write
 };
