@@ -199,11 +199,9 @@ void read_directory(Simple * input, ReadDirResponse * resp){
 
   resp->n_records = file_count;
   resp->records = malloc(sizeof(DirRecord *) * file_count);
-  fprintf(stderr, "file count is %d\n", file_count);
 
   //next, fill up all those lovely dir records
   while((dirent = readdir(dir_front)) != NULL){
-    fprintf(stderr, "in the while loop i is %d", i);
     resp->records[i] = malloc(sizeof(DirRecord));
     memcpy(resp->records[i], &init_dir, sizeof(init_dir));
     resp->records[i]->name = strdup(dirent->d_name);
