@@ -6,10 +6,8 @@
 #include <errno.h>
 
 #include <sys/types.h>
+#include <dirent.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <unistd.h>
 
 #include "threading.h"
@@ -88,7 +86,7 @@ void open_file(Open* input, FileResponse* resp) {
   free(full_path);
 }
 
-int get_attr(Simple * input, GetAttrResponse * response){
+int get_attr(Simple * input, GetAttrResponse * resp){
   char * full_path;
   struct stat stat_buf;
   int res;
@@ -96,21 +94,21 @@ int get_attr(Simple * input, GetAttrResponse * response){
   full_path = get_full_path(input->path);
   res = stat(full_path, &stat_buf);
 
-  response->st_dev = stat_buf.st_dev;
-  response->st_ino = stat_buf.st_ino;
-  response->st_mode = stat_buf.st_mode;
-  response->st_nlink = stat_buf.st_nlink;
-  response->st_uid = stat_buf.st_uid;
-  response->st_gid = stat_buf.st_gid;
-  response->st_rdev = stat_buf.st_rdev;
-  response->atime = stat_buf.st_atime;
-  response->mtime = stat_buf.st_mtime;
-  response->ctime = stat_buf.st_ctime;
-  response->st_blksize = stat_buf.st_blksize;
-  response->st_blocks = stat_buf.st_blocks;
-  response->st_size = stat_buf.st_size;
+  resp->st_dev = stat_buf.st_dev;
+  resp->st_ino = stat_buf.st_ino;
+  resp->st_mode = stat_buf.st_mode;
+  resp->st_nlink = stat_buf.st_nlink;
+  resp->st_uid = stat_buf.st_uid;
+  resp->st_gid = stat_buf.st_gid;
+  resp->st_rdev = stat_buf.st_rdev;
+  resp->atime = stat_buf.st_atime;
+  resp->mtime = stat_buf.st_mtime;
+  resp->ctime = stat_buf.st_ctime;
+  resp->st_blksize = stat_buf.st_blksize;
+  resp->st_blocks = stat_buf.st_blocks;
+  resp->st_size = stat_buf.st_size;
 
-  response->error_code = res == 0 ? res : errno;
+  resp->error_code = res == 0 ? res : errno;
   free(full_path);
 
   return res == 0 ? res : errno;
@@ -131,15 +129,15 @@ void write_file(Write * input, size_t count, StatusResponse * response) {
   
 }
 
-void *read_help(Read * input, ReadResponse *response) {
+void *read_help(Read * input, ReadResponse *resp) {
   int res, errors;
   void * buffer = malloc(input->num_bytes);
 
   res = pread(input->fd, buffer, input->num_bytes, input->offset);
-  response->error_code = res >= 0 ? 0 : errno;
-  response->bytes_read = res >= 0 ? res : 0;
-  response->data.data = buffer;
-  response->data.len = input->num_bytes;
+  resp->error_code = res >= 0 ? 0 : errno;
+  resp->bytes_read = res >= 0 ? res : 0;
+  resp->data.data = buffer;
+  resp->data.len = input->num_bytes;
 
   return buffer;
 }
@@ -157,5 +155,81 @@ void make_dir(Create * input, ErrorResponse * resp){
  }
 
  resp->error_code = res == 0 ? res : error;
+}
 
+void open_dir(Simple * input, ErrorResponse * resp){
+  char * full_path = get_full_path(input->path);
+  DIR * dp = opendir(full_path);
+  
+  if(dp != NULL){
+    closedir(dp);    
+  }
+
+  free(full_path);
+  
+  resp->error_code = dp == NULL ? errno : 0;
+}
+
+void read_directory(Simple * input, ReadDirResponse * resp){
+  int error, result, i = 0, file_count = 0;
+  char * full_path;
+  DIR * dp, * dir_front;
+  struct dirent * dirent;
+  DirRecord init_dir = DIR_RECORD__INIT;
+
+  full_path = get_full_path(input->path);
+  dp = opendir(full_path);
+  dir_front = opendir(full_path);
+  free(full_path);
+
+  // if the directory couldn't be opened, return an error
+  if(dp == NULL || dir_front == NULL){
+    fprintf(stderr, "ReadDir: first if statement");
+    resp->n_records = 0;
+    resp->error_code = errno;
+    return;
+  }
+
+  dirent = readdir(dp);
+  // if dirent was null after we opened the directory, there is an erro
+  if(dirent == NULL){
+    fprintf(stderr, "Readdir: second if statement");
+    resp->n_records = 0;
+    resp->error_code = errno;
+    return;
+  }
+ 
+  // get the number of files for this directory we do while because we already
+  // read the first one
+  do
+  {
+    file_count++;
+  }
+  while((dirent = readdir(dp)) != NULL);
+
+  resp->n_records = file_count;
+  resp->records = malloc(sizeof(DirRecord *) * file_count);
+
+  //next, fill up all those lovely dir records
+  while((dirent = readdir(dir_front)) != NULL){
+    resp->records[i] = malloc(sizeof(DirRecord));
+    memcpy(resp->records[i], &init_dir, sizeof(init_dir));
+    resp->records[i]->name = strdup(dirent->d_name);
+    i++;
+  }
+  resp->error_code = 0;
+
+  //any cleanup needs to happen after packing
+}
+
+void clean_readdir(ReadDirResponse *resp){
+  int i = 0;
+
+  // free the mallocs for each individual records
+  for(; i < resp->n_records; i++){
+    free(resp->records[i]->name);
+    free(resp->records[i]);
+  }
+
+  free(resp->records);
 }

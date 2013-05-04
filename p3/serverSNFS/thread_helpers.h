@@ -10,3 +10,6 @@ int get_attr(Simple *, GetAttrResponse *);
 void write_file(Write *, size_t count, StatusResponse *);
 void *read_help(Read *, ReadResponse *);
 void make_dir(Create *, ErrorResponse *);
+void open_dir(Simple *, ErrorResponse *);
+void read_directory(Simple *, ReadDirResponse *);
+void clean_readdir(ReadDirResponse *);
