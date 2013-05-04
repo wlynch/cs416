@@ -64,19 +64,19 @@ void * handle_request(void * args){
       }
     case TRUNCATE_MESSAGE:
       {
-        Truncate * truncate = truncate__unpack(NULL, message_size, message_buffer);
-        FileResponse *resp = malloc(sizeof(FileResponse));
-        truncate_file(truncate, resp);
+        Truncate * input = truncate__unpack(NULL, message_size, message_buffer);
+        StatusResponse *resp = malloc(sizeof(StatusResponse));
+        truncate_file(input, resp);
 
         /*  Send to client code */
-        uint32_t send_size = file_response__get_packed_size(resp) + 2*sizeof(uint32_t);
+        uint32_t send_size = status_response__get_packed_size(resp) + 2*sizeof(uint32_t);
         void * send_buffer = malloc(send_size);
         // ignore the length when writing the length of the message
         uint32_t net_data_size = htonl(send_size - 2 * sizeof(uint32_t));
         message_type = htonl(FILE_RESPONSE_MESSAGE);
         memcpy(send_buffer, &net_data_size, sizeof(uint32_t));
         memcpy(send_buffer + sizeof(uint32_t), &message_type, sizeof(uint32_t));
-        file_response__pack(resp, send_buffer + 2 * sizeof(uint32_t));
+        status_response__pack(resp, send_buffer + 2 * sizeof(uint32_t));
 
         int num_written = write(thr_arg->socket, send_buffer, send_size);
         while(num_written < send_size)
@@ -86,7 +86,7 @@ void * handle_request(void * args){
 
         free(resp);
         free(send_buffer);
-        truncate__free_unpacked(truncate, NULL);
+        truncate__free_unpacked(input, NULL);
         break;
       }
     case OPEN_MESSAGE:
@@ -163,6 +163,7 @@ void * handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
         fprintf(stderr, "successfully sent the message over back to the client\n");
+        write__free_unpacked(write_msg, NULL);
         break;
       }
     case READ_MESSAGE:
