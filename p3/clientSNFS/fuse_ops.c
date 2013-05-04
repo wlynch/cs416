@@ -200,6 +200,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   read(sock, &message_type, sizeof(message_type));
   receive_size = ntohl(receive_size);
   message_type = ntohl(message_type);
+  receive_buffer = malloc(receive_size);
   read(sock, receive_buffer, receive_size);
   log_msg("received response");
   resp = status_response__unpack(NULL, receive_size, receive_buffer);
