@@ -143,9 +143,9 @@ void * handle_request(void * args){
       }
     case WRITE_MESSAGE:
       {
-        fprintf(stderr,"GOT A WRITE\n");
         Write *write_msg =  write__unpack(NULL, message_size, message_buffer);
         StatusResponse resp = STATUS_RESPONSE__INIT;
+        fprintf(stderr,"Writing %d bytes\n",message_size);
         write_file(write_msg, message_size, &resp);
 
         /* Send to client */
@@ -164,8 +164,6 @@ void * handle_request(void * args){
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
         fprintf(stderr, "successfully sent the message over back to the client\n");
-        free(&resp);
-        free(send_buffer);
         break;
       }
     case READ_MESSAGE:

@@ -446,7 +446,7 @@ static int _write(const char* path, const void *buf, size_t count, size_t offset
 
   write_msg.fd = fi->fh;
   write_msg.offset = offset;
-  memcpy(&write_msg.data, buf, count);
+  write_msg.data.data = buf;
   write_msg.data.len = count;
   sprintf(log_buffer, "file descriptor is %d and bytes to write is %d\n", write_msg.fd, count);
   log_msg(log_buffer);
