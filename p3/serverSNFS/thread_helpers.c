@@ -37,7 +37,7 @@ void create_file(Create * input, FileResponse * resp) {
 }
 
 void truncate_file(Truncate * input, StatusResponse * resp) {
-  int truncate_res, num_bytes;
+  int num_bytes;
   char * full_path;
 
   StatusResponse truncate_handle = STATUS_RESPONSE__INIT;
@@ -118,20 +118,21 @@ int get_attr(Simple * input, GetAttrResponse * resp){
 void write_file(Write * input, size_t count, StatusResponse * response) {
   int res, fd = input->fd;
   off_t offset = input->offset;
-  void *buf;
+  void *buf = malloc(sizeof(input->data.len));
   memcpy(buf, input->data.data, sizeof(input->data.len));
-  fprintf(stderr,"writing %d bytes\n",input->data.len);
   res = pwrite(fd, buf, input->data.len, offset);
   response->retval = res;
   if (res < 0) {
     response->has_err = 1;
     response->err = errno;
   }
+
+  free(buf);
   
 }
 
 void *read_help(Read * input, ReadResponse *resp) {
-  int res, errors;
+  int res;
   void * buffer = malloc(input->num_bytes);
 
   res = pread(input->fd, buffer, input->num_bytes, input->offset);
@@ -171,7 +172,7 @@ void open_dir(Simple * input, ErrorResponse * resp){
 }
 
 void read_directory(Simple * input, ReadDirResponse * resp){
-  int error, result, i = 0, file_count = 0;
+  int i = 0, file_count = 0;
   char * full_path;
   DIR * dp, * dir_front;
   struct dirent * dirent;

@@ -39,8 +39,6 @@ bool set_root_path(const char * new_root){
     free(root_path);
   }
 
-  root_path = strdup(new_root);
-  
   realpath(new_root, path);
   root_path = strdup(path);
   

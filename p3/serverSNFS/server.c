@@ -21,14 +21,13 @@
 
 
 int main(int argc, char **argv) {
-  int sock, port, new_socket, bytes_read;
+  int sock, port, new_socket;
   const char * mount = NULL;
   struct sockaddr_in serv_addr, client_addr;
   socklen_t client_len;
   unsigned i;
   bool set_root;
   char buffer[256];
-  uint32_t size_buffer, int_buffer;
 
   if(argc != 5){
     fprintf(stderr, "Error, please supply a -mount and -port option\n");
@@ -55,6 +54,16 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  int res = fork(); 
+  
+  // fork the process after we set up everything and let the parent die
+  if(res != 0)
+  {
+    return 0;
+  }
+
+
+
   sock = socket(AF_INET, SOCK_STREAM, 0);
   if(sock < 0)
   {
@@ -69,7 +78,7 @@ int main(int argc, char **argv) {
 
   if(bind(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
   {
-    fprintf(stderr, "Error while trying to bind the socket\n");
+    fprintf(stderr, "Error while trying to bind the socket, make sure the socket's free\n");
     return 1;
   }
 

@@ -161,7 +161,8 @@ void * handle_request(void * args){
         {
           write(thr_arg->socket, send_buffer + num_written, send_size - num_written);
         }
-        fprintf(stderr, "successfully sent the message over back to the client\n");
+        
+        free(send_buffer);
         write__free_unpacked(write_msg, NULL);
         break;
       }

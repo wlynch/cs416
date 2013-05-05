@@ -78,7 +78,10 @@ static int _getattr(const char *path, struct stat *stbuf) {
 
   int error_code = resp->error_code;
   close(sock);
+
+  get_attr_response__free_unpacked(resp, NULL);
   free(send_buffer);
+  free(attr_req.path);
   free(receive_buffer);
 
   return -1 * error_code;
@@ -159,7 +162,6 @@ static int _create(const char *path, mode_t mode, struct fuse_file_info *fi){
   void *send_buffer;
   void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
-  int error, i;
   FileResponse * resp;
 
   Create create = CREATE__INIT;
@@ -250,7 +252,7 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
   }
 
   /* send the truncate message */
-  int bytes_written = write(sock, send_buffer, send_size);
+  write(sock, send_buffer, send_size);
 
   /* wait for the response */
   read(sock, &receive_size, sizeof(send_size));
@@ -267,6 +269,9 @@ static int _truncate(const char *path, off_t length, struct fuse_file_info *fi) 
 
   close(sock);
   status_response__free_unpacked(resp, NULL);
+  free(receive_buffer);
+  free(send_buffer);
+
 
   return retval;
 }
@@ -388,12 +393,9 @@ static int _ex_open(const char *path, struct fuse_file_info *fi) {
 
   close(socket_fd);
   free(open_struct.path);
-  log_msg("got through freeing the path");
-  log_msg("got through freeing the file response");
+  file_response__free_unpacked(resp, NULL);
   free(receive_buffer);
-  log_msg("got through freeing receive buffer");
   free(send_buffer);
-  log_msg("about to return");
 
   return fd > 0 ? 0 : -1 * error_code;
 }
@@ -553,10 +555,12 @@ static int _opendir(char *path, struct fuse_file_info *fi){
 
   ErrorResponse *resp = error_response__unpack(NULL, receive_size, receive_buffer);
   int error_code = resp->error_code;
+
+  error_response__free_unpacked(resp, NULL);
   free(send_buffer);
   free(receive_buffer);
 
-  sprintf(log_buffer, "error code is %d\n", resp->error_code);
+  sprintf(log_buffer, "error code is %d\n", error_code);
   log_msg(log_buffer);
 
   return -1 * error_code;
@@ -571,7 +575,6 @@ static int _write(const char* path, const void *buf, size_t count, size_t offset
   log_msg("logging in write");
   Write write_msg = WRITE__INIT;
   void *send_buffer;
-  void *receive_buffer;
   uint32_t send_size, net_data_size, message_type, receive_size;
   int retval;
 
@@ -579,8 +582,6 @@ static int _write(const char* path, const void *buf, size_t count, size_t offset
   write_msg.offset = offset;
   write_msg.data.data = buf;
   write_msg.data.len = count;
-  sprintf(log_buffer, "file descriptor is %d and bytes to write is %d\n", write_msg.fd, count);
-  log_msg(log_buffer);
 
   send_size = write__get_packed_size(&write_msg) + 2*sizeof(uint32_t);
   send_buffer = malloc(send_size);
@@ -621,7 +622,9 @@ static int _write(const char* path, const void *buf, size_t count, size_t offset
   }
   sprintf(log_buffer, "return code is %d\n",resp->retval);
   log_msg(log_buffer);
-  
+
+  status_response__free_unpacked(resp, NULL);
+  free(payload);
   close(sock);
   return retval;
 }
