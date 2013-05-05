@@ -7,7 +7,6 @@ CFLAGS += $(shell pkg-config fuse --cflags)
 CFLAGS += $(shell PKG_CONFIG_PATH=${PKG_CONFIG_PATH} pkg-config libprotobuf-c --cflags)
 LDFLAGS += $(shell pkg-config fuse --libs)
 LDFLAGS += $(shell PKG_CONFIG_PATH=${PKG_CONFIG_PATH} pkg-config libprotobuf-c --libs)
-LDFLAGS +=  ../lib/libprotobuf.a ../lib/libprotobuf-c.a
 
 SERVER_EXEC = serverSNFS
 

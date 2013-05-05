@@ -118,8 +118,8 @@ int get_attr(Simple * input, GetAttrResponse * resp){
 void write_file(Write * input, size_t count, StatusResponse * response) {
   int res, fd = input->fd;
   off_t offset = input->offset;
-  void *buf = malloc(sizeof(input->data.len));
-  memcpy(buf, input->data.data, sizeof(input->data.len));
+  void *buf = malloc(input->data.len);
+  memcpy(buf, input->data.data, input->data.len);
   res = pwrite(fd, buf, input->data.len, offset);
   response->retval = res;
   if (res < 0) {

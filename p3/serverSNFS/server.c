@@ -54,15 +54,13 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  int res = fork(); 
+   int res = fork(); 
   
   // fork the process after we set up everything and let the parent die
   if(res != 0)
   {
     return 0;
   }
-
-
 
   sock = socket(AF_INET, SOCK_STREAM, 0);
   if(sock < 0)
