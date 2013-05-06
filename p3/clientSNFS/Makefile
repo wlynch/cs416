@@ -1,7 +1,5 @@
 CC = gcc
 
-PKG_CONFIG_PATH:=/filer/tmp2/contrib/lib/pkgconfig:${PKG_CONFIG_PATH}
-
 CFLAGS = -c -g -Wall
 CFLAGS +=  $(shell pkg-config fuse --cflags)
 CFLAGS +=  $(shell PKG_CONFIG_PATH=${PKG_CONFIG_PATH} pkg-config libprotobuf-c --cflags)
@@ -15,10 +13,13 @@ CLIENT_EXEC = clientSNFS
 SRCS= rpc.c log.c fuse_ops_helpers.c fuse_ops.c client.c ../protobuf-model/ping.pb-c.c ../protobuf-model/fs.pb-c.c
 OBJS = ${SRCS:.c=.o}
 
-all: ${CLIENT_EXEC}
+all: protobuf ${CLIENT_EXEC}
 
 .c.o:
 	${CC} ${CFLAGS} -o $@ -c $<
+
+protobuf:
+	cd ../protobuf-model; make
 
 ${CLIENT_EXEC}:${OBJS}
 	${CC} -o ${CLIENT_EXEC} ${OBJS} ${LDFLAGS}
@@ -31,5 +32,5 @@ kill: ${CLIENT_EXEC}
 	$(shell pkill clientSNFS)
 
 clean:
-	rm -rf ${CLIENT_EXEC}
-	rm -rf ${OBJS}
+	rm -f ${CLIENT_EXEC}
+	rm -f ${OBJS}
